@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
     .then(data => {
       if (data.message && data.message.trim().toLowerCase() === "inicio de sesión exitoso".toLowerCase()) {
         // redirigir al usuario a la página de bienvenida
-        window.location.href = 'bienvenido.html';
+        window.location.href = 'index.html';
       } else {
         mensajeError.textContent = data.message;
         mensajeError.style.display = "block";

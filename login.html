@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página de Inicio de Sesión</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="login.css">
+
+</head>
+<body>
+  <div class="container d-flex justify-content-center align-items-center vh-100 contenedor-login"> 
+    <div class="login-card p-4 shadow-sm" style="width: 22rem;">
+      <h1 class="titulo-login text-center mb-4">Inicio de Sesión</h1>
+      <form id="formulario-login">
+        <div class="form-group datos-usuario"> 
+          <label for="usuario">Usuario</label>
+          <input type="text" class="form-control" id="usuario" placeholder="Nombre de usuario" required>
+        </div>
+        <div class="form-group datos-usuario"> 
+          <label for="clave">Contraseña</label>
+          <input type="password" class="form-control" id="clave" placeholder="Contraseña" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100 mt-3">Iniciar Sesión</button>
+        <p id="mensaje-error" class="text-danger mt-3" style="display: none;"></p> 
+      </form>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="script.js"></script> 
+</body>
+</html>

@@ -3,31 +3,87 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Página de Inicio de Sesión</title>
+  <title>Bienvenido</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="index.css">
+
 </head>
 <body>
-  <div class="container d-flex justify-content-center align-items-center vh-100 contenedor-login"> 
-    <div class="card p-4 shadow-sm" style="width: 22rem;">
-      <h1 class="titulo-login text-center mb-4">Inicio de Sesión</h1>
-      <form id="formulario-login">
-        <div class="form-group datos-usuario"> 
-          <label for="usuario">Usuario</label>
-          <input type="text" class="form-control" id="usuario" placeholder="Ingresa tu usuario" required>
+  <nav id="menu" class="d-flex flex-column p-3">
+    <ul class="nav flex-column">
+      <li class="nav-item mb-3">
+        <a href="#" class="nav-link d-flex align-items-center">
+          <i class="fas fa-home"></i> <span>Inicio</span>
+        </a>
+      </li>
+      <li class="nav-item mb-3">
+        <a href="#" class="nav-link d-flex align-items-center">
+          <i class="fas fa-user-graduate"></i> <span>Alumnos</span>
+        </a>
+      </li>
+      <li class="nav-item mb-3">
+        <a href="#" class="nav-link d-flex align-items-center">
+          <i class="fas fa-book"></i> <span>Cursos</span>
+        </a>
+      </li>
+      <li class="nav-item mb-3">
+        <a href="#" class="nav-link d-flex align-items-center">
+          <i class="fas fa-chalkboard-teacher"></i> <span>Prácticas</span>
+        </a>
+      </li>
+      <li class="nav-item mt-auto">
+        <a href="#" id="cerrar-sesion" class="nav-link d-flex align-items-center">
+          <i class="fas fa-sign-out-alt"></i> <span>Cerrar Sesión</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="text-center contenedor-bienvenida">
+          <h1>Bienvenido, <span id="usuario"></span>!</h1>
+          <p>Has iniciado sesión correctamente.</p>
+          <p>Tu nombre de usuario es: <strong><span id="usuario-nombre"></span></strong></p>
         </div>
-        <div class="form-group datos-usuario"> 
-          <label for="clave">Contraseña</label>
-          <input type="password" class="form-control" id="clave" placeholder="Ingresa tu contraseña" required>
+
+        <!-- Sección de Promociones -->
+        <div class="contenedor-promociones mt-5">
+          <h2 class="text-center mb-4">Promociones</h2>
+          <div class="row">
+            <div class="col-md-4 mb-3 d-flex align-items-stretch">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h3 class="card-title">Alumnos</h3>
+                  <p class="card-text">Accede a información relacionada con los datos de los alumnos matriculados en el centro.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3 d-flex align-items-stretch">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h3 class="card-title">Cursos</h3>
+                  <p class="card-text">Accede a información sobre los datos de los cursos, asignaturas y calificaciones.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3 d-flex align-items-stretch">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h3 class="card-title">Prácticas</h3>
+                  <p class="card-text">Consulta información sobre las prácticas asignadas a los alumnos.</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary w-100 mt-3">Acceder</button>
-        <p id="mensaje-error" class="text-danger mt-3" style="display: none;"></p> 
-      </form>
+      </div>
     </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="script.js"></script> 
 </body>
 </html>

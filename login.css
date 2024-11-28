@@ -1,0 +1,58 @@
+
+/* Estilo del contenedor de Login */
+.contenedor-login {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Estilo de la tarjeta de Login */
+  .login-card {
+    background-color: var(--color-fondo-tarjeta);  
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    width: 320px;
+    text-align: center;
+  }
+  
+  /* Estilo específico de elementos dentro de la tarjeta de Login */
+  .login-card .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .login-card label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: var(--color-texto-principal);  
+  }
+  
+  .login-card input {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid var(--color-borde-input);  
+    border-radius: 6px;
+    box-sizing: border-box;
+  }
+  
+  .login-card button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: var(--color-primario);  
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-card button:hover {
+    background-color: var(--color-primario-hover);  
+  }
+  

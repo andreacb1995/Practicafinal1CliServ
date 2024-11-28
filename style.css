@@ -1,4 +1,4 @@
-/* :root - Definición de variables de color */
+/* Definición de Variables de Color */
 :root {
   --color-negro: #000000;              
   --color-gris-oscuro-1: #191919;      
@@ -10,91 +10,108 @@
   --color-gris-neutro: #333333;        
   --color-primario: #007BFF;           
   --color-primario-hover: #0056b3;     
-  --color-exito: #28A745;              
-  --color-exito-hover: #218838;        
-  --color-error: #FF4D4D;              
-  --color-error-hover: #E60000;        
-  --color-cancelar: #6C757D;           
-  --color-cancelar-hover: #343A40;     
-  --color-naranja: #FD7E14;            
-  --color-naranja-hover: #E66000;      
   --color-body-bg: var(--color-gris-claro-2);  
   --color-header-bg: var(--color-gris-oscuro-1); 
   --color-texto-principal: var(--color-gris-oscuro-1); 
   --color-texto-secundario: var(--color-gris-medio-1); 
   --color-fondo-tarjeta: #ffffff;       
   --color-borde-input: var(--color-gris-claro-1);  
-    --color-info: #FFC107;               
-  --color-info-hover: #E0A800;         
-}
-
-.oculto {
-  display: none;
-}
-
-.visible {
-  display: block;
 }
 
 /* Estilos Globales */
- body{
+body {
   background: linear-gradient(120deg, #e0eafc, #cfdef3); 
   font-family: 'Poppins', sans-serif; 
-  color: #333;
+  color: var(--color-texto-principal);
   margin: 0;
   padding: 0;
-  color: var(--color-texto-principal);
   overflow-x: hidden; /* Evitar desplazamiento horizontal */
   margin-left: 80px; /* Espacio para el menú compacto */
   transition: margin-left 0.3s ease;
 }
 
-/* Estilos para la Página de Login */
-.contenedor-login {
-  background-color: var(--color-gris-claro-2);
-  height: 100vh;
+/* Estilo del Menú Lateral */
+#menu {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 70px; 
+  height: 100%;
+  background: linear-gradient(180deg, #343a40, #1c1f24); 
+  transition: width 0.3s ease;
+  z-index: 1030;
+  overflow: hidden;
+  border-right: 2px solid #444;
+}
+
+#menu:hover {
+  width: 250px; 
+}
+
+#menu .nav-link {
+  display: flex; 
+  align-items: center; 
+  gap: 10px; 
+  color: var(--color-gris-claro-1);
+  padding: 12px 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  border-radius: 5px; /* Bordes redondeados */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#menu .nav-link i {
+  font-size: 1.5rem; 
+  flex-shrink: 0; 
+  display: flex;
   align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
 }
 
-.titulo-login {
-  font-size: 28px;
-  margin-bottom: 25px;
-  color: var(--color-primario);  
+#menu .nav-link span {
+  display: none; 
+  flex-grow: 1; 
+  text-align: left; 
 }
 
-.contenedor-login form {
-  background: var(--color-fondo-tarjeta);  
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  width: 320px;
-  text-align: center;
+#menu:hover .nav-link span {
+  display: inline; /* Mostrar texto cuando el menú esté expandido */
 }
 
-.datos-usuario {
-  margin-bottom: 20px;
-  text-align: left;
+#menu:hover ~ body {
+  margin-left: 260px; 
 }
 
-label {
-  display: block;
-  font-size: 16px;
-  margin-bottom: 8px;
-  color: var(--color-texto-principal);  
+#menu .nav-link:hover {
+  background-color: var(--color-gris-medio-2); 
+  color: #fff; 
 }
 
-input {
-  width: 100%;
-  padding: 10px;
-  font-size: 15px;
-  border: 1px solid var(--color-borde-input);  
-  border-radius: 6px;
-  box-sizing: border-box;
+/* Estilo específico para "Cerrar Sesión" */
+#menu #cerrar-sesion {
+  color: var(--color-gris-claro-1);
+  font-weight: bold;
 }
 
+#menu #cerrar-sesion:hover {
+  color: #fff;
+  background-color: var(--color-gris-medio-2);
+}
+
+#menu #cerrar-sesion span {
+  display: none; 
+  margin-left: 5px;
+}
+
+#menu:hover #cerrar-sesion span {
+  display: inline;
+}
+
+/* Elementos Generales */
 button {
   width: 100%;
   padding: 12px;
@@ -109,138 +126,4 @@ button {
 
 button:hover {
   background-color: var(--color-primario-hover);  
-}
-
-#mensaje-error {
-  color: var(--color-error);  
-  font-size: 14px;
-  margin-top: 10px;
-  display: none;
-}
-
-
-.contenedor-bienvenida {
-  text-align: center;
-}
-
-.contenedor-bienvenida,
-.contenedor-promociones {
-  margin-top: 50px;
-}
-
-h1, h2 {
-  font-family: 'Poppins', sans-serif; 
-  font-weight: bold;
-  color: #333; 
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-
-/* Estilo del Menú Lateral */
-#menu {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; 
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 70px; 
-  height: 100%;
-  background-color: #343a40;
-  transition: width 0.3s ease;
-  z-index: 1030;
-  overflow: hidden;
-  background: linear-gradient(180deg, #343a40, #1c1f24); 
-  border-right: 2px solid #444;
-}
-
-#menu:hover {
-  width: 250px; 
-}
-
-/* Estilo de los elementos del Menú Lateral */
-#menu .nav-link {
-  display: flex; 
-  align-items: center; 
-  justify-content: flex-start; 
-  gap: 10px; 
-  color: #cfd2da;
-  padding: 15px;
-  white-space: nowrap;
-  overflow: hidden;
-  transition: all 0.3s ease-in-out;
-
-}
-
-#menu .nav-link i {
-  font-size: 1.5rem; 
-  flex-shrink: 0; 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-}
-
-#menu:hover .nav-link span {
-  display: inline-block;
-}
-
-#menu .nav-link span {
-  display: none; 
-  flex-grow: 1; 
-  text-align: left; 
-}
-
-#menu:hover ~ body {
-  margin-left: 260px; 
-}
-
-#menu .nav-link:hover {
-  background-color: #495057; 
-  color: #fff; 
-  border-radius: 10px; 
-}
-
-.tarjeta {
-  background-color: #fff; 
-  border: none;
-  border-radius: 15px; 
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.tarjeta:hover {
-  transform: translateY(-5px); /* Elevar ligeramente */
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); 
-}
-
-.tarjeta h3 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.tarjeta p {
-  color: #555; 
-  font-size: 0.9rem;
-}
-
-#cerrar-sesion {
-  margin: 10px 15px; 
-  padding: 10px 15px;
-  background-color: var(--color-error); 
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  text-align: center;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-family: 'Poppins', sans-serif;
-  font-size: 1rem;
-}
-
-#cerrar-sesion:hover {
-  background-color: var(--color-error-hover); 
 }
