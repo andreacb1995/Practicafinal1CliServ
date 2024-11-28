@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alumnos</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="alumnos.css"> 
+  <link rel="stylesheet" href="style.css"> 
+</head>
+
+<div id="menu-container"></div>
+<body class="alumnos">
+    <div class="contenedor my-5">
+      <header class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Alumnos</h1>
+        <button id="añadirAlumno"><i class="fas fa-plus"></i></button> <!-- Botón de añadir cliente -->
+      </header>
+  
+      <div class="tarjetasAlumnos">
+        <!-- Las tarjetas de alumnos se creán dinámicamente -->
+         
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+              <img src="imagenes/cliente.png" class="tarjeta-img" alt="Foto de Alumno">
+              <div class="tarjeta">
+                <h5 class="titulo-tarjeta">Juan Pérez</h5>
+                <p class="texto-tarjeta">Estudiante de TCAE.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4 mb-4">
+            <div class="card h-100">
+              <img src="imagenes/cliente.png" class="tarjeta-img" alt="Foto de Alumno">
+              <div class="tarjeta">
+                <h5 class="titulo-tarjeta">María Gómez</h5>
+                <p class="texto-tarjeta">Estudiante de Administración de Informática.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4 mb-4">
+            <div class="card h-100">
+              <img src="imagenes/cliente.png" class="tarjeta-img" alt="Foto de Alumno">
+              <div class="tarjeta">
+                <h5 class="titulo-tarjeta">Carlos Sánchez</h5>
+                <p class="texto-tarjeta">Estudiante de Gestión.</p>
+              </div>
+            </div>
+          </div>
+        </div>         
+      </div>
+    </div>
+  
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script> <!-- JavaScript para manejar la lógica del formulario y el modal -->
+</body>
+</html>

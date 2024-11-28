@@ -1,7 +1,14 @@
+fetch('menu.html')
+.then(response => response.text())
+.then(data => {
+  document.getElementById('menu-container').innerHTML = data;
+});
+
 document.getElementById('cerrar-sesion').addEventListener('click', function() {
   alert('Has cerrado sesión correctamente.');
-  window.location.href = 'index.html'; // Redirige a la página de login
+  window.location.href = 'login.html'; // Redirige a la página de login
 });
+
 
 document.addEventListener("DOMContentLoaded", function() {
   const mensajeError = document.getElementById("mensaje-error");
