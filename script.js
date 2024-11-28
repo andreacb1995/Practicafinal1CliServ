@@ -1,16 +1,18 @@
+document.getElementById('cerrar-sesion').addEventListener('click', function() {
+  alert('Has cerrado sesión correctamente.');
+  window.location.href = 'index.html'; // Redirige a la página de login
+});
+
 document.addEventListener("DOMContentLoaded", function() {
+  const mensajeError = document.getElementById("mensaje-error");
 
   document.getElementById("formulario-login").addEventListener("submit", function(event) {
     event.preventDefault(); // Evitar que se recargue la página
-    mensajeError.style.display = "none"
+
     const usuario = document.getElementById("usuario").value.trim();
     const clave = document.getElementById("clave").value.trim();
-    const mensajeError = document.getElementById("mensaje-error");
     
-    mensajeError.style.display = "block !important";
-    console.log( mensajeError.style.display);
-    //console.log(usuario);
-    //console.log(clave);
+    mensajeError.style.display = "block";
 
     // Enviar datos al backend
     fetch('http://localhost/proyectofinal1/login.php', {       
@@ -37,4 +39,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
   });
+
+
 });

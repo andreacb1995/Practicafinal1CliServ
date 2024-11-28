@@ -1,38 +1,52 @@
-/* Definición de Variables de Color */
+/* :root - Definición de variables de color */
 :root {
-  --color-negro: #000000;              /* Negro profundo */
-  --color-gris-oscuro-1: #191919;      /* Gris oscuro 1 */
-  --color-gris-oscuro-2: #707070;      /* Gris oscuro 2 */
-  --color-gris-claro-1: #AEAEAE;       /* Gris claro 1 */
-  --color-gris-claro-2: #CCCCCC;       /* Gris claro 2 */
-  --color-gris-medio-1: #808080;       /* Gris medio 1 */
-  --color-gris-medio-2: #5A5A5A;       /* Gris medio 2 */
-  --color-gris-neutro: #333333;        /* Gris neutro */
+  --color-negro: #000000;              
+  --color-gris-oscuro-1: #191919;      
+  --color-gris-oscuro-2: #707070;      
+  --color-gris-claro-1: #AEAEAE;       
+  --color-gris-claro-2: #CCCCCC;       
+  --color-gris-medio-1: #808080;      
+  --color-gris-medio-2: #5A5A5A;       
+  --color-gris-neutro: #333333;        
+  --color-primario: #007BFF;           
+  --color-primario-hover: #0056b3;     
+  --color-exito: #28A745;              
+  --color-exito-hover: #218838;        
+  --color-error: #FF4D4D;              
+  --color-error-hover: #E60000;        
+  --color-cancelar: #6C757D;           
+  --color-cancelar-hover: #343A40;     
+  --color-naranja: #FD7E14;            
+  --color-naranja-hover: #E66000;      
+  --color-body-bg: var(--color-gris-claro-2);  
+  --color-header-bg: var(--color-gris-oscuro-1); 
+  --color-texto-principal: var(--color-gris-oscuro-1); 
+  --color-texto-secundario: var(--color-gris-medio-1); 
+  --color-fondo-tarjeta: #ffffff;       
+  --color-borde-input: var(--color-gris-claro-1);  
+    --color-info: #FFC107;               
+  --color-info-hover: #E0A800;         
+}
 
-  /* Asignación de colores específicos para el diseño */
-  --color-body-bg: var(--color-gris-claro-2);
-  --color-header-bg: var(--color-gris-oscuro-1);
-  --color-primario: var(--color-gris-medio-2);             /* Gris medio 2 para los botones principales */
-  --color-primario-hover: var(--color-gris-neutro);        /* Gris neutro para hover */
-  --color-exito: var(--color-gris-oscuro-2);               /* Gris oscuro 2 para el botón de añadir cliente */
-  --color-exito-hover: var(--color-gris-medio-1);          /* Gris medio 1 para hover */
-  --color-texto-principal: var(--color-gris-oscuro-1);     /* Gris oscuro 1 para el texto principal */
-  --color-fondo-tarjeta: #ffffff;                          /* Fondo blanco para las tarjetas */
-  --color-borde-input: var(--color-gris-claro-1);          /* Gris claro 1 para el borde de los inputs */
-  --color-error: #ff4d4d;                                  /* Rojo brillante para el botón de eliminar */
-  --color-error-hover: #e60000;                            /* Rojo más oscuro para hover */
-  --color-cancelar: var(--color-gris-medio-1);             /* Gris medio 1 para cancelar */
-  --color-cancelar-hover: var(--color-gris-neutro);        /* Gris neutro para hover */
+.oculto {
+  display: none;
+}
+
+.visible {
+  display: block;
 }
 
 /* Estilos Globales */
-body {
-  font-family: 'Roboto', sans-serif;
+ body{
+  background: linear-gradient(120deg, #e0eafc, #cfdef3); 
+  font-family: 'Poppins', sans-serif; 
+  color: #333;
   margin: 0;
   padding: 0;
-  background-color: var(--color-body-bg);
   color: var(--color-texto-principal);
   overflow-x: hidden; /* Evitar desplazamiento horizontal */
+  margin-left: 80px; /* Espacio para el menú compacto */
+  transition: margin-left 0.3s ease;
 }
 
 /* Estilos para la Página de Login */
@@ -48,11 +62,11 @@ body {
 .titulo-login {
   font-size: 28px;
   margin-bottom: 25px;
-  color: var(--color-primario);
+  color: var(--color-primario);  
 }
 
 .contenedor-login form {
-  background: var(--color-fondo-tarjeta);
+  background: var(--color-fondo-tarjeta);  
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
@@ -69,14 +83,14 @@ label {
   display: block;
   font-size: 16px;
   margin-bottom: 8px;
-  color: var(--color-texto-principal);
+  color: var(--color-texto-principal);  
 }
 
 input {
   width: 100%;
   padding: 10px;
   font-size: 15px;
-  border: 1px solid var(--color-borde-input);
+  border: 1px solid var(--color-borde-input);  
   border-radius: 6px;
   box-sizing: border-box;
 }
@@ -85,7 +99,7 @@ button {
   width: 100%;
   padding: 12px;
   font-size: 16px;
-  background-color: var(--color-primario);
+  background-color: var(--color-primario);  
   color: white;
   border: none;
   border-radius: 5px;
@@ -94,26 +108,139 @@ button {
 }
 
 button:hover {
-  background-color: var(--color-primario-hover);
+  background-color: var(--color-primario-hover);  
 }
 
 #mensaje-error {
-  color: var(--color-error);
+  color: var(--color-error);  
   font-size: 14px;
   margin-top: 10px;
   display: none;
 }
 
-/* Encabezado de la Página de Bienvenida */
+
 .contenedor-bienvenida {
   text-align: center;
+}
+
+.contenedor-bienvenida,
+.contenedor-promociones {
   margin-top: 50px;
 }
 
-.oculto {
-  display: none;
+h1, h2 {
+  font-family: 'Poppins', sans-serif; 
+  font-weight: bold;
+  color: #333; 
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.visible {
-  display: block
+
+/* Estilo del Menú Lateral */
+#menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 70px; 
+  height: 100%;
+  background-color: #343a40;
+  transition: width 0.3s ease;
+  z-index: 1030;
+  overflow: hidden;
+  background: linear-gradient(180deg, #343a40, #1c1f24); 
+  border-right: 2px solid #444;
+}
+
+#menu:hover {
+  width: 250px; 
+}
+
+/* Estilo de los elementos del Menú Lateral */
+#menu .nav-link {
+  display: flex; 
+  align-items: center; 
+  justify-content: flex-start; 
+  gap: 10px; 
+  color: #cfd2da;
+  padding: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+
+}
+
+#menu .nav-link i {
+  font-size: 1.5rem; 
+  flex-shrink: 0; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+
+#menu:hover .nav-link span {
+  display: inline-block;
+}
+
+#menu .nav-link span {
+  display: none; 
+  flex-grow: 1; 
+  text-align: left; 
+}
+
+#menu:hover ~ body {
+  margin-left: 260px; 
+}
+
+#menu .nav-link:hover {
+  background-color: #495057; 
+  color: #fff; 
+  border-radius: 10px; 
+}
+
+.tarjeta {
+  background-color: #fff; 
+  border: none;
+  border-radius: 15px; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta:hover {
+  transform: translateY(-5px); /* Elevar ligeramente */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); 
+}
+
+.tarjeta h3 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.tarjeta p {
+  color: #555; 
+  font-size: 0.9rem;
+}
+
+#cerrar-sesion {
+  margin: 10px 15px; 
+  padding: 10px 15px;
+  background-color: var(--color-error); 
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+}
+
+#cerrar-sesion:hover {
+  background-color: var(--color-error-hover); 
 }
