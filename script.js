@@ -1,9 +1,3 @@
-fetch('menu.html')
-.then(response => response.text())
-.then(data => {
-  document.getElementById('menu-container').innerHTML = data;
-});
-
 document.getElementById('cerrar-sesion').addEventListener('click', function() {
   alert('Has cerrado sesión correctamente.');
   window.location.href = 'login.html'; // Redirige a la página de login
@@ -11,6 +5,12 @@ document.getElementById('cerrar-sesion').addEventListener('click', function() {
 
 
 document.addEventListener("DOMContentLoaded", function() {
+  
+  fetch('menu.html')
+  .then(response => response.text())
+  .then(data => {
+    document.getElementById('menu-container').innerHTML = data;
+  });
   const mensajeError = document.getElementById("mensaje-error");
 
   document.getElementById("formulario-login").addEventListener("submit", function(event) {
