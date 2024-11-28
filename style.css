@@ -91,6 +91,12 @@ body {
   color: #fff; 
 }
 
+
+/* Estilo para el ícono cuando el enlace está activo */
+.nav-link.active .fas {
+  color: #007bff; 
+}
+
 /* Estilo específico para "Cerrar Sesión" */
 #menu #cerrar-sesion {
   color: var(--color-gris-claro-1);
