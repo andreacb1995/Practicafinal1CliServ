@@ -1,0 +1,111 @@
+/* Definición de Variables de Color */
+:root {
+  --color-negro: #000000;              /* Negro profundo */
+  --color-gris-oscuro-1: #191919;      /* Gris oscuro 1 */
+  --color-gris-oscuro-2: #707070;      /* Gris oscuro 2 */
+  --color-gris-claro-1: #AEAEAE;       /* Gris claro 1 */
+  --color-gris-claro-2: #CCCCCC;       /* Gris claro 2 */
+  --color-gris-medio-1: #808080;       /* Gris medio 1 */
+  --color-gris-medio-2: #5A5A5A;       /* Gris medio 2 */
+  --color-gris-neutro: #333333;        /* Gris neutro */
+
+  /* Asignación de colores específicos para el diseño */
+  --color-body-bg: var(--color-gris-claro-2);
+  --color-header-bg: var(--color-gris-oscuro-1);
+  --color-primario: var(--color-gris-medio-2);             /* Gris medio 2 para los botones principales */
+  --color-primario-hover: var(--color-gris-neutro);        /* Gris neutro para hover */
+  --color-exito: var(--color-gris-oscuro-2);               /* Gris oscuro 2 para el botón de añadir cliente */
+  --color-exito-hover: var(--color-gris-medio-1);          /* Gris medio 1 para hover */
+  --color-texto-principal: var(--color-gris-oscuro-1);     /* Gris oscuro 1 para el texto principal */
+  --color-fondo-tarjeta: #ffffff;                          /* Fondo blanco para las tarjetas */
+  --color-borde-input: var(--color-gris-claro-1);          /* Gris claro 1 para el borde de los inputs */
+  --color-error: #ff4d4d;                                  /* Rojo brillante para el botón de eliminar */
+  --color-error-hover: #e60000;                            /* Rojo más oscuro para hover */
+  --color-cancelar: var(--color-gris-medio-1);             /* Gris medio 1 para cancelar */
+  --color-cancelar-hover: var(--color-gris-neutro);        /* Gris neutro para hover */
+}
+
+/* Estilos Globales */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-body-bg);
+  color: var(--color-texto-principal);
+  overflow-x: hidden; /* Evitar desplazamiento horizontal */
+}
+
+/* Estilos para la Página de Login */
+.contenedor-login {
+  background-color: var(--color-gris-claro-2);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.titulo-login {
+  font-size: 28px;
+  margin-bottom: 25px;
+  color: var(--color-primario);
+}
+
+.contenedor-login form {
+  background: var(--color-fondo-tarjeta);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  width: 320px;
+  text-align: center;
+}
+
+.datos-usuario {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: var(--color-texto-principal);
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  border: 1px solid var(--color-borde-input);
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  background-color: var(--color-primario);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--color-primario-hover);
+}
+
+#mensaje-error {
+  color: var(--color-error);
+  font-size: 14px;
+  margin-top: 10px;
+  display: none;
+}
+
+/* Encabezado de la Página de Bienvenida */
+.contenedor-bienvenida {
+  text-align: center;
+  margin-top: 50px;
+}
