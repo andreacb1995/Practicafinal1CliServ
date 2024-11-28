@@ -109,3 +109,11 @@ button:hover {
   text-align: center;
   margin-top: 50px;
 }
+
+.oculto {
+  display: none;
+}
+
+.visible {
+  display: block
+}
