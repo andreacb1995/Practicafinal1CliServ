@@ -1,72 +1,404 @@
- /* Estilos personalizados */
- body.alumnos {
+ /* Definición de Variables de Color */
+:root {
+  --color-black: #000000;              /* Negro profundo */
+  --color-dark-grey-1: #191919;        /* Gris oscuro 1 */
+  --color-dark-grey-2: #707070;        /* Gris oscuro 2 */
+  --color-light-grey-1: #AEAEAE;       /* Gris claro 1 */
+  --color-light-grey-2: #CCCCCC;       /* Gris claro 2 */
+  --color-mid-grey-1: #808080;         /* Gris medio 1 */
+  --color-mid-grey-2: #5A5A5A;         /* Gris medio 2 */
+  --color-neutral-grey: #333333;       /* Gris neutro */
+
+  /* Asignación de colores específicos para el diseño */
+  --color-body-bg: var(--color-light-grey-2);
+  --color-header-bg: var(--color-dark-grey-1);
+  --color-primary: var(--color-mid-grey-2);             /* Gris medio 2 para los botones principales */
+  --color-primary-hover: var(--color-neutral-grey);     /* Gris neutro para hover */
+  --color-success: var(--color-dark-grey-2);            /* Gris oscuro 2 para el botón de añadir cliente */
+  --color-success-hover: var(--color-mid-grey-1);       /* Gris medio 1 para hover */
+  --color-text-main: var(--color-dark-grey-1);          /* Gris oscuro 1 para el texto principal */
+  --color-card-bg: #ffffff;                             /* Fondo blanco para las tarjetas */
+  --color-input-border: var(--color-light-grey-1);      /* Gris claro 1 para el borde de los inputs */
+  --color-error: #ff4d4d; /* Rojo brillante para el botón de eliminar */
+  --color-error-hover: #e60000; /* Rojo más oscuro para hover */                       /* Marrón rojizo oscuro para hover */
+  --color-cancel: var(--color-mid-grey-1);              /* Gris medio 1 para cancelar */
+  --color-cancel-hover: var(--color-neutral-grey);      /* Gris neutro para hover */
+}
+
+/* Estilos personalizados */
+body.alumnos {
     background-color: #f8f9fa;
-  }
+    font-family: 'Arial', sans-serif;
+}
 
-  .contenedor {
-    max-width: 1200px;
-    margin: auto;
-    padding: 20px;
-  }
+/* Encabezado de la Página de Clientes */
+header {
+  background: linear-gradient(180deg, #343a40, #1c1f24); 
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  position: relative;
+  width: 100%;
+  display: flex;  /* Usamos flexbox para distribuir los elementos */
+  justify-content: space-between; /* Esto alineará el contenido del header */
+  align-items: center; /* Alinea verticalmente el contenido */
+}
 
-  header h1 {
-    font-size: 2.5rem;
-    color: #343a40;
-  }
+header h1 {
+  font-size: 2.5rem;
+  color: white;
+  font-weight: 700;
+  flex-grow: 1; /* Esto asegura que el título "Alumnos" ocupe el espacio disponible y se centre */
+  text-align: center;
+}
 
-  #añadirAlumno {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    cursor: pointer;
-  }
+#añadirAlumno {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: auto; /* Alinea el botón a la derecha */
 
-  #añadirAlumno:hover {
-    background-color: #0056b3;
-  }
+}
 
-  .tarjetasAlumnos {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
+#añadirAlumno:hover {
+  background-color: #0056b3;
+}
 
-  .card {
-    border: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-  }
+#tarjetasAlumnos {
+  display: flex;           /* Usamos flexbox para controlar la distribución de las tarjetas */
+  flex-wrap: wrap;         /* Permite que las tarjetas se ajusten cuando no haya espacio suficiente */
+  justify-content: flex-start; /* Alinea las tarjetas al principio (izquierda por defecto) */
+  margin-left: 40px;       /* Este margen empuja todo el contenedor hacia la derecha */
+}
 
-  .card:hover {
-    transform: translateY(-5px);
-  }
+.card {
+  background-color: var(--color-card-bg);
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  width: 240px;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin: 5px; /* Margen mínimo para evitar que se superpongan */
+  margin-left: 200px; /* Desplaza la tarjeta hacia la derecha */
 
-  .tarjeta-img {
-    height: 200px;
-    object-fit: cover;
-    width: 140px;
-    height: 140px;
-    margin: 15px;
+}
 
-  }
+.card:hover {
+  transform: translateY(-5px);
+}
 
-  .tarjeta {
-    padding: 15px;
-  }
+.card img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 15px auto; /* Centra horizontalmente y agrega espacio abajo */
+  display: block; /* Asegura que el elemento se trate como bloque para centrarlo */
 
-  .titulo-tarjeta {
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #007bff;
-  }
+}
+
+.titulo-tarjeta {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+.texto-tarjeta {
+  color: var(--color-mid-grey-1);
+  font-size: 1rem;
+}
+
+
+  /* Modal Estilo */
+.modal {
+  display: none; /* Oculto por defecto */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro translúcido */
+  display: flex; /* Flexbox para centrar el contenido del modal */
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: var(--color-card-bg);
+  width: 40%;
+  max-height: 85vh;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.modal-header {
+  background: linear-gradient(180deg, #343a40, #1c1f24); 
+  padding: 15px;
+  background-color: var(--color-primary);
+  color: white;
+  font-size: 16px;
+  text-align: center;
+  position: relative;
+}
+
+.modal-header h2 {
+  text-align: center;
+  width: 100%; /* Asegura que el texto ocupe todo el espacio disponible */
+  margin: 0; /* Elimina márgenes por defecto */
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover, .close:focus {
+  color: var(--color-light-grey-1);
+}
+
+.modal-body {
+  padding: 20px;
+  overflow-y: auto; /* Añadir scroll al contenido del modal */
+  height: calc(85vh - 70px);
   
-  .texto-tarjeta {
-    color: #6c757d;
-  }
+}
+
+/* Estilo del Formulario en el Modal */
+#addAlumnoForm {
+  display: flex;
+  flex-direction: column;
+}
+
+#addAlumnoForm .input-group {
+  margin-bottom: 20px;
+}
+
+#addAlumnoForm label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+#addAlumnoForm input, #addAlumnoForm select, #addAlumnoForm textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--color-input-border);
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+#addAlumnoForm textarea {
+  resize: vertical;
+}
+
+.input-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+
+input[type="file"] {
+  font-size: 0.9rem;
+  padding: 5px;
+}
+
+input[type="file"]:focus {
+  outline: 2px solid #007bff;
+}
+
+/* Botones del modal de confirmación */
+.confirm-button {
+  background-color: var(--color-error);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.confirm-button:hover {
+  background-color: var(--color-error-hover);
+}
+
+.cancel-button {
+  background-color: var(--color-cancel);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  background-color: var(--color-cancel-hover);
+}
+
+/* Ventana de confirmación de eliminación */
+#confirmDeleteModal .modal-content {
+  background-color: var(--color-card-bg); /* Fondo blanco */
+  border: 2px solid var(--color-error); /* Bordes rojos */
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Sombra */
+  padding: 15px; /* Compactar espacio interno */
+  text-align: center;
+  width: 250px; /* Modal más estrecho */
+  animation: fadeIn 0.3s ease; /* Animación */
+  position: relative; /* Para posicionar el botón de cierre */
+}
+
+/* Contenedor de botones en línea */
+#confirmDeleteModal .modal-content div {
+  display: flex; /* Flexbox para organizar en línea */
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  gap: 10px; /* Espaciado uniforme entre los botones */
+  margin-top: 10px; /* Separación del texto */
+}
+
+/* Texto del mensaje */
+#confirmDeleteModal p {
+  font-size: 16px; /* Texto más pequeño */
+  color: var(--color-dark-grey-1); /* Gris oscuro */
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+#confirmDeleteModal .confirm-button,
+#confirmDeleteModal .cancel-button {
+  padding: 6px 12px; /* Más pequeños */
+  font-size: 12px; /* Texto más pequeño */
+  border-radius: 3px; /* Bordes ligeramente redondeados */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: none;
+  color: white;
+  min-width: 80px; /* Ancho mínimo para uniformidad */
+  text-align: center; /* Centrar texto dentro del botón */
+}
+
+/* Botón confirmar - Eliminar */
+#confirmDeleteModal .confirm-button {
+  background-color: var(--color-error); /* Rojo */
+}
+
+/* Botón cancelar */
+#confirmDeleteModal .cancel-button {
+  background-color: var(--color-cancel);
+}
+
+/* Botón de cerrar (X) */
+#confirmDeleteModal .close {
+  position: absolute;
+  top: 8px; /* Más cercano al borde */
+  right: 12px;
+  color: var(--color-dark-grey-2);
+  font-size: 20px; /* Más pequeño */
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#confirmDeleteModal .close:hover {
+  color: var(--color-light-grey-1);
+}
+
+#confirmDeleteModal .confirm-button:hover,
+#confirmDeleteModal .cancel-button:hover {
+  transition: background-color 0.3s ease;
+}
+
+
+/* Modal de éxito */
+#successModal .modal-content {
+  background-color: var(--color-card-bg); /* Fondo blanco */
+  color: var(--color-text-main); /* Texto principal */
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px; /* Tamaño fijo */
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra elegante */
+  position: relative;
+}
+
+#successModal .close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  color: var(--color-dark-grey-2);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+#successModal .close:hover {
+  color: var(--color-light-grey-1);
+}
+/* Asegúrate de que el input de archivo tenga el margen adecuado */
+#cv {
+  margin-bottom: 10px; /* Añade espacio debajo del campo de archivo */
+  display: block; /* Hace que el input esté en su propia línea */
+  width: 100%; /* Asegura que el campo de archivo ocupe el 100% del contenedor */
+}
+
+/* Contenedor que agrupa los elementos informativos y el botón */
+.mostrarCv {
+  display: block; /* Hace que el contenedor ocupe toda la línea disponible */
+}
+
+/* Asegura que los elementos dentro de mostrarCv estén en su propia línea */
+#fileSelected, #downloadLinkContainer, #changeCvButton {
+  display: block; /* Cada uno ocupa una línea completa */
+  margin-top: 10px; /* Espacio entre los elementos */
+  margin-bottom: 20px; /* Espacio inferior para separar los elementos */
+}
+
+/* Estilo para la información de archivo */
+.file-info {
+  font-size: 0.9em;
+  color: #555;
+}
+
+/* Botón para cambiar el CV */
+#changeCvButton {
+  margin-top: 10px; /* Espacio superior para el botón */
+  padding: 10px 15px; /* Espaciado dentro del botón */
+  width: 120px; /* Hace que el botón ocupe todo el espacio disponible */
+  color: white; /* Color del texto */
+  border: none; /* Elimina el borde */
+  border-radius: 5px; /* Bordes redondeados */
+  cursor: pointer; /* Cambia el cursor a mano */
+  font-size: 16px; /* Tamaño de la fuente */
+  text-align: center; /* Centra el texto dentro del botón */
+}
+
+
+
+/* Enlace de descarga */
+#downloadLinkContainer a {
+  color: #007bff;
+  text-decoration: underline; /* Subrayado para el enlace */
+  font-weight: bold;
+}

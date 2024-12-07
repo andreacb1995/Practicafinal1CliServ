@@ -20,11 +20,13 @@
       <form id="formulario-login">
         <div class="form-group datos-usuario"> 
           <label for="usuario">Usuario</label>
-          <input type="text" class="form-control" id="usuario" placeholder="Nombre de usuario" required>
+          <input type="text" class="form-control" id="usuario" placeholder="Nombre de usuario" 
+          required oninvalid="this.setCustomValidity('Por favor, completa este campo.')" oninput="this.setCustomValidity('')">
         </div>
         <div class="form-group datos-usuario"> 
           <label for="clave">Contraseña</label>
-          <input type="password" class="form-control" id="clave" placeholder="Contraseña" required>
+          <input type="password" class="form-control" id="clave" placeholder="Contraseña" 
+          required oninvalid="this.setCustomValidity('Por favor, completa este campo.')" oninput="this.setCustomValidity('')">
         </div>
         <button type="submit" class="btn btn-primary w-100 mt-3">Iniciar Sesión</button>
         <p id="mensaje-error" class="text-danger mt-3" style="display: none;"></p> 

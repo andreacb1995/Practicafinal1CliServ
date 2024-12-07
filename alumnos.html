@@ -12,48 +12,138 @@
 
 <body class="alumnos">
   <div id="contenedor-menu"></div>
-    <div class="contenedor my-5">
       <header class="d-flex justify-content-between align-items-center mb-4">
         <h1>Alumnos</h1>
         <button id="añadirAlumno"><i class="fas fa-plus"></i></button> <!-- Botón de añadir cliente -->
       </header>
-  
-      <div class="tarjetasAlumnos">
+
+      <div id="tarjetasAlumnos" class="card-deck">
         <!-- Las tarjetas de alumnos se creán dinámicamente -->
-         
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-              <img src="imagenes/cliente.png" class="tarjeta-img" alt="Foto de Alumno">
-              <div class="tarjeta">
-                <h5 class="titulo-tarjeta">Juan Pérez</h5>
-                <p class="texto-tarjeta">Estudiante de TCAE.</p>
-              </div>
-            </div>
+      </div> 
+
+      <!-- Modal para añadir cliente -->
+      <div id="formModal" class="modal"  tabindex="0">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Nuevo Alumno</h2>
+            <span class="close" id="closeModal">&times;</span>
           </div>
-          
-          <div class="col-md-4 mb-4">
-            <div class="card h-100">
-              <img src="imagenes/cliente.png" class="tarjeta-img" alt="Foto de Alumno">
-              <div class="tarjeta">
-                <h5 class="titulo-tarjeta">María Gómez</h5>
-                <p class="texto-tarjeta">Estudiante de Administración de Informática.</p>
+          <div class="modal-body">
+            <form id="addAlumnoForm">
+              <!-- Campo oculto para el ID del alumno -->
+              <input type="hidden" id="alumnoId" value=""> <!-- ID del alumno -->
+            
+              <div class="input-group" >
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" class="form-field" required>
               </div>
-            </div>
-          </div>
-          
-          <div class="col-md-4 mb-4">
-            <div class="card h-100">
-              <img src="imagenes/cliente.png" class="tarjeta-img" alt="Foto de Alumno">
-              <div class="tarjeta">
-                <h5 class="titulo-tarjeta">Carlos Sánchez</h5>
-                <p class="texto-tarjeta">Estudiante de Gestión.</p>
+              <div class="input-group">
+                <label for="apellidos">Apellidos:</label>
+                <input type="text" id="apellidos" name="apellidos" class="form-field" required>
               </div>
-            </div>
+              <div class="input-group">
+                <label for="telefono">Teléfono:</label>
+                <input type="text" id="telefono" name="telefono" class="form-field" required>
+              </div>
+              <div class="input-group">
+                <label for="dni">DNI:</label>
+                <input type="text" id="dni" name="dni" class="form-field" required>
+              </div>
+              <div class="input-group">
+                <label for="direccion">Dirección:</label>
+                <input type="text" id="direccion" name="direccion" class="form-field" required>
+              </div>
+              <div class="input-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="form-field" required>
+              </div>
+              <div class="input-group">
+                <label for="formacion">Formación:</label>
+                <select id="formacion" name="formacion" class="form-field" required>
+                  <option value="tcae">TCAE</option>
+                  <option value="informatica">Informática</option>
+                  <option value="gestion">Gestión</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label for="titulo_asociado">Título Asociado:</label>
+                <input type="text" id="titulo_asociado" name="titulo_asociado" class="form-field" required>
+              </div>
+              <div class="input-group">
+                <label for="promocion">Promoción:</label>
+                <input type="text" id="promocion" name="promocion" class="form-field" required>
+              </div>
+
+
+              <div class="input-group">
+                <label for="cv">CV:</label>
+                <input type="file" id="cv" name="cv" class="form-field" accept=".pdf" disabled>
+                <div class="mostrarCv">
+                  <span id="fileSelected" class="file-info">No se ha seleccionado un archivo</span>
+                  <div id="downloadLinkContainer"></div> <!-- Contenedor para el enlace de descarga -->
+                  <button type="button" id="changeCvButton" class="btn btn-secondary" style="display: none;">Cambiar CV</button> <!-- Botón para cambiar el CV -->
+                </div>
+
+              </div>
+
+              <div class="input-group">
+                <label for="oferta">Oferta:</label>
+                <input type="text" id="oferta" name="oferta" class="form-field">
+              </div>
+              <div class="input-group">
+                <label for="trabajando">Trabajando:</label>
+                <select id="trabajando" name="trabajando" class="form-field" required>
+                  <option value="Sí">Sí</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label for="cursando_titulado">Cursando/Titulado:</label>
+                <select id="cursando_titulado" name="cursando_titulado" class="form-field" required>
+                  <option value="Cursando">Cursando</option>
+                  <option value="Titulado">Titulado</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label for="titula">Titula:</label>
+                <select id="titula" name="titula" class="form-field" required>
+                  <option value="Sí">Sí</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label for="titulo_que_le_da_acceso">Título que le da acceso:</label>
+                <input type="text" id="titulo_que_le_da_acceso" name="titulo_que_le_da_acceso" class="form-field">
+              </div>
+              <div class="input-group">
+                <label for="foto">Foto:</label>
+                <input type="text" id="foto" name="foto" class="form-field">
+              </div>
+              <button type="submit" id="btn-guardar" class="btn btn-secondary ">Guardar</button>
+              <button type="submit" id="btn-modificar" class="btn btn-secondary" style="display: none;" >Modificar</button>
+            </form>
           </div>
-        </div>         
+        </div>
+      </div>          
+    </div>
+    <!-- Modal para confirmar eliminación de cliente -->
+    <div id="confirmDeleteModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close" id="closeDeleteModal">&times;</span>
+        <p>¿Estás seguro de que deseas eliminar este alumno?</p>
+        <div>
+          <button id="confirmDeleteButton" class="confirm-button">Eliminar</button>
+          <button id="cancelDeleteButton" class="cancel-button">Cancelar</button>
+        </div>
       </div>
     </div>
-  
+    <div id="successModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close" id="closeSuccessModal">&times;</span>
+        <p id="successModalMessage">¡Datos guardados correctamente!</p>
+      </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="script.js"></script> 
