@@ -29,7 +29,7 @@
             <span class="close" id="closeModal">&times;</span>
           </div>
           <div class="modal-body">
-            <form id="addAlumnoForm">
+            <form id="addAlumnoForm"  enctype="multipart/form-data">
               <!-- Campo oculto para el ID del alumno -->
               <input type="hidden" id="alumnoId" value=""> <!-- ID del alumno -->
             
@@ -77,7 +77,7 @@
 
               <div class="input-group">
                 <label for="cv">CV:</label>
-                <input type="file" id="cv" name="cv" class="form-field" accept=".pdf" disabled>
+                <input type="file" id="cv" name="cv" class="form-field" accept=".pdf">
                 <div class="mostrarCv">
                   <span id="fileSelected" class="file-info">No se ha seleccionado un archivo</span>
                   <div id="downloadLinkContainer"></div> <!-- Contenedor para el enlace de descarga -->
@@ -118,6 +118,10 @@
               <div class="input-group">
                 <label for="foto">Foto:</label>
                 <input type="text" id="foto" name="foto" class="form-field">
+              </div>
+              <!-- Añadir un contenedor para el mensaje de "No hay cambios" -->
+              <div id="mensajeSinCambios" style="color: red; display: none; font-weight: bold; margin: 10px;">
+                No se han realizado cambios.
               </div>
               <button type="submit" id="btn-guardar" class="btn btn-secondary ">Guardar</button>
               <button type="submit" id="btn-modificar" class="btn btn-secondary" style="display: none;" >Modificar</button>

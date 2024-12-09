@@ -1,6 +1,9 @@
+let alumnosA = []; // Array para almacenar los alumnos obtenidos
+
 document.addEventListener("DOMContentLoaded", function () {
     // Manejar el formulario de inicio de sesión solo si existe en la página
     const formularioLogin = document.getElementById("formulario-login");
+
     if (formularioLogin) {
         formularioLogin.addEventListener("submit", function handleLoginFormSubmit(event) {
             event.preventDefault(); // Evitar recargar la página
@@ -81,10 +84,10 @@ document.addEventListener("DOMContentLoaded", function () {
         // Asegurarse de que los modales estén siempre ocultos al iniciar
         formModal.style.display = 'none';
         confirmDeleteModal.style.display = 'none';
+
         isEditing = false
-
         obtenerAlumnos();
-
+        
         // Abrir el modal al hacer clic en el botón de añadir cliente
         addAlumno.addEventListener('click', (event) => {
             event.stopPropagation();
@@ -122,9 +125,24 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById('btn-modificar').style.display = 'none'; 
                 isEditing = true; // No estamos editando, estamos añadiendo
                 estadoCamposForm(false);
+                
+                const alumnomodif = alumnosA.find(alumno => alumno._id === document.getElementById('alumnoId').value);
+                const subirArchivo = document.getElementById('cv'); // El input para el archivo
+                const changeCvButton = document.getElementById('changeCvButton');
+
+                if (alumnomodif.cv) {
+                    // Mostrar botón para cambiar archivo
+                    changeCvButton.style.display = 'inline-block';
+                    subirArchivo.disabled = true; // Deshabilitar selección de archivos
+                }
 
 
-            } else if (btnclick.id === 'btn-guardar') {            
+            } else if (btnclick.id === 'btn-guardar') {        
+                
+                const mensajeSinCambios = document.getElementById('mensajeSinCambios');
+                const archivoInput = document.getElementById('cv');
+                const alumnomodif = alumnosA.find(alumno => alumno._id === document.getElementById('alumnoId').value);
+
                 const alumnoData = {
                     _id: document.getElementById('alumnoId').value,  // El ID del alumno que se va a modificar
                     nombre: document.getElementById('nombre').value,
@@ -136,15 +154,95 @@ document.addEventListener("DOMContentLoaded", function () {
                     formacion: document.getElementById('formacion').value,
                     titulo_asociado: document.getElementById('titulo_asociado').value,
                     promocion: document.getElementById('promocion').value,
-                    cv: document.getElementById('cv').value,
+                    cv: document.getElementById('cv').value.split('\\').pop(), // El nombre del archivo subido
                     oferta: document.getElementById('oferta').value,
                     trabajando: document.getElementById('trabajando').value,
                     cursando_titulado: document.getElementById('cursando_titulado').value,
                     titula: document.getElementById('titula').value,
                     titulo_que_le_da_acceso: document.getElementById('titulo_que_le_da_acceso').value,
                     foto: document.getElementById('foto').value
+                }
+
+                
+                valoresOriginales = {
+                    nombre: alumnomodif.nombre,
+                    apellidos: alumnomodif.apellidos,
+                    telefono: alumnomodif.telefono,
+                    dni: alumnomodif.dni,
+                    direccion: alumnomodif.direccion,
+                    email: alumnomodif.email,
+                    formacion: alumnomodif.formacion,
+                    titulo_asociado: alumnomodif.titulo_asociado,
+                    promocion: alumnomodif.promocion,
+                    oferta: alumnomodif.oferta,
+                    trabajando: alumnomodif.trabajando,
+                    cursando_titulado: alumnomodif.cursando_titulado,
+                    titula: alumnomodif.titula,
+                    titulo_que_le_da_acceso: alumnomodif.titulo_que_le_da_acceso,
+                    foto: alumnomodif.foto
                 };
-    
+
+                // Comparar los valores actuales con los nuevos valores
+                 let hayCambios = false;
+                 for (const key in valoresOriginales) {
+                     if (valoresOriginales[key] !== alumnoData[key]) {
+                         hayCambios = true;
+                         break;
+                    }
+                }
+
+                if (archivoInput.files.length > 0) {
+                    // Si se ha seleccionado un nuevo archivo, hay cambios
+                    hayCambios = true;
+                } 
+
+                // Si no hay cambios, mostrar un mensaje y no hacer nada
+                if (!hayCambios) {
+                    // Mostrar el mensaje en la pantalla
+                    mensajeSinCambios.textContent = 'No se han realizado cambios.';
+                    mensajeSinCambios.style.display = 'block';  // Mostrar el mensaje
+                    return;
+                } else {
+                    // Aquí puedes proceder con la lógica de modificación
+                    console.log('Datos modificados correctamente');
+                    mensajeSinCambios.style.display = 'none';  // Ocultar el mensaje si hay cambios
+                }
+
+
+                const formData = new FormData(this); // Captura todos los datos del formulario, incluyendo el archivo
+                
+                fetch('http://localhost/proyectofinal1/subir_archivo.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('La respuesta del servidor no fue exitosa');
+                    }
+                    return response.json(); // Parsear la respuesta como JSON
+                })
+                .then(data => {
+                    if (data.status === 'success') {
+                        console.log(data.message);  // Muestra el mensaje de éxito
+                        // Aquí puedes hacer algo con la respuesta, como actualizar la interfaz de usuario.
+                    } else {
+                        console.error('Error en la subida del archivo:', data.message);
+                        // Mostrar el mensaje de error en la UI
+                        const errorElement = document.getElementById('error-message');
+                        if (errorElement) {
+                            errorElement.textContent = `Error: ${data.message}`;
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Hubo un error al intentar subir el archivo:', error);
+                    // Mostrar el mensaje de error en la UI
+                    const errorElement = document.getElementById('error-message');
+                    if (errorElement) {
+                        errorElement.textContent = `Error inesperado: ${error.message}`;
+                    }
+                });
+
                 fetch('http://localhost/proyectofinal1/alumnos.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -172,26 +270,26 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-
-
         document.getElementById('tarjetasAlumnos').addEventListener('click', function (event) {
             const target = event.target;
             const alumnoButton = target.closest('button[data-id]'); // Encuentra el botón más cercano con data-id
-        
+            const mensajeSinCambios = document.getElementById('mensajeSinCambios');
+            mensajeSinCambios.textContent = '';
+
             if (!alumnoButton) return; // Si no hay botón válido, salir
         
             const alumnoId = alumnoButton.dataset.id; // Obtén el ID del alumno
-        
+
             // Verifica qué botón se clicó y ejecuta la acción correspondiente
             if (alumnoButton.classList.contains('verAlumno')) {
-                console.log('Ver alumno:', alumnoId);
+                //console.log('Ver alumno:', alumnoId);
                 obtenerAlumnoPorId(alumnoId, 'ver');
             } else if (alumnoButton.classList.contains('modificarAlumno')) {
-                console.log('Modificar alumno:', alumnoId);
+                //console.log('Modificar alumno:', alumnoId);
                 isEditing = true;
                 obtenerAlumnoPorId(alumnoId, 'modificar');
             } else if (alumnoButton.classList.contains('eliminarAlumno')) {
-                console.log('Eliminar alumno:', alumnoId);
+                //console.log('Eliminar alumno:', alumnoId);
                 alumnoToDeleteId = alumnoId;
                 document.getElementById('confirmDeleteModal').style.display = 'flex';
             }
@@ -231,6 +329,21 @@ document.addEventListener("DOMContentLoaded", function () {
             confirmDeleteModal.style.display = 'none';
         });
 
+        // Al hacer clic en el botón "Cambiar CV", restablecer el input para permitir seleccionar un nuevo archivo
+        document.getElementById('changeCvButton').addEventListener('click', function() {
+            const fileInput = document.getElementById('cv');
+            const fileInfoSpan = document.getElementById('fileSelected');
+            const downloadLinkContainer = document.getElementById('downloadLinkContainer');
+            
+            // Restablecer el input de archivo
+            fileInput.value = '';  // Limpiar el valor del input
+            fileInput.disabled = false; // Asegurarse de que el input no esté deshabilitado
+
+            // Restablecer los estados de la UI
+            fileInfoSpan.textContent = '';
+            downloadLinkContainer.innerHTML = ''; // Limpiar el enlace de descarga
+            this.style.display = 'none'; // Ocultar el botón "Cambiar CV"
+        });
    
     }
 
@@ -354,6 +467,8 @@ function obtenerAlumnos() {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
+            alumnosA = data.data;  // Guardar los datos de los alumnos en el array
+
             renderAlumnos(data.data); // Llamar a la función que renderiza las tarjetas de los alumnos
         } else {
           console.error('Error al obtener los alumnos:', data.message);
@@ -366,7 +481,7 @@ function obtenerAlumnos() {
 
 // Función para obtener la información de un alumno
 function obtenerAlumnoPorId(alumnoId, tipo) {
-        if (!alumnoId) {
+    if (!alumnoId) {
             console.error('Error: el alumnoId es undefined o vacío');
             return;
         }
@@ -402,85 +517,65 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                 document.getElementById('titulo_que_le_da_acceso').value = alumno.titulo_que_le_da_acceso;
                 document.getElementById('foto').value = alumno.foto;
 
-                const cvAlumno = alumno.cv;
-                const fileSelected = document.getElementById("fileSelected");
-                const inputCv = document.getElementById("cv");
+                const cvAlumno = alumno.cv;                
+                const modalTitle = document.getElementById('formModal').querySelector('h2');
+                const btnGuardar = document.getElementById('btn-guardar');
+                const btnModificar = document.getElementById('btn-modificar');
                 const changeCvButton = document.getElementById('changeCvButton');
+                const subirArchivo = document.getElementById('cv');
+                const fileSelected = document.getElementById('fileSelected');
+                const downloadLinkContainer = document.getElementById('downloadLinkContainer');
 
-                //inputCv.disabled = true;
+                // Restablecer estado inicial del modal
+                downloadLinkContainer.innerHTML = ''; // Limpia enlaces previos
+                changeCvButton.style.display = 'none'; // Ocultar botón para cambiar archivo
+                subirArchivo.disabled = false; // Habilitar selección de archivos por defecto
+                fileSelected.textContent = '';
 
-                // Si deseas habilitar el campo de archivo en algún momento (por ejemplo, con un botón)
-                /*if (changeCvButton) {
-                    changeCvButton.addEventListener('click', function() {
-                        // Habilitar el campo de archivo
-                        cvField.disabled = false;
-                    });
-                }
-
-                if (cvAlumno) {
-                    // Mostrar el botón para cambiar el archivo
-                    changeCvButton.style.display = 'inline-block';
-                    // Hacer que el campo de archivo esté deshabilitado
-                    //inputCv.disabled = true;
-
-                    fileSelected.textContent = `Archivo seleccionado: ${cvAlumno}`;
-                    const link = document.createElement("a");
-                    link.href = `uploads/${cvAlumno}`; // Cambiar ruta según la ubicación del archivo
-                    link.textContent = "Descargar CV";
-                    link.target = "_blank"; // Abrir en una nueva pestaña
-                    downloadLinkContainer.appendChild(link);
-                } else {
-                  const noFileText = document.createElement("p");
-                  downloadLinkContainer.appendChild(noFileText);
-                  fileSelected.textContent = ``;
-                  changeCvButton.style.display = 'none';
-                }*/
-                
-
-                //const submitButton = document.querySelector('#addAlumnoForm button[type="submit"]');
                 if (tipo === 'ver') {
-                    // Solo habilitar la opción de ver, no modificar
-                    document.getElementById('formModal').querySelector('h2').textContent = 'Alumno'; // Cambiar el título
-                    document.getElementById('btn-guardar').style.display = 'none';
-                    document.getElementById('btn-modificar').style.display = 'block';
+                    modalTitle.textContent = 'Alumno'; // Cambiar el título
+                    btnGuardar.style.display = 'none'; // Ocultar botón de guardar
+                    btnModificar.style.display = 'block'; // Mostrar botón de modificar
+                    changeCvButton.disabled = false;
 
+                    // Si hay CV, mostrar enlace de descarga
                     if (cvAlumno) {
-                        //inputCv.disabled = true;
-    
                         fileSelected.textContent = `Archivo seleccionado: ${cvAlumno}`;
                         const link = document.createElement("a");
-                        link.href = `uploads/${cvAlumno}`; // Cambiar ruta según la ubicación del archivo
+                        link.href = `http://localhost/proyectofinal1/descargas/${cvAlumno}`; // Ruta completa al archivo
                         link.textContent = "Descargar CV";
-                        link.target = "_blank"; // Abrir en una nueva pestaña
-                        downloadLinkContainer.appendChild(link);
-                    } 
-                    
-                    estadoCamposForm(true);
-
-                } else if (tipo === 'modificar') {
-                    document.getElementById('btn-guardar').style.display = 'inline-block'; // Mostrar el botón de guardar
-                    document.getElementById('formModal').querySelector('h2').textContent = 'Modificar Alumno'; // Cambiar el título
-                    document.getElementById('btn-guardar').textContent = 'Modificar';
-                    document.getElementById('btn-modificar').style.display = 'none';
-
-                    estadoCamposForm(false);
-                    if (cvAlumno) {
-                        // Mostrar el botón para cambiar el archivo
-                        changeCvButton.style.display = 'inline-block';
-                        // Hacer que el campo de archivo esté deshabilitado
-                        //inputCv.disabled = true;
-    
-                        fileSelected.textContent = `Archivo seleccionado: ${cvAlumno}`;
-                        const link = document.createElement("a");
-                        link.href = `uploads/${cvAlumno}`; // Cambiar ruta según la ubicación del archivo
-                        link.target = "_blank"; // Abrir en una nueva pestaña
+                        link.target = "_blank"; // Abrir en nueva pestaña
                         downloadLinkContainer.appendChild(link);
                     } else {
-                      const noFileText = document.createElement("p");
-                      downloadLinkContainer.appendChild(noFileText);
-                      fileSelected.textContent = ``;
-                      changeCvButton.style.display = 'none';
+                        fileSelected.textContent = 'Este alumno no tiene un CV.';
                     }
+
+                    estadoCamposForm(true); // Deshabilitar campos para modo "ver"
+
+                    } else if (tipo === 'modificar') {
+                        modalTitle.textContent = 'Modificar Alumno'; // Cambiar el título
+                        btnGuardar.style.display = 'inline-block'; // Mostrar botón de guardar
+                        btnGuardar.textContent = 'Modificar';
+                        btnModificar.style.display = 'none'; // Ocultar botón de modificar
+
+                        estadoCamposForm(false); // Habilitar campos para edición
+
+                        if (cvAlumno) {
+                            fileSelected.textContent = `Archivo seleccionado: ${cvAlumno}`;
+                            const link = document.createElement("a");
+                            link.href = `http://localhost/proyectofinal1/descargas/${cvAlumno}`; // Ruta completa al archivo
+                            link.textContent = "Descargar CV";
+                            link.target = "_blank"; // Abrir en nueva pestaña
+                            downloadLinkContainer.appendChild(link);
+
+                            
+                            // Mostrar botón para cambiar archivo
+                            changeCvButton.style.display = 'inline-block';
+                            subirArchivo.disabled = true; // Deshabilitar selección de archivos
+                        } else {
+                            fileSelected.textContent = 'Este alumno no tiene un CV.';
+                        }
+
                 }
 
                 abrirModal(document.getElementById('formModal'));  // Mostrar el modal
