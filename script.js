@@ -1,4 +1,5 @@
 let alumnosA = []; // Array para almacenar los alumnos obtenidos
+let empresasA = []; // Array para almacenar las empresas obtenidos
 
 document.addEventListener("DOMContentLoaded", function () {
     // Manejar el formulario de inicio de sesión solo si existe en la página
@@ -67,16 +68,26 @@ document.addEventListener("DOMContentLoaded", function () {
     const formModal = document.getElementById('formModal'); // Modal del formulario
     const addAlumno = document.getElementById('añadirAlumno'); // Botón de añadir cliente
     const addAlumnoForm = document.getElementById('addAlumnoForm'); // Formulario
+    const addEmpresaForm = document.getElementById('addEmpresaForm'); // Formulario
+    const addEmpresa = document.getElementById('añadirEmpresa'); // Botón de añadir cliente
+
     const closeModal = document.getElementById('closeModal'); // Botón para cerrar el modal
 
     const confirmDeleteModal = document.getElementById('confirmDeleteModal'); // Modal de confirmación de eliminación
     const closeDeleteModal = document.getElementById('closeDeleteModal'); // Botón para cerrar el modal de eliminación
     const confirmDeleteButton = document.getElementById('confirmDeleteButton'); // Botón para confirmar eliminación
     const cancelDeleteButton = document.getElementById('cancelDeleteButton'); // Botón para cancelar eliminación
+    const confirmModal = document.getElementById('successModal'); // Modal de confirmación de eliminación
+    const closeConfirmModal = document.getElementById('closeSuccessModal'); // Botón para cerrar el modal de eliminación
+    const ModalElimArchivo = document.getElementById('ModalElimArchivo'); // Modal de confirmación de eliminación
+    const ElimArchivoButton = document.getElementById('EliminarArchivoButton'); // Botón para confirmar eliminación
+    const cancelElumArchivoButton = document.getElementById('cancelElumArchivoButton'); // Botón para cancelar eliminación
 
+    
     let isEditing = false; // Variable para saber si estamos en modo edición
-    let editingAlumnoId = null; // Guardar el id del cliente que se está editando
     let alumnoToDeleteId = null; // Guardar el id del cliente que se va a eliminar
+    let cambiarcv = false; // Variable para saber si estamos cambio el cv
+    let empresaToDeleteId = null; // Guardar el id del cliente que se va a eliminar
 
     if (document.body.classList.contains("alumnos")) {
         //const submitButton = addAlumnoForm.querySelector('button[type="submit"]'); // Botón de guardar cliente
@@ -124,9 +135,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 btnGuardar.textContent = 'Modificar';
                 document.getElementById('btn-modificar').style.display = 'none'; 
                 isEditing = true; // No estamos editando, estamos añadiendo
+
                 estadoCamposForm(false);
                 
                 const alumnomodif = alumnosA.find(alumno => alumno._id === document.getElementById('alumnoId').value);
+                
+                const subirTitulo = document.getElementById('tituloalum'); // El input para el archivo
+                const TituloBtn = document.getElementById('tituloBtn');
+
+                if (alumnomodif.titulo_asociado) {
+                    // Mostrar botón para cambiar archivo
+                    TituloBtn.style.display = 'inline-block';
+                    subirTitulo.disabled = true; // Deshabilitar selección de archivos
+                }
+                
                 const subirArchivo = document.getElementById('cv'); // El input para el archivo
                 const changeCvButton = document.getElementById('changeCvButton');
 
@@ -137,136 +159,173 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
 
+
+
             } else if (btnclick.id === 'btn-guardar') {        
                 
-                const mensajeSinCambios = document.getElementById('mensajeSinCambios');
-                const archivoInput = document.getElementById('cv');
-                const alumnomodif = alumnosA.find(alumno => alumno._id === document.getElementById('alumnoId').value);
+                //if (cambiarcv){
+                  //  document.getElementById('ModalElimArchivo').style.display = 'flex';
+                //}else {
+                    
+                    const alumnomodif = alumnosA.find(alumno => alumno._id === document.getElementById('alumnoId').value);
+                    const archivoCvInput = document.getElementById('cv');
+                    const nombreArchivocv = archivoCvInput.value.split('\\').pop() || (alumnomodif ? alumnomodif.cv : '') || '';
+                    
+                    const archivoTituloInput = document.getElementById('tituloalum');
 
-                const alumnoData = {
-                    _id: document.getElementById('alumnoId').value,  // El ID del alumno que se va a modificar
-                    nombre: document.getElementById('nombre').value,
-                    apellidos: document.getElementById('apellidos').value,
-                    telefono: document.getElementById('telefono').value,
-                    dni: document.getElementById('dni').value,
-                    direccion: document.getElementById('direccion').value,
-                    email: document.getElementById('email').value,
-                    formacion: document.getElementById('formacion').value,
-                    titulo_asociado: document.getElementById('titulo_asociado').value,
-                    promocion: document.getElementById('promocion').value,
-                    cv: document.getElementById('cv').value.split('\\').pop(), // El nombre del archivo subido
-                    oferta: document.getElementById('oferta').value,
-                    trabajando: document.getElementById('trabajando').value,
-                    cursando_titulado: document.getElementById('cursando_titulado').value,
-                    titula: document.getElementById('titula').value,
-                    titulo_que_le_da_acceso: document.getElementById('titulo_que_le_da_acceso').value,
-                    foto: document.getElementById('foto').value
-                }
+                    const nombreArchivotitulo = archivoTituloInput.value.split('\\').pop() || (alumnomodif ? alumnomodif.titulo_asociado : '') || '';
 
-                
-                valoresOriginales = {
-                    nombre: alumnomodif.nombre,
-                    apellidos: alumnomodif.apellidos,
-                    telefono: alumnomodif.telefono,
-                    dni: alumnomodif.dni,
-                    direccion: alumnomodif.direccion,
-                    email: alumnomodif.email,
-                    formacion: alumnomodif.formacion,
-                    titulo_asociado: alumnomodif.titulo_asociado,
-                    promocion: alumnomodif.promocion,
-                    oferta: alumnomodif.oferta,
-                    trabajando: alumnomodif.trabajando,
-                    cursando_titulado: alumnomodif.cursando_titulado,
-                    titula: alumnomodif.titula,
-                    titulo_que_le_da_acceso: alumnomodif.titulo_que_le_da_acceso,
-                    foto: alumnomodif.foto
-                };
-
-                // Comparar los valores actuales con los nuevos valores
-                 let hayCambios = false;
-                 for (const key in valoresOriginales) {
-                     if (valoresOriginales[key] !== alumnoData[key]) {
-                         hayCambios = true;
-                         break;
+                    const alumnoData = {
+                        _id: document.getElementById('alumnoId').value,  // El ID del alumno que se va a modificar
+                        nombre: document.getElementById('nombre').value,
+                        apellidos: document.getElementById('apellidos').value,
+                        telefono: document.getElementById('telefono').value,
+                        dni: document.getElementById('dni').value,
+                        direccion: document.getElementById('direccion').value,
+                        email: document.getElementById('email').value,
+                        formacion: document.getElementById('formacion').value,
+                        titulo_asociado: nombreArchivotitulo,
+                        promocion: document.getElementById('promocion').value,
+                        cv: nombreArchivocv , // El nombre del archivo subido
+                        oferta: document.getElementById('oferta').value,
+                        trabajando: document.getElementById('trabajando').value,
+                        cursando_titulado: document.getElementById('cursando_titulado').value,
+                        titula: document.getElementById('titula').value,
+                        titulo_que_le_da_acceso: document.getElementById('titulo_que_le_da_acceso').value,
+                        foto: document.getElementById('foto').value
                     }
-                }
+                    if(isEditing){
+                        const mensajeSinCambios = document.getElementById('mensajeSinCambios');
+                        const archivoInput = document.getElementById('cv');
 
-                if (archivoInput.files.length > 0) {
-                    // Si se ha seleccionado un nuevo archivo, hay cambios
-                    hayCambios = true;
-                } 
-
-                // Si no hay cambios, mostrar un mensaje y no hacer nada
-                if (!hayCambios) {
-                    // Mostrar el mensaje en la pantalla
-                    mensajeSinCambios.textContent = 'No se han realizado cambios.';
-                    mensajeSinCambios.style.display = 'block';  // Mostrar el mensaje
-                    return;
-                } else {
-                    // Aquí puedes proceder con la lógica de modificación
-                    console.log('Datos modificados correctamente');
-                    mensajeSinCambios.style.display = 'none';  // Ocultar el mensaje si hay cambios
-                }
-
-
-                const formData = new FormData(this); // Captura todos los datos del formulario, incluyendo el archivo
-                
-                fetch('http://localhost/proyectofinal1/subir_archivo.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('La respuesta del servidor no fue exitosa');
-                    }
-                    return response.json(); // Parsear la respuesta como JSON
-                })
-                .then(data => {
-                    if (data.status === 'success') {
-                        console.log(data.message);  // Muestra el mensaje de éxito
-                        // Aquí puedes hacer algo con la respuesta, como actualizar la interfaz de usuario.
-                    } else {
-                        console.error('Error en la subida del archivo:', data.message);
-                        // Mostrar el mensaje de error en la UI
-                        const errorElement = document.getElementById('error-message');
-                        if (errorElement) {
-                            errorElement.textContent = `Error: ${data.message}`;
+                        /*if (alumnomodif.cv) {
+                            // Enviar una solicitud al servidor para eliminar el archivo
+                            fetch('http://localhost/proyectofinal1/eliminar_archivo.php', {
+                                method: 'POST',
+                                body: new URLSearchParams({
+                                    archivo: alumnomodif.cv
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    console.log('Archivo eliminado correctamente');
+                                    ModalElimArchivo.style.display = 'none';
+        
+                                } else {
+                                    console.error('Error al eliminar el archivo:', data.message);
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error al intentar eliminar el archivo:', error);
+                            });
                         }
-                    }
-                })
-                .catch(error => {
-                    console.error('Hubo un error al intentar subir el archivo:', error);
-                    // Mostrar el mensaje de error en la UI
-                    const errorElement = document.getElementById('error-message');
-                    if (errorElement) {
-                        errorElement.textContent = `Error inesperado: ${error.message}`;
-                    }
-                });
-
-                fetch('http://localhost/proyectofinal1/alumnos.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(alumnoData)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        if (isEditing){
-                            mostrarModalExito('Alumno modificado correctamente!'); 
-                        } else{
-                            mostrarModalExito('Alumno añadido correctamente!'); 
+                        */
+                        valoresOriginales = {
+                            nombre: alumnomodif.nombre,
+                            apellidos: alumnomodif.apellidos,
+                            telefono: alumnomodif.telefono,
+                            dni: alumnomodif.dni,
+                            direccion: alumnomodif.direccion,
+                            email: alumnomodif.email,
+                            formacion: alumnomodif.formacion,
+                            promocion: alumnomodif.promocion,
+                            oferta: alumnomodif.oferta,
+                            trabajando: alumnomodif.trabajando,
+                            cursando_titulado: alumnomodif.cursando_titulado,
+                            titula: alumnomodif.titula,
+                            titulo_que_le_da_acceso: alumnomodif.titulo_que_le_da_acceso,
+                            foto: alumnomodif.foto
+                        };
+    
+                        // Comparar los valores actuales con los nuevos valores
+                        let hayCambios = false;
+                        for (const key in valoresOriginales) {
+                            if (valoresOriginales[key] !== alumnoData[key]) {
+                                hayCambios = true;
+                                break;
+                            }
                         }
-                        obtenerAlumnos();
-                        cerrarModal(document.getElementById('formModal'));
-                        addAlumnoForm.reset();
-                    } else {
-                        alert("Error al guardar el alumno.");
+    
+                        if (archivoInput.files.length > 0 || archivoTituloInput.files.length > 0 ) {
+                            // Si se ha seleccionado un nuevo archivo, hay cambios
+                            hayCambios = true;
+                        } 
+    
+                        // Si no hay cambios, mostrar un mensaje y no hacer nada
+                        if (!hayCambios) {
+                            // Mostrar el mensaje en la pantalla
+                            mensajeSinCambios.textContent = 'No se han realizado cambios.';
+                            mensajeSinCambios.style.display = 'block';  // Mostrar el mensaje
+                            return;
+                        } else {
+                            // Aquí puedes proceder con la lógica de modificación
+                            console.log('Datos modificados correctamente');
+                            mensajeSinCambios.style.display = 'none';  // Ocultar el mensaje si hay cambios
+                        }
+                        
+                        
+                        const formData = new FormData(this); // Captura todos los datos del formulario, incluyendo el archivo
+                    
+                        fetch('http://localhost/proyectofinal1/subir_archivo.php', {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('La respuesta del servidor no fue exitosa');
+                            }
+                            return response.json(); // Parsear la respuesta como JSON
+                        })
+                        .then(data => {
+                            if (data.status === 'success') {
+                                console.log(data.message);  // Muestra el mensaje de éxito
+                                // Aquí puedes hacer algo con la respuesta, como actualizar la interfaz de usuario.
+                            } else {
+                                console.error('Error en la subida del archivo:', data.message);
+                                // Mostrar el mensaje de error en la UI
+                                const errorElement = document.getElementById('error-message');
+                                if (errorElement) {
+                                    errorElement.textContent = `Error: ${data.message}`;
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Hubo un error al intentar subir el archivo:', error);
+                            // Mostrar el mensaje de error en la UI
+                            const errorElement = document.getElementById('error-message');
+                            if (errorElement) {
+                                errorElement.textContent = `Error inesperado: ${error.message}`;
+                            }
+                        });
+
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert("Ocurrió un error al guardar el alumno.");
-                });
+
+                    fetch('http://localhost/proyectofinal1/alumnos.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(alumnoData)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            if (isEditing){
+                                mostrarModalExito('Alumno modificado correctamente!'); 
+                            } else{
+                                mostrarModalExito('Alumno añadido correctamente!'); 
+                            }
+                            obtenerAlumnos();
+                            cerrarModal(document.getElementById('formModal'));
+                            addAlumnoForm.reset();
+                        } else {
+                            console.error("Error del servidor:", data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert("Ocurrió un error al guardar el alumno.");
+                    });
+                //}
             }
         });
 
@@ -279,17 +338,15 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!alumnoButton) return; // Si no hay botón válido, salir
         
             const alumnoId = alumnoButton.dataset.id; // Obtén el ID del alumno
+            cambiarcv = false
 
             // Verifica qué botón se clicó y ejecuta la acción correspondiente
             if (alumnoButton.classList.contains('verAlumno')) {
-                //console.log('Ver alumno:', alumnoId);
                 obtenerAlumnoPorId(alumnoId, 'ver');
             } else if (alumnoButton.classList.contains('modificarAlumno')) {
-                //console.log('Modificar alumno:', alumnoId);
                 isEditing = true;
                 obtenerAlumnoPorId(alumnoId, 'modificar');
             } else if (alumnoButton.classList.contains('eliminarAlumno')) {
-                //console.log('Eliminar alumno:', alumnoId);
                 alumnoToDeleteId = alumnoId;
                 document.getElementById('confirmDeleteModal').style.display = 'flex';
             }
@@ -320,6 +377,34 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
+        ElimArchivoButton.addEventListener('click', () => {
+
+            const archivocvAlumno = alumnosA.find(alumno => alumno._id === document.getElementById('alumnoId').value);
+        
+            if (archivocvAlumno.cv) {
+                // Enviar una solicitud al servidor para eliminar el archivo
+                fetch('http://localhost/proyectofinal1/eliminar_archivo.php', {
+                    method: 'POST',
+                    body: new URLSearchParams({
+                        archivo: archivocvAlumno.cv
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        console.log('Archivo eliminado correctamente');
+                        ModalElimArchivo.style.display = 'none';
+
+                    } else {
+                        console.error('Error al eliminar el archivo:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al intentar eliminar el archivo:', error);
+                });
+            }
+        });
+        
         // Cancelar la eliminación
         cancelDeleteButton.addEventListener('click', () => {
             confirmDeleteModal.style.display = 'none';
@@ -329,12 +414,22 @@ document.addEventListener("DOMContentLoaded", function () {
             confirmDeleteModal.style.display = 'none';
         });
 
+        closeConfirmModal.addEventListener('click', () => {
+            successModal.style.display = 'none';
+        });
+
+        cancelElumArchivoButton.addEventListener('click', () => {
+            ModalElimArchivo.style.display = 'none';
+        });
+        
         // Al hacer clic en el botón "Cambiar CV", restablecer el input para permitir seleccionar un nuevo archivo
         document.getElementById('changeCvButton').addEventListener('click', function() {
+            cambiarcv = true
             const fileInput = document.getElementById('cv');
             const fileInfoSpan = document.getElementById('fileSelected');
             const downloadLinkContainer = document.getElementById('downloadLinkContainer');
-            
+            const changeCvButton = document.getElementById('changeCvButton');
+
             // Restablecer el input de archivo
             fileInput.value = '';  // Limpiar el valor del input
             fileInput.disabled = false; // Asegurarse de que el input no esté deshabilitado
@@ -342,10 +437,192 @@ document.addEventListener("DOMContentLoaded", function () {
             // Restablecer los estados de la UI
             fileInfoSpan.textContent = '';
             downloadLinkContainer.innerHTML = ''; // Limpiar el enlace de descarga
-            this.style.display = 'none'; // Ocultar el botón "Cambiar CV"
+            
+            changeCvButton.style.display = 'none'; // Ocultar el botón "Cambiar CV"
+
         });
-   
     }
+
+    if (document.body.classList.contains("empresas")) {
+        const btnGuardar = document.getElementById('btn-guardar');
+        formModal.style.display = 'none';
+        confirmDeleteModal.style.display = 'none';
+
+        isEditing = false
+        obtenerEmpresas();
+
+        // Abrir el modal al hacer clic en el botón de añadir empresa
+        addEmpresa.addEventListener('click', (event) => {
+            event.stopPropagation();
+            isEditing = false; // No estamos editando, estamos añadiendo
+            addEmpresaForm.reset(); // Limpiar formulario
+            console.log("Nueva Empresa")
+            document.getElementById('formModal').querySelector('h2').textContent = 'Nueva Empresa'; 
+            btnGuardar.style.display = 'inline-block'; // Mostrar el botón de guardar
+            estadoCamposForm(false);
+            btnGuardar.innerHTML = '<i class="fas fa-save"></i> Guardar'; // Añadir ícono al botón de guardar
+            document.getElementById('btn-modificar').style.display = 'none';
+            abrirModal(formModal);
+
+        });     
+                    
+        // Cerrar el modal al hacer clic en la 'x'
+        closeModal.addEventListener('click', (event) => {
+            event.stopPropagation();
+            cerrarModal(formModal);
+        });
+        
+        
+        addEmpresaForm.addEventListener('submit', function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const btnclick = event.submitter;
+            if (btnclick.id === 'btn-modificar') {
+                console.log('Modificar Empresa');
+                btnGuardar.style.display = 'inline-block'; // Mostrar el botón de guardar
+                document.getElementById('formModal').querySelector('h2').textContent = 'Modificar Empresa'; // Cambiar el título
+                btnGuardar.textContent = 'Modificar';
+                document.getElementById('btn-modificar').style.display = 'none'; 
+                isEditing = true; // No estamos editando, estamos añadiendo
+
+                estadoCamposForm(false);
+        
+            } else if (btnclick.id === 'btn-guardar') {        
+                const mensajeSinCambios = document.getElementById('mensajeSinCambios');
+                const empresamodif = empresasA.find(empresa => empresa._id === document.getElementById('empresaId').value);
+
+                const empresaData = {
+                    _id: document.getElementById('empresaId').value,  
+                    nombre: document.getElementById('nombre').value,
+                    telefono: document.getElementById('telefono').value,
+                    email: document.getElementById('email').value,
+                    persona_de_contacto: document.getElementById('persona_de_contacto').value,
+                    rama: document.getElementById('rama').value,
+                    oferta: document.getElementById('oferta').value,
+                }
+                if(isEditing){
+                    valoresOriginales = {
+                        nombre: empresamodif.nombre,
+                        telefono: empresamodif.telefono,
+                        email: empresamodif.email,
+                        persona_de_contacto: empresamodif.persona_de_contacto,
+                        rama: empresamodif.rama,
+                        oferta: empresamodif.oferta,
+                    };
+    
+                    // Comparar los valores actuales con los nuevos valores
+                    let hayCambios = false;
+                    for (const key in valoresOriginales) {
+                        if (valoresOriginales[key] !== empresaData[key]) {
+                            hayCambios = true;
+                            break;
+                        }
+                    }
+    
+                    // Si no hay cambios, mostrar un mensaje y no hacer nada
+                    if (!hayCambios) {
+                        // Mostrar el mensaje en la pantalla
+                        mensajeSinCambios.textContent = 'No se han realizado cambios.';
+                        mensajeSinCambios.style.display = 'block';  // Mostrar el mensaje
+                        return;
+                    } else {
+                        // Aquí puedes proceder con la lógica de modificación
+                        console.log('Datos modificados correctamente');
+                        mensajeSinCambios.style.display = 'none';  // Ocultar el mensaje si hay cambios
+                    }
+                }
+
+
+                fetch('http://localhost/proyectofinal1/empresas.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(empresaData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        if (isEditing){
+                            mostrarModalExito('Empresa modificada correctamente!'); 
+                        } else{
+                            mostrarModalExito('Empresa añadida correctamente!'); 
+                        }
+                        obtenerEmpresas();
+                        cerrarModal(document.getElementById('formModal'));
+                        addEmpresaForm.reset();
+                    } else {
+                        console.error("Error del servidor:", data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("Ocurrió un error al guardar la empresa.");
+                });
+            }
+        });
+        
+        document.getElementById('tarjetasEmpresas').addEventListener('click', function (event) {
+            const target = event.target;
+            const empresaButton = target.closest('button[data-id]'); // Encuentra el botón más cercano con data-id
+            const mensajeSinCambios = document.getElementById('mensajeSinCambios');
+            mensajeSinCambios.textContent = '';
+
+            if (!empresaButton) return; // Si no hay botón válido, salir
+        
+            const empresaId = empresaButton.dataset.id; // Obtén el ID del alumno
+
+            // Verifica qué botón se clicó y ejecuta la acción correspondiente
+            if (empresaButton.classList.contains('verEmpresa')) {
+                console.log("verempresa")
+                obtenerEmpresaPorId(empresaId, 'ver');
+            } else if (empresaButton.classList.contains('modificarEmpresa')) {
+                isEditing = true;
+                obtenerEmpresaPorId(empresaId, 'modificar');
+            } else if (empresaButton.classList.contains('eliminarEmpresa')) {
+                empresaToDeleteId = empresaId;
+                document.getElementById('confirmDeleteModal').style.display = 'flex';
+            }
+        });
+        
+
+            // Función para eliminar un cliente con confirmación
+        confirmDeleteButton.addEventListener('click', () => {
+            if (empresaToDeleteId) {
+                fetch(`http://localhost/proyectofinal1/empresas.php?id=${empresaToDeleteId}`, {
+                    method: 'DELETE', // Enviar una solicitud DELETE
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Opcionalmente, eliminar el alumno de la interfaz sin recargar la página
+                        mostrarModalExito('¡Cliente eliminado correctamente!'); // Mostrar el modal de éxito
+                        obtenerEmpresas();
+                        confirmDeleteModal.style.display = 'none';
+                    } else {
+                        alert('Error al eliminar la empresa.');
+                    }
+                })
+            .catch(error => console.error('Error:', error));
+            }
+        });
+
+        // Cancelar la eliminación
+        cancelDeleteButton.addEventListener('click', () => {
+            confirmDeleteModal.style.display = 'none';
+        });
+
+        closeDeleteModal.addEventListener('click', () => {
+            confirmDeleteModal.style.display = 'none';
+        });
+
+        closeConfirmModal.addEventListener('click', () => {
+            successModal.style.display = 'none';
+        });
+        
+    }
+
 
     // Evitar cargar el menú en login.html
     if (window.location.pathname !== '/login.html') {
@@ -448,7 +725,7 @@ function crearTarjetaAlumno(alumno, foto) {
         <img src="${foto}" class="card-img-top" alt="Foto de Alumno" onerror="this.onerror=null; this.src='imagenes/alumno.png';">
         <div class="card-body">
             <h5 class="card-title">${alumno.nombre || 'Nombre no disponible'} ${alumno.apellidos || 'Apellidos no disponibles'}</h5>
-            <p class="card-text"">Estudiante de ${alumno.formacion || 'Formación no disponible'}</p>
+            <p class="card-text"">Estudiante de ${alumno.formacion.toUpperCase() || 'Formación no disponible'}</p>
             <div class="btn-group" role="group" >
                 ${verButton}
                 ${modificarButton}
@@ -459,8 +736,6 @@ function crearTarjetaAlumno(alumno, foto) {
 
     return card;
 }
-
-
 // Función para obtener los alumnos desde el servidor
 function obtenerAlumnos() {
     fetch('http://localhost/proyectofinal1/alumnos.php')
@@ -508,7 +783,6 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                 document.getElementById('direccion').value = alumno.direccion;
                 document.getElementById('email').value = alumno.email;
                 document.getElementById('formacion').value = alumno.formacion;
-                document.getElementById('titulo_asociado').value = alumno.titulo_asociado;
                 document.getElementById('promocion').value = alumno.promocion;
                 document.getElementById('oferta').value = alumno.oferta;
                 document.getElementById('trabajando').value = alumno.trabajando;
@@ -517,10 +791,24 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                 document.getElementById('titulo_que_le_da_acceso').value = alumno.titulo_que_le_da_acceso;
                 document.getElementById('foto').value = alumno.foto;
 
-                const cvAlumno = alumno.cv;                
+                const cvAlumno = alumno.cv;     
+                const tituloAlumno = alumno.titulo_asociado;                
+           
                 const modalTitle = document.getElementById('formModal').querySelector('h2');
                 const btnGuardar = document.getElementById('btn-guardar');
                 const btnModificar = document.getElementById('btn-modificar');
+
+                const tituloBtn = document.getElementById('tituloBtn');
+                const tituloalum = document.getElementById('tituloalum');
+                const fileTitulo = document.getElementById('fileTitulo');
+                const LinkTitulo = document.getElementById('LinkTitulo');
+
+                // Restablecer estado inicial del modal
+                LinkTitulo.innerHTML = ''; // Limpia enlaces previos
+                tituloBtn.style.display = 'none'; // Ocultar botón para cambiar archivo
+                tituloalum.disabled = false; // Habilitar selección de archivos por defecto
+                fileTitulo.textContent = '';
+
                 const changeCvButton = document.getElementById('changeCvButton');
                 const subirArchivo = document.getElementById('cv');
                 const fileSelected = document.getElementById('fileSelected');
@@ -537,6 +825,19 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                     btnGuardar.style.display = 'none'; // Ocultar botón de guardar
                     btnModificar.style.display = 'block'; // Mostrar botón de modificar
                     changeCvButton.disabled = false;
+                    tituloBtn.disabled = false;
+
+                    // Si hay Titulo, mostrar enlace de descarga
+                    if (tituloAlumno) {
+                        fileTitulo.textContent = `Archivo seleccionado: ${tituloAlumno}`;
+                        const link = document.createElement("a");
+                        link.href = `http://localhost/proyectofinal1/descargas/${tituloAlumno}`; // Ruta completa al archivo
+                        link.textContent = "Descargar Título";
+                        link.target = "_blank"; // Abrir en nueva pestaña
+                        LinkTitulo.appendChild(link);
+                    } else {
+                        fileSelected.textContent = 'Este alumno no tiene Título.';
+                    }
 
                     // Si hay CV, mostrar enlace de descarga
                     if (cvAlumno) {
@@ -560,6 +861,23 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
 
                         estadoCamposForm(false); // Habilitar campos para edición
 
+                        if (tituloAlumno) {
+                            fileTitulo.textContent = `Archivo seleccionado: ${tituloAlumno}`;
+                            const link = document.createElement("a");
+                            link.href = `http://localhost/proyectofinal1/descargas/${tituloAlumno}`; // Ruta completa al archivo
+                            link.textContent = "Descargar Título";
+                            link.target = "_blank"; // Abrir en nueva pestaña
+                            LinkTitulo.appendChild(link);
+                            
+                            console.log("dentro")
+                            // Mostrar botón para cambiar archivo
+                            tituloBtn.style.display = 'inline-block';
+                            tituloalum.disabled = true; // Deshabilitar selección de archivos
+
+                        } else {
+                            fileSelected.textContent = 'Este alumno no tiene Título.';
+                        }
+
                         if (cvAlumno) {
                             fileSelected.textContent = `Archivo seleccionado: ${cvAlumno}`;
                             const link = document.createElement("a");
@@ -568,16 +886,13 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                             link.target = "_blank"; // Abrir en nueva pestaña
                             downloadLinkContainer.appendChild(link);
 
-                            
                             // Mostrar botón para cambiar archivo
                             changeCvButton.style.display = 'inline-block';
                             subirArchivo.disabled = true; // Deshabilitar selección de archivos
                         } else {
                             fileSelected.textContent = 'Este alumno no tiene un CV.';
                         }
-
                 }
-
                 abrirModal(document.getElementById('formModal'));  // Mostrar el modal
             } else {
                 console.error('Error al obtener la información del alumno');
@@ -605,4 +920,132 @@ function mostrarModalExito(mensaje) {
   formFields.forEach(field => {
       field.disabled = estado;
   });
+}
+
+// Función para obtener las empresas desde el servidor
+function obtenerEmpresas() {
+    fetch('http://localhost/proyectofinal1/empresas.php')
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+            empresasA = data.data;  // Guardar los datos de las empresas en el array
+
+            renderEmpresas(data.data); // Llamar a la función que renderiza las tarjetas de los alumnos
+        } else {
+          console.error('Error al obtener los alumnos:', data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error de conexión:', error);
+    });
+}  
+
+// Función para renderizar las cartas de empresas
+function renderEmpresas(empresas) {
+    const cardsContainer = document.getElementById('tarjetasEmpresas');
+    cardsContainer.innerHTML = ''; // Limpiar el contenedor antes de renderizar
+
+    // Crear una fila de Bootstrap
+    const row = document.createElement('div');
+    row.classList.add('row'); // Asegurarse de tener la clase 'row' para alinear las columnas
+
+    empresas.forEach(empresa => {
+        // Comprobamos que alumno no sea undefined y tenga la propiedad 'foto'
+
+        const card = crearTarjetaEmpresa(empresa); // Pasamos foto como parámetro
+        
+        const col = document.createElement('div');
+        col.classList.add('col-md-4', 'mb-4'); // Cada tarjeta estará en una columna de 4 en la cuadrícula de Bootstrap
+        col.appendChild(card);
+        row.appendChild(col); // Agregar la columna con la tarjeta a la fila
+    });
+
+    cardsContainer.appendChild(row); // Agregar la fila al contenedor principal
+}
+
+// Función para crear la tarjeta de cada alumno
+function crearTarjetaEmpresa(empresa) {
+    if (!empresa) {
+        console.error("Empresa no definida:", empresa);
+        return; // Si la empresa no está definida, no renderizamos nada.
+    }
+    
+    const card = document.createElement('div');
+    card.classList.add('card');
+    // Crear los botones de Ver y Modificar
+    const verButton = `<button type="button" class="btn btn-secondary verEmpresa" data-id="${empresa._id}"><i class="fas fa-eye"></i></button>`;
+    const modificarButton = `<button type="button" class="btn btn-secondary modificarEmpresa" data-id="${empresa._id}"><i class="fas fa-edit"></i></button>`;
+    const eliminarButton = `<button type="button" class="btn btn-secondary eliminarEmpresa" data-id="${empresa._id}"><i class="fas fa-trash-alt"></i> </button>`;
+
+    card.innerHTML = `
+        <div class="card-body">
+            <h5 class="card-title">${empresa.nombre || 'Nombre no disponible'}</h5>
+            <p class="card-text"">Empresa de ${empresa.rama.toUpperCase() || 'Rama no disponible'}</p>
+            <div class="btn-group" role="group" >
+                ${verButton}
+                ${modificarButton}
+                ${eliminarButton}
+            </div>
+        </div>
+    `;
+
+    return card;
+}
+
+// Función para obtener la información de una empresa
+function obtenerEmpresaPorId(empresaId, tipo) {
+    if (!empresaId) {
+            console.error('Error: el empresaId es undefined o vacío');
+            return;
+        }
+
+        fetch(`http://localhost/proyectofinal1/empresas.php?id=${empresaId}`, {
+            method: 'GET'
+        })
+        .then(response => {
+            // Verifica si la respuesta es exitosa (status 200)
+            if (!response.ok) {
+                throw new Error('Error en la respuesta del servidor: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                const empresa = data.empresa;
+                console.log(empresa)
+                // Llenar los campos del modal con los datos del alumno
+                document.getElementById('empresaId').value = empresa._id;
+                document.getElementById('nombre').value = empresa.nombre;
+                document.getElementById('telefono').value = empresa.telefono;
+                document.getElementById('email').value = empresa.email;
+                document.getElementById('persona_de_contacto').value = empresa.persona_de_contacto;
+                document.getElementById('rama').value = empresa.rama;
+                document.getElementById('oferta').value = empresa.oferta;
+                const modalTitle = document.getElementById('formModal').querySelector('h2');
+                const btnGuardar = document.getElementById('btn-guardar');
+                const btnModificar = document.getElementById('btn-modificar');
+
+                if (tipo === 'ver') {
+                    modalTitle.textContent = 'Empresa'; // Cambiar el título
+                    btnGuardar.style.display = 'none'; // Ocultar botón de guardar
+                    btnModificar.style.display = 'block'; // Mostrar botón de modificar
+                    estadoCamposForm(true); // Deshabilitar campos para modo "ver"
+
+                    } else if (tipo === 'modificar') {
+                        modalTitle.textContent = 'Modificar Empresa'; // Cambiar el título
+                        btnGuardar.style.display = 'inline-block'; // Mostrar botón de guardar
+                        btnGuardar.textContent = 'Modificar';
+                        btnModificar.style.display = 'none'; // Ocultar botón de modificar
+
+                        estadoCamposForm(false); // Habilitar campos para edición
+                    }
+
+                abrirModal(document.getElementById('formModal'));  // Mostrar el modal
+            } else {
+                console.error('Error al obtener la información de la empresa');
+            }
+        })
+        .catch(error => {
+            console.error('Error al obtener la información de la empresa:', error);
+        });
 }

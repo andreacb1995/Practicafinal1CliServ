@@ -64,26 +64,30 @@
                   <option value="informatica">Informática</option>
                   <option value="gestion">Gestión</option>
                 </select>
-              </div>
-              <div class="input-group">
-                <label for="titulo_asociado">Título Asociado:</label>
-                <input type="text" id="titulo_asociado" name="titulo_asociado" class="form-field" required>
+                <div class="file-input-container">
+                  <label for="titulo">Titulo:</label>
+                  <input type="file" id="tituloalum" name="tituloalum" class="form-field" accept=".pdf">
+
+                  <div class="mostrarTitulo">
+                    <span id="fileTitulo" class="file-info"></span>
+                    <div id="LinkTitulo"></div> <!-- Contenedor para el enlace de descarga -->
+                    <button type="button" id="tituloBtn" class="btn btn-secondary" style="display: none;">Cambiar Titulo</button> <!-- Botón para cambiar el CV -->
+                  </div>
+
+                </div>
               </div>
               <div class="input-group">
                 <label for="promocion">Promoción:</label>
                 <input type="text" id="promocion" name="promocion" class="form-field" required>
               </div>
-
-
               <div class="input-group">
                 <label for="cv">CV:</label>
                 <input type="file" id="cv" name="cv" class="form-field" accept=".pdf">
                 <div class="mostrarCv">
-                  <span id="fileSelected" class="file-info">No se ha seleccionado un archivo</span>
+                  <span id="fileSelected" class="file-info"></span>
                   <div id="downloadLinkContainer"></div> <!-- Contenedor para el enlace de descarga -->
                   <button type="button" id="changeCvButton" class="btn btn-secondary" style="display: none;">Cambiar CV</button> <!-- Botón para cambiar el CV -->
                 </div>
-
               </div>
 
               <div class="input-group">
@@ -147,7 +151,17 @@
         <p id="successModalMessage">¡Datos guardados correctamente!</p>
       </div>
     </div>
-
+    <!-- Modal para confirmar eliminación de archivo cv -->
+    <div id="ModalElimArchivo" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close" id="closeDeleteModal">&times;</span>
+        <p>¿Estás seguro de que deseas eliminar el cv de este alumno?</p>
+        <div>
+          <button id="EliminarArchivoButton" class="buttonconfirmElim">Si</button>
+          <button id="cancelElumArchivoButton" class="cancel-button">Cancelar</button>
+        </div>
+      </div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="script.js"></script> 

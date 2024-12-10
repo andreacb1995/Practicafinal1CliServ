@@ -261,6 +261,21 @@ input[type="file"]:focus {
   background-color: var(--color-error-hover);
 }
 
+.buttonconfirmElim {
+  background-color: var(--color-mid-grey-1);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.buttonconfirmElim:hover {
+  background-color: var(--color-mid-grey-2);
+}
+
+
 .cancel-button {
   background-color: var(--color-cancel);
   color: white;
@@ -288,7 +303,7 @@ input[type="file"]:focus {
 }
 
 /* Contenedor de botones en línea */
-#confirmDeleteModal .modal-content div {
+#confirmDeleteModal .modal-content div{
   display: flex; /* Flexbox para organizar en línea */
   justify-content: center; /* Centrar horizontalmente */
   align-items: center; /* Centrar verticalmente */
@@ -304,7 +319,7 @@ input[type="file"]:focus {
   font-weight: bold;
 }
 
-#confirmDeleteModal .confirm-button,
+#confirmDeleteModal .confirm-button
 #confirmDeleteModal .cancel-button {
   padding: 6px 12px; /* Más pequeños */
   font-size: 12px; /* Texto más pequeño */
@@ -347,7 +362,6 @@ input[type="file"]:focus {
   transition: background-color 0.3s ease;
 }
 
-
 /* Modal de éxito */
 #successModal .modal-content {
   background-color: var(--color-card-bg); /* Fondo blanco */
@@ -374,19 +388,18 @@ input[type="file"]:focus {
 }
 /* Asegúrate de que el input de archivo tenga el margen adecuado */
 #cv {
-  
   margin-bottom: 10px; /* Añade espacio debajo del campo de archivo */
   display: block; /* Hace que el input esté en su propia línea */
   width: 100%; /* Asegura que el campo de archivo ocupe el 100% del contenedor */
 }
 
 /* Contenedor que agrupa los elementos informativos y el botón */
-.mostrarCv {
+.mostrarCv, .mostrarTitulo {
   display: block; /* Hace que el contenedor ocupe toda la línea disponible */
 }
 
 /* Asegura que los elementos dentro de mostrarCv estén en su propia línea */
-#fileSelected, #downloadLinkContainer, #changeCvButton {
+#fileSelected, #downloadLinkContainer, #changeCvButton,#fileTitulo,#LinkTitulo,#tituloBtn {
   display: block; /* Cada uno ocupa una línea completa */
   margin-top: 10px; /* Espacio entre los elementos */
   margin-bottom: 20px; /* Espacio inferior para separar los elementos */
@@ -399,10 +412,10 @@ input[type="file"]:focus {
 }
 
 /* Botón para cambiar el CV */
-#changeCvButton {
+#changeCvButton,#tituloBtn {
   margin-top: 10px; /* Espacio superior para el botón */
   padding: 10px 15px; /* Espaciado dentro del botón */
-  width: 120px; /* Hace que el botón ocupe todo el espacio disponible */
+  width: 140px; 
   color: white; /* Color del texto */
   border: none; /* Elimina el borde */
   border-radius: 5px; /* Bordes redondeados */
@@ -411,10 +424,8 @@ input[type="file"]:focus {
   text-align: center; /* Centra el texto dentro del botón */
 }
 
-
-
 /* Enlace de descarga */
-#downloadLinkContainer a {
+#downloadLinkContainer a, #LinkTitulo a {
   color: #007bff;
   text-decoration: underline; /* Subrayado para el enlace */
   font-weight: bold;
@@ -422,4 +433,8 @@ input[type="file"]:focus {
 
 #successModalMessage{
   margin-top: 20px;
+}
+
+.file-input-container {
+  margin-top: 10px; /* Agrega margen superior para separar el input file del select */
 }

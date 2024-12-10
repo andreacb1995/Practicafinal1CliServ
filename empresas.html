@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Empresas</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="empresas.css"> 
+  <link rel="stylesheet" href="style.css"> 
+</head>
+
+<body class="empresas">
+  <div id="contenedor-menu"></div>
+      <header class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Empresas</h1>
+        <button id="añadirEmpresa"><i class="fas fa-plus"></i></button> <!-- Botón de añadir cliente -->
+      </header>
+
+      <div id="tarjetasEmpresas" class="card-deck">
+        <!-- Las tarjetas de las empresas se creán dinámicamente -->
+      </div> 
+
+      <!-- Modal para añadir cliente -->
+      <div id="formModal" class="modal"  tabindex="0">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Nuevo Empresa</h2>
+            <span class="close" id="closeModal">&times;</span>
+          </div>
+          <div class="modal-body">
+            <form id="addEmpresaForm"  enctype="multipart/form-data">
+              <!-- Campo oculto para el ID de la empresa -->
+              <input type="hidden" id="empresaId" value=""> <!-- ID de la empresa -->
+            
+              <div class="input-group" >
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" class="form-field" required>
+              </div>
+              <div class="input-group">
+                <label for="telefono">Teléfono:</label>
+                <input type="text" id="telefono" name="telefono" class="form-field" required>
+              </div>
+              <div class="input-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="form-field" required>
+              </div>
+              <div class="input-group">
+                <label for="persona_de_contacto">Persona de contacto:</label>
+                <input type="text" id="persona_de_contacto" name="persona_de_contacto" class="form-field">
+              </div>
+              <div class="input-group">
+                <label for="rama">Rama:</label>
+                <select type="text" id="rama" name="rama" class="form-field" required>
+                  <option value="tcae">TCAE</option>
+                  <option value="informatica">Informática</option>
+                  <option value="gestion">Gestión</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label for="oferta">Oferta:</label>
+                <input type="text" id="oferta" name="oferta" class="form-field">
+              </div>
+              <!-- Añadir un contenedor para el mensaje de "No hay cambios" -->
+              <div id="mensajeSinCambios" style="color: red; display: none; font-weight: bold; margin: 10px;">
+                No se han realizado cambios.
+              </div>
+              <button type="submit" id="btn-guardar" class="btn btn-secondary ">Guardar</button>
+              <button type="submit" id="btn-modificar" class="btn btn-secondary" style="display: none;" >Modificar</button>
+            </form>
+          </div>
+        </div>
+      </div>          
+    </div>
+    <!-- Modal para confirmar eliminación de empresa -->
+    <div id="confirmDeleteModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close" id="closeDeleteModal">&times;</span>
+        <p>¿Estás seguro de que deseas eliminar este Empresa?</p>
+        <div>
+          <button id="confirmDeleteButton" class="confirm-button">Eliminar</button>
+          <button id="cancelDeleteButton" class="cancel-button">Cancelar</button>
+        </div>
+      </div>
+    </div>
+    <div id="successModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close" id="closeSuccessModal">&times;</span>
+        <p id="successModalMessage">¡Datos guardados correctamente!</p>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script> 
+</body>
+</html>
