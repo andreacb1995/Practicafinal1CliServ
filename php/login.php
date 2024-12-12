@@ -1,6 +1,6 @@
 <?php
 
-header("Access-Control-Allow-Origin: http://127.0.0.1:3000");
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 header("Access-Control-Allow-Credentials: true"); // Permitir credenciales (cookies)
@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
-require 'vendor/autoload.php'; 
+require '../vendor/autoload.php'; // Ajusta la ruta según la ubicación de `alumnos.php`
 
 // Conectar a la base de datos MongoDB
 try {

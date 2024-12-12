@@ -1,17 +1,19 @@
 <?php
 
     // Desactivar la visualización de errores en producción
-    ini_set('display_errors', 0); // Desactivar los errores visuales
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+
     error_reporting(E_ALL); // Mantener el registro de errores
 
-    header("Access-Control-Allow-Origin: http://127.0.0.1:3000");
+    header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");  // Permitir GET, POST, DELETE y OPTIONS
     header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
     header("Access-Control-Allow-Credentials: true"); // Permitir credenciales (cookies)
     header('Content-Type: application/json');
 
 // Incluir el autoload de Composer (asegúrate de tener MongoDB instalado mediante Composer)
-require 'vendor/autoload.php';
+require '../vendor/autoload.php'; // Ajusta la ruta según la ubicación de `alumnos.php`
 
 // Conectar a MongoDB
 try {

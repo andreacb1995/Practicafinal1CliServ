@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
             mensajeError.style.display = "none";
 
             // Enviar datos al backend
-            fetch('http://localhost/proyectofinal1/login.php', {       
+            fetch('http://localhost/proyectofinal/php/login.php', {       
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (data.message && data.message.trim().toLowerCase() === "inicio de sesión exitoso".toLowerCase()) {
                         // Si el inicio de sesión es exitoso, redirigir al usuario a la página principal
                         //window.location.href = 'index.html'; // Redirige a la página principal
-                        fetch('http://localhost/proyectofinal1/verificar_sesion.php', {
+                        fetch('http://localhost/proyectofinal/php/verificar_sesion.php', {
                             method: 'GET',
                             credentials: 'include'  
                         })
@@ -191,7 +191,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         titulo_asociado: nombreArchivotitulo,
                         promocion: document.getElementById('promocion').value,
                         cv: nombreArchivocv , // El nombre del archivo subido
-                        oferta: document.getElementById('oferta').value,
                         trabajando: document.getElementById('trabajando').value,
                         cursando_titulado: document.getElementById('cursando_titulado').value,
                         titula: document.getElementById('titula').value,
@@ -204,7 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         /*if (alumnomodif.cv) {
                             // Enviar una solicitud al servidor para eliminar el archivo
-                            fetch('http://localhost/proyectofinal1/eliminar_archivo.php', {
+                            fetch('http://localhost:3000:3000/proyectofinal1/eliminar_archivo.php', {
                                 method: 'POST',
                                 body: new URLSearchParams({
                                     archivo: alumnomodif.cv
@@ -234,7 +233,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             email: alumnomodif.email,
                             formacion: alumnomodif.formacion,
                             promocion: alumnomodif.promocion,
-                            oferta: alumnomodif.oferta,
                             trabajando: alumnomodif.trabajando,
                             cursando_titulado: alumnomodif.cursando_titulado,
                             titula: alumnomodif.titula,
@@ -271,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         
                         
                         const formData = new FormData(this); // Captura todos los datos del formulario, incluyendo el archivo
-                        fetch('http://localhost/proyectofinal1/subir_archivo.php', {
+                        fetch('http://localhost/proyectofinal/php/subir_archivo.php', {
                             method: 'POST',
                             body: formData
                         })
@@ -305,30 +303,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     }
 
-                    fetch('http://localhost/proyectofinal1/alumnos.php', {
+                    fetch('http://localhost/proyectofinal/php/alumnos.php', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(alumnoData)
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            if (isEditing){
-                                mostrarModalExito('Alumno modificado correctamente!'); 
-                            } else{
-                                mostrarModalExito('Alumno añadido correctamente!'); 
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`Error del servidor: ${response.status}`);
                             }
-                            obtenerAlumnos();
-                            cerrarModal(document.getElementById('formModal'));
-                            addAlumnoForm.reset();
-                        } else {
-                            console.error("Error del servidor:", data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert("Ocurrió un error al guardar el alumno.");
-                    });
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                if (isEditing) {
+                                    mostrarModalExito('Alumno modificado correctamente!');
+                                } else {
+                                    mostrarModalExito('Alumno añadido correctamente!');
+                                }
+                                obtenerAlumnos();
+                                cerrarModal(document.getElementById('formModal'));
+                                addAlumnoForm.reset();
+                            } else {
+                                console.error("Error del servidor:", data.message);
+                                alert("Error: " + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert("Ocurrió un error al guardar el alumno.");
+                        });
+                    
                 //}
             }
         });
@@ -360,7 +365,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Función para eliminar un cliente con confirmación
         confirmDeleteButton.addEventListener('click', () => {
             if (alumnoToDeleteId) {
-                fetch(`http://localhost/proyectofinal1/alumnos.php?id=${alumnoToDeleteId}`, {
+                fetch(`http://localhost/proyectofinal/php/alumnos.php?id=${alumnoToDeleteId}`, {
                     method: 'DELETE', // Enviar una solicitud DELETE
                     headers: {
                         'Content-Type': 'application/json',
@@ -387,7 +392,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
             if (archivocvAlumno.cv) {
                 // Enviar una solicitud al servidor para eliminar el archivo
-                fetch('http://localhost/proyectofinal1/eliminar_archivo.php', {
+                fetch('http://localhost/proyectofinal/php/eliminar_archivo.php', {
                     method: 'POST',
                     body: new URLSearchParams({
                         archivo: archivocvAlumno.cv
@@ -537,7 +542,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     email: document.getElementById('email').value,
                     persona_de_contacto: document.getElementById('persona_de_contacto').value,
                     rama: document.getElementById('rama').value,
-                    oferta: document.getElementById('oferta').value,
                 }
                 if(isEditing){
                     valoresOriginales = {
@@ -546,7 +550,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         email: empresamodif.email,
                         persona_de_contacto: empresamodif.persona_de_contacto,
                         rama: empresamodif.rama,
-                        oferta: empresamodif.oferta,
                     };
     
                     // Comparar los valores actuales con los nuevos valores
@@ -572,7 +575,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
 
-                fetch('http://localhost/proyectofinal1/empresas.php', {
+                fetch('http://localhost/proyectofinal/php/empresas.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(empresaData)
@@ -625,7 +628,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Función para eliminar un cliente con confirmación
         confirmDeleteButton.addEventListener('click', () => {
             if (empresaToDeleteId) {
-                fetch(`http://localhost/proyectofinal1/empresas.php?id=${empresaToDeleteId}`, {
+                fetch(`http://localhost/proyectofinal/php/empresas.php?id=${empresaToDeleteId}`, {
                     method: 'DELETE', // Enviar una solicitud DELETE
                     headers: {
                         'Content-Type': 'application/json',
@@ -735,7 +738,7 @@ function renderAlumnos(alumnos) {
 
     alumnos.forEach(alumno => {
         // Comprobamos que alumno no sea undefined y tenga la propiedad 'foto'
-        const foto = (alumno && alumno.foto) ? alumno.foto : 'imagenes/alumno.png'; // Asignamos un valor por defecto si no tiene foto
+        const foto = (alumno && alumno.foto) ? alumno.foto : 'alumno.png'; // Asignamos un valor por defecto si no tiene foto
 
         const card = crearTarjetaAlumno(alumno, foto); // Pasamos foto como parámetro
         
@@ -763,7 +766,7 @@ function crearTarjetaAlumno(alumno, foto) {
     const eliminarButton = `<button type="button" class="btn btn-secondary eliminarAlumno" data-id="${alumno._id}"><i class="fas fa-trash-alt"></i> </button>`;
 
     card.innerHTML = `
-        <img src="${foto}" class="card-img-top" alt="Foto de Alumno" onerror="this.onerror=null; this.src='imagenes/alumno.png';">
+        <img src="http://localhost/proyectofinal/descargas/${foto}" class="card-img-top" alt="Foto de Alumno" onerror="this.onerror=null; this.src='imagenes/alumno.png';">
         <div class="card-body">
             <h5 class="card-title">${alumno.nombre || 'Nombre no disponible'} ${alumno.apellidos || 'Apellidos no disponibles'}</h5>
             <p class="card-text"">Estudiante de ${alumno.formacion.toUpperCase() || 'Formación no disponible'}</p>
@@ -779,7 +782,7 @@ function crearTarjetaAlumno(alumno, foto) {
 }
 // Función para obtener los alumnos desde el servidor
 function obtenerAlumnos() {
-    fetch('http://localhost/proyectofinal1/alumnos.php')
+    fetch('http://localhost/proyectofinal/php/alumnos.php')
       .then(response => response.json())
       .then(data => {
         if (data.success) {
@@ -802,7 +805,7 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
             return;
         }
 
-        fetch(`http://localhost/proyectofinal1/alumnos.php?id=${alumnoId}`, {
+        fetch(`http://localhost/proyectofinal/php/alumnos.php?id=${alumnoId}`, {
             method: 'GET'
         })
         .then(response => {
@@ -825,7 +828,6 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                 document.getElementById('email').value = alumno.email;
                 document.getElementById('formacion').value = alumno.formacion;
                 document.getElementById('promocion').value = alumno.promocion;
-                document.getElementById('oferta').value = alumno.oferta;
                 document.getElementById('trabajando').value = alumno.trabajando;
                 document.getElementById('cursando_titulado').value = alumno.cursando_titulado;
                 document.getElementById('titula').value = alumno.titula;
@@ -885,7 +887,7 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                     if (tituloAlumno) {
                         fileTitulo.textContent = `Archivo seleccionado: ${tituloAlumno}`;
                         const link = document.createElement("a");
-                        link.href = `http://localhost/proyectofinal1/descargas/${tituloAlumno}`; // Ruta completa al archivo
+                        link.href = `http://localhost/proyectofinal/php/descargas/${tituloAlumno}`; // Ruta completa al archivo
                         link.textContent = "Descargar Título";
                         link.target = "_blank"; // Abrir en nueva pestaña
                         LinkTitulo.appendChild(link);
@@ -897,7 +899,7 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                     if (cvAlumno) {
                         fileSelected.textContent = `Archivo seleccionado: ${cvAlumno}`;
                         const link = document.createElement("a");
-                        link.href = `http://localhost/proyectofinal1/descargas/${cvAlumno}`; // Ruta completa al archivo
+                        link.href = `http://localhost/proyectofinal/php/descargas/${cvAlumno}`; // Ruta completa al archivo
                         link.textContent = "Descargar CV";
                         link.target = "_blank"; // Abrir en nueva pestaña
                         downloadLinkContainer.appendChild(link);
@@ -924,7 +926,7 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                         if (tituloAlumno) {
                             fileTitulo.textContent = `Archivo seleccionado: ${tituloAlumno}`;
                             const link = document.createElement("a");
-                            link.href = `http://localhost/proyectofinal1/descargas/${tituloAlumno}`; // Ruta completa al archivo
+                            link.href = `http://localhost/proyectofinal/php/descargas/${tituloAlumno}`; // Ruta completa al archivo
                             link.textContent = "Descargar Título";
                             link.target = "_blank"; // Abrir en nueva pestaña
                             LinkTitulo.appendChild(link);
@@ -940,7 +942,7 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                         if (cvAlumno) {
                             fileSelected.textContent = `Archivo seleccionado: ${cvAlumno}`;
                             const link = document.createElement("a");
-                            link.href = `http://localhost/proyectofinal1/descargas/${cvAlumno}`; // Ruta completa al archivo
+                            link.href = `http://localhost/proyectofinal/php/descargas/${cvAlumno}`; // Ruta completa al archivo
                             link.textContent = "Descargar CV";
                             link.target = "_blank"; // Abrir en nueva pestaña
                             downloadLinkContainer.appendChild(link);
@@ -992,7 +994,7 @@ function mostrarModalExito(mensaje) {
 
 // Función para obtener las empresas desde el servidor
 function obtenerEmpresas() {
-    fetch('http://localhost/proyectofinal1/empresas.php')
+    fetch('http://localhost/proyectofinal/php/empresas.php')
       .then(response => response.json())
       .then(data => {
         if (data.success) {
@@ -1067,7 +1069,7 @@ function obtenerEmpresaPorId(empresaId, tipo) {
             return;
         }
 
-        fetch(`http://localhost/proyectofinal1/empresas.php?id=${empresaId}`, {
+        fetch(`http://localhost/proyectofinal/php/empresas.php?id=${empresaId}`, {
             method: 'GET'
         })
         .then(response => {
@@ -1088,7 +1090,6 @@ function obtenerEmpresaPorId(empresaId, tipo) {
                 document.getElementById('email').value = empresa.email;
                 document.getElementById('persona_de_contacto').value = empresa.persona_de_contacto;
                 document.getElementById('rama').value = empresa.rama;
-                document.getElementById('oferta').value = empresa.oferta;
                 const modalTitle = document.getElementById('formModal').querySelector('h2');
                 const btnGuardar = document.getElementById('btn-guardar');
                 const btnModificar = document.getElementById('btn-modificar');
@@ -1121,11 +1122,10 @@ function obtenerEmpresaPorId(empresaId, tipo) {
 
 function abrirOfertas() {
     const empresaId = document.getElementById('empresaId').value; // Obtén el ID de la empresa seleccionada
-    const empresaNombre = document.getElementById('nombre').value; // Obtén el ID de la empresa seleccionada
 
     if (empresaId) {
         // Redirigir a ofertas.html con el ID de la empresa como parámetro
-        window.location.href = `ofertas.html?empresaNombre=${empresaNombre}`;
+        window.location.href = `ofertas.html?empresaId=${empresaId}`;
     } else {
         alert("Selecciona una empresa válida para gestionar las ofertas.");
     }

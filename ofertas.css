@@ -1,0 +1,9 @@
+.table-responsive {
+    max-width: 1400px; /* Aumenta el tamaño según tu preferencia */
+    margin: 0 auto; /* Centra el contenedor */
+  }
+  
+  .container {
+    padding: 15px;
+  }
+  
