@@ -172,8 +172,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     const nombreArchivocv = archivoCvInput.value.split('\\').pop() || (alumnomodif ? alumnomodif.cv : '') || '';
                     
                     const archivoTituloInput = document.getElementById('tituloalum');
-
                     const nombreArchivotitulo = archivoTituloInput.value.split('\\').pop() || (alumnomodif ? alumnomodif.titulo_asociado : '') || '';
+                    
+                    const archivofotoInput = document.getElementById('foto');
+                    const nombreArchivofoto = archivofotoInput.value.split('\\').pop() || (alumnomodif ? alumnomodif.foto : '') || '';
+
+                    console.log(nombreArchivofoto);
 
                     const alumnoData = {
                         _id: document.getElementById('alumnoId').value,  // El ID del alumno que se va a modificar
@@ -192,7 +196,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         cursando_titulado: document.getElementById('cursando_titulado').value,
                         titula: document.getElementById('titula').value,
                         titulo_que_le_da_acceso: document.getElementById('titulo_que_le_da_acceso').value,
-                        foto: document.getElementById('foto').value
+                        foto: nombreArchivofoto
                     }
                     if(isEditing){
                         const mensajeSinCambios = document.getElementById('mensajeSinCambios');
@@ -235,7 +239,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             cursando_titulado: alumnomodif.cursando_titulado,
                             titula: alumnomodif.titula,
                             titulo_que_le_da_acceso: alumnomodif.titulo_que_le_da_acceso,
-                            foto: alumnomodif.foto
                         };
     
                         // Comparar los valores actuales con los nuevos valores
@@ -247,7 +250,9 @@ document.addEventListener("DOMContentLoaded", function () {
                             }
                         }
     
-                        if (archivoInput.files.length > 0 || archivoTituloInput.files.length > 0 ) {
+                        if (archivoInput.files.length > 0 || archivoTituloInput.files.length > 0
+                            || archivofotoInput.files.length > 0
+                        ) {
                             // Si se ha seleccionado un nuevo archivo, hay cambios
                             hayCambios = true;
                         } 
@@ -266,7 +271,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         
                         
                         const formData = new FormData(this); // Captura todos los datos del formulario, incluyendo el archivo
-                    
                         fetch('http://localhost/proyectofinal1/subir_archivo.php', {
                             method: 'POST',
                             body: formData
@@ -441,6 +445,42 @@ document.addEventListener("DOMContentLoaded", function () {
             changeCvButton.style.display = 'none'; // Ocultar el botón "Cambiar CV"
 
         });
+
+        // Al hacer clic en el botón "Cambiar Foto", restablecer el input para permitir seleccionar un nuevo archivo
+        document.getElementById('tituloBtn').addEventListener('click', function() {
+            const fileTitulo = document.getElementById('tituloalum');
+            const fileInfoTitulo = document.getElementById('fileTitulo');
+            const LinkTitulo = document.getElementById('LinkTitulo');
+            const ButtonTitulo = document.getElementById('tituloBtn');
+
+            // Restablecer el input de archivo
+            fileTitulo.value = '';  // Limpiar el valor del input
+            fileTitulo.disabled = false; // Asegurarse de que el input no esté deshabilitado
+
+            // Restablecer los estados de la UI
+            fileInfoTitulo.textContent = '';
+            LinkTitulo.innerHTML = ''; // Limpiar el enlace de descarga
+            
+            ButtonTitulo.style.display = 'none'; // Ocultar el botón "Cambiar CV"
+
+        });
+
+        // Al hacer clic en el botón "Cambiar Titulo", restablecer el input para permitir seleccionar un nuevo archivo
+        document.getElementById('fotoBtn').addEventListener('click', function() {
+            const fotoInput = document.getElementById('foto');
+            const fileFoto = document.getElementById('fileFoto');
+            const fotoBtn = document.getElementById('fotoBtn');
+
+            // Restablecer el input de archivo
+            fotoInput.value = '';  // Limpiar el valor del input
+            fotoInput.disabled = false; // Asegurarse de que el input no esté deshabilitado
+
+            // Restablecer los estados de la UI
+            fileFoto.textContent = '';
+            
+            fotoBtn.style.display = 'none'; // Ocultar el botón "Cambiar CV"
+
+        });
     }
 
     if (document.body.classList.contains("empresas")) {
@@ -471,7 +511,6 @@ document.addEventListener("DOMContentLoaded", function () {
             event.stopPropagation();
             cerrarModal(formModal);
         });
-        
         
         addEmpresaForm.addEventListener('submit', function handleFormSubmit(event) {
             event.preventDefault();
@@ -583,8 +622,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
         
-
-            // Función para eliminar un cliente con confirmación
+        // Función para eliminar un cliente con confirmación
         confirmDeleteButton.addEventListener('click', () => {
             if (empresaToDeleteId) {
                 fetch(`http://localhost/proyectofinal1/empresas.php?id=${empresaToDeleteId}`, {
@@ -621,6 +659,9 @@ document.addEventListener("DOMContentLoaded", function () {
             successModal.style.display = 'none';
         });
         
+
+        
+
     }
 
 
@@ -699,7 +740,7 @@ function renderAlumnos(alumnos) {
         const card = crearTarjetaAlumno(alumno, foto); // Pasamos foto como parámetro
         
         const col = document.createElement('div');
-        col.classList.add('col-md-4', 'mb-4'); // Cada tarjeta estará en una columna de 4 en la cuadrícula de Bootstrap
+        col.classList.add('col-md-4', 'mb-2'); // Cada tarjeta estará en una columna de 4 en la cuadrícula de Bootstrap
         col.appendChild(card);
         row.appendChild(col); // Agregar la columna con la tarjeta a la fila
     });
@@ -789,11 +830,12 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                 document.getElementById('cursando_titulado').value = alumno.cursando_titulado;
                 document.getElementById('titula').value = alumno.titula;
                 document.getElementById('titulo_que_le_da_acceso').value = alumno.titulo_que_le_da_acceso;
-                document.getElementById('foto').value = alumno.foto;
+                //document.getElementById('foto').value = alumno.foto;
 
                 const cvAlumno = alumno.cv;     
                 const tituloAlumno = alumno.titulo_asociado;                
-           
+                const fotoAlumno = alumno.foto;                
+
                 const modalTitle = document.getElementById('formModal').querySelector('h2');
                 const btnGuardar = document.getElementById('btn-guardar');
                 const btnModificar = document.getElementById('btn-modificar');
@@ -806,7 +848,7 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                 // Restablecer estado inicial del modal
                 LinkTitulo.innerHTML = ''; // Limpia enlaces previos
                 tituloBtn.style.display = 'none'; // Ocultar botón para cambiar archivo
-                tituloalum.disabled = false; // Habilitar selección de archivos por defecto
+                //tituloalum.disabled = false; // Habilitar selección de archivos por defecto
                 fileTitulo.textContent = '';
 
                 const changeCvButton = document.getElementById('changeCvButton');
@@ -820,12 +862,24 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                 subirArchivo.disabled = false; // Habilitar selección de archivos por defecto
                 fileSelected.textContent = '';
 
+                const fotoBtn = document.getElementById('fotoBtn');
+                const fotoalum = document.getElementById('foto');
+                const fileFoto = document.getElementById('fileFoto');
+
+                // Restablecer estado inicial del modal
+                fileFoto.innerHTML = ''; // Limpia enlaces previos
+                fotoBtn.style.display = 'none'; // Ocultar botón para cambiar archivo
+                fotoalum.disabled = false; // Habilitar selección de archivos por defecto
+                fileFoto.textContent = '';
+
+
                 if (tipo === 'ver') {
                     modalTitle.textContent = 'Alumno'; // Cambiar el título
                     btnGuardar.style.display = 'none'; // Ocultar botón de guardar
                     btnModificar.style.display = 'block'; // Mostrar botón de modificar
                     changeCvButton.disabled = false;
                     tituloBtn.disabled = false;
+                    //fotoBtn.disabled = false;
 
                     // Si hay Titulo, mostrar enlace de descarga
                     if (tituloAlumno) {
@@ -851,6 +905,12 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                         fileSelected.textContent = 'Este alumno no tiene un CV.';
                     }
 
+                    if (fotoAlumno) {
+                        fileFoto.textContent = `Archivo seleccionado: ${fotoAlumno}`;
+                    } else {
+                        fileFoto.textContent = 'Este alumno no tiene un foto.';
+                    }
+
                     estadoCamposForm(true); // Deshabilitar campos para modo "ver"
 
                     } else if (tipo === 'modificar') {
@@ -869,7 +929,6 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                             link.target = "_blank"; // Abrir en nueva pestaña
                             LinkTitulo.appendChild(link);
                             
-                            console.log("dentro")
                             // Mostrar botón para cambiar archivo
                             tituloBtn.style.display = 'inline-block';
                             tituloalum.disabled = true; // Deshabilitar selección de archivos
@@ -891,6 +950,15 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                             subirArchivo.disabled = true; // Deshabilitar selección de archivos
                         } else {
                             fileSelected.textContent = 'Este alumno no tiene un CV.';
+                        }
+
+                        if (fotoAlumno) {
+                            fileFoto.textContent = `Archivo seleccionado: ${fotoAlumno}`;
+                            // Mostrar botón para cambiar archivo
+                            fotoBtn.style.display = 'inline-block';
+                            fotoalum.disabled = true; // Deshabilitar selección de archivos
+                        } else {
+                            fileFoto.textContent = 'Este alumno no tiene un foto.';
                         }
                 }
                 abrirModal(document.getElementById('formModal'));  // Mostrar el modal
@@ -1048,4 +1116,17 @@ function obtenerEmpresaPorId(empresaId, tipo) {
         .catch(error => {
             console.error('Error al obtener la información de la empresa:', error);
         });
+}
+
+
+function abrirOfertas() {
+    const empresaId = document.getElementById('empresaId').value; // Obtén el ID de la empresa seleccionada
+    const empresaNombre = document.getElementById('nombre').value; // Obtén el ID de la empresa seleccionada
+
+    if (empresaId) {
+        // Redirigir a ofertas.html con el ID de la empresa como parámetro
+        window.location.href = `ofertas.html?empresaNombre=${empresaNombre}`;
+    } else {
+        alert("Selecciona una empresa válida para gestionar las ofertas.");
+    }
 }

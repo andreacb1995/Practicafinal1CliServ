@@ -54,69 +54,6 @@ header h1 {
   text-align: center;
 }
 
-#añadirAlumno {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-left: auto; /* Alinea el botón a la derecha */
-
-}
-
-#añadirAlumno:hover {
-  background-color: #0056b3;
-}
-
-#tarjetasAlumnos {
-  display: flex;           /* Usamos flexbox para controlar la distribución de las tarjetas */
-  flex-wrap: wrap;         /* Permite que las tarjetas se ajusten cuando no haya espacio suficiente */
-  margin-left: 40px;       /* Este margen empuja todo el contenedor hacia la derecha */
-  justify-content: space-between;  /* Opcional: espacio entre las tarjetas */
-}
-
-/* Establecemos un mínimo para las tarjetas (opcional, en caso de que no haya suficiente contenido) */
-#tarjetasAlumnos .col-md-4 {
-  display: flex;
-  flex-direction: column;
-  min-height: 300px;  /* Ajusta según el diseño deseado */
-}
-.card {
-  display: flex;
-  flex-direction: column;  /* Asegura que el contenido de la tarjeta se apile de arriba a abajo */
-  height: 100%;  /* Permite que las tarjetas ocupen todo el alto disponible */
-  display: flex;
-  flex-grow: 1;  /* Las tarjetas crecen para igualar la altura de la más alta */
-  background-color: var(--color-card-bg);
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
-  width: 240px;
-  padding: 20px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  margin: 5px; /* Margen mínimo para evitar que se superpongan */
-  margin-left: 200px; /* Desplaza la tarjeta hacia la derecha */
-
-}
-
-/* Asegura que el contenido de la tarjeta esté alineado */
-.card-body {
-  flex-grow: 1;  /* Hace que el cuerpo de la tarjeta crezca para ocupar el espacio restante */
-}
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
 .card img {
   width: 140px;
   height: 140px;
@@ -139,7 +76,7 @@ header h1 {
 }
 
 
-  /* Modal Estilo */
+/* Modal Estilo */
 .modal {
   display: none; /* Oculto por defecto */
   position: fixed;
@@ -394,12 +331,13 @@ input[type="file"]:focus {
 }
 
 /* Contenedor que agrupa los elementos informativos y el botón */
-.mostrarCv, .mostrarTitulo {
+.mostrarCv, .mostrarTitulo,.mostrarFoto {
   display: block; /* Hace que el contenedor ocupe toda la línea disponible */
 }
 
 /* Asegura que los elementos dentro de mostrarCv estén en su propia línea */
-#fileSelected, #downloadLinkContainer, #changeCvButton,#fileTitulo,#LinkTitulo,#tituloBtn {
+#fileSelected, #downloadLinkContainer, #changeCvButton,#fileTitulo,#LinkTitulo,#tituloBtn,
+#fileFoto,#fotoBtn {
   display: block; /* Cada uno ocupa una línea completa */
   margin-top: 10px; /* Espacio entre los elementos */
   margin-bottom: 20px; /* Espacio inferior para separar los elementos */
@@ -437,4 +375,24 @@ input[type="file"]:focus {
 
 .file-input-container {
   margin-top: 10px; /* Agrega margen superior para separar el input file del select */
+}
+
+
+
+#tarjetasAlumnos {
+  display: flex;           /* Usamos flexbox para controlar la distribución de las tarjetas */
+  flex-wrap: wrap;         /* Permite que las tarjetas se ajusten cuando no haya espacio suficiente */
+  margin-left: 40px;       /* Este margen empuja todo el contenedor hacia la derecha */
+  justify-content: space-between;  /* Opcional: espacio entre las tarjetas */
+  gap: 20px; /* Espacio entre las tarjetas */
+
+}
+
+/* Establecemos un mínimo para las tarjetas (opcional, en caso de que no haya suficiente contenido) */
+#tarjetasAlumnos .col-md-4 {
+  display: flex;
+  flex-direction: column;
+  min-height: 100px;  /* Ajusta según el diseño deseado */
+  width: 100%; /* Asegura que las tarjetas no se estiren en dispositivos pequeños */
+  max-width: 300px; /* Ancho máximo para las tarjetas */
 }

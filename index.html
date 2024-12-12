@@ -11,6 +11,12 @@
 
 </head>
 <body>
+  <!-- Encabezado -->
+  <header class="bg-primary text-white text-center py-3">
+    <img src="imagenes/logo.png" alt="Logo" class="logo" style="width: 50px;">
+    <h1>¡Bienvenido a nuestra plataforma!</h1>
+  </header>
+  
   <!-- Cargar el menú -->
   <div id="contenedor-menu"></div>
   <div class="container mt-5">
@@ -18,9 +24,7 @@
       <div class="col-md-12">
         <div class="text-center contenedor-bienvenida">
           <h1>Bienvenido, <span id="bienvenido"></span>!</h1>
-          
-          <p>Has iniciado sesión correctamente.</p>
-          <p>Tu nombre de usuario es: <strong><span id="sesion-usuario"></span></strong></p>
+          <p>Tu nombre de usuario es: <strong><i class="fas fa-user"></i> <span id="sesion-usuario"></span></strong></p>
         </div>
 
         <!-- Sección de Promociones -->
@@ -28,34 +32,57 @@
           <h2 class="text-center mb-4">Promociones</h2>
           <div class="row">
             <div class="col-md-4 mb-3 d-flex align-items-stretch">
-              <div class="card h-100">
-                <div class="card-body">
-                  <h3 class="card-title">Alumnos</h3>
-                  <p class="card-text">Accede a información relacionada con los datos de los alumnos matriculados en el centro.</p>
+              <a href="alumnos.html" class="card-link">
+                <div class="card h-100">
+                  <img src="imagenes/alumnos.jpg" class="card-img-top img-fluid" alt="Alumnos">
+                  <div class="card-body">
+                    <h3 class="card-title">Alumnos</h3>
+                    <p class="card-text">Accede a información relacionada con los datos de los alumnos matriculados en el centro.</p>
+                  </div>
                 </div>
-              </div>
+              </a>
+            </div>            
+            <div class="col-md-4 mb-3 d-flex align-items-stretch">
+              <a href="cursos.html" class="card-link">
+                <div class="card h-100">
+                  <img src="imagenes/cursos.jpg" class="card-img-top img-fluid" alt="Cursos">
+                  <div class="card-body">
+                    <h3 class="card-title">Cursos</h3>
+                    <p class="card-text">Accede a información sobre los datos de los cursos, asignaturas y calificaciones.</p>
+                  </div>
+                </div>
+              </a>
             </div>
             <div class="col-md-4 mb-3 d-flex align-items-stretch">
-              <div class="card h-100">
-                <div class="card-body">
-                  <h3 class="card-title">Cursos</h3>
-                  <p class="card-text">Accede a información sobre los datos de los cursos, asignaturas y calificaciones.</p>
+              <a href="practicas.html" class="card-link"> 
+                <div class="card h-100">
+                  <img src="imagenes/practicas.jpg" class="card-img-top img-fluid" alt="Prácticas">
+                  <div class="card-body">
+                    <h3 class="card-title">Prácticas</h3>
+                    <p class="card-text">Consulta información sobre las prácticas asignadas a los alumnos.</p>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div class="col-md-4 mb-3 d-flex align-items-stretch">
-              <div class="card h-100">
-                <div class="card-body">
-                  <h3 class="card-title">Prácticas</h3>
-                  <p class="card-text">Consulta información sobre las prácticas asignadas a los alumnos.</p>
-                </div>
-              </div>
+              </a>
             </div>
           </div>
+        </div>
+         <!-- Sección de Testimonios -->
+         <div class="testimonios mt-5">
+          <h2 class="text-center mb-4">Testimonios</h2>
+          <blockquote class="blockquote text-center">
+            <p class="mb-0">"Este centro ha sido una experiencia increíble para mi formación."</p>
+            <footer class="blockquote-footer">Juan Pérez</footer>
+          </blockquote>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Pie de página -->
+  <footer class="bg-dark text-white text-center py-3 mt-5">
+    <p>© 2024 Tu Centro Educativo | <a href="#" class="text-white">Política de privacidad</a></p>
+  </footer>
+
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="script.js"></script> 

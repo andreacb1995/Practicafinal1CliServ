@@ -30,6 +30,52 @@ body {
   transition: margin-left 0.3s ease;
 }
 
+
+/* Encabezado de la Página de Clientes */
+header {
+  background: linear-gradient(180deg, #343a40, #1c1f24); 
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  position: relative;
+  width: 100%;
+  display: flex;  /* Usamos flexbox para distribuir los elementos */
+  justify-content: space-between; /* Esto alineará el contenido del header */
+  align-items: center; /* Alinea verticalmente el contenido */
+}
+
+header h1 {
+  font-size: 2.5rem;
+  color: white;
+  font-weight: 700;
+  flex-grow: 1; /* Esto asegura que el título "Alumnos" ocupe el espacio disponible y se centre */
+  text-align: center;
+}
+
+.btnadd {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: auto; /* Alinea el botón a la derecha */
+
+}
+
+.btnadd:hover {
+  background-color: #0056b3;
+}
+
+
 /* Estilo del Menú Lateral */
 #menu {
   display: flex;
@@ -116,4 +162,34 @@ body {
 #menu:hover #cerrar-sesion span {
   display: inline;
 }
+
+.card {
+  display: flex;
+  flex-direction: column;  /* Asegura que el contenido de la tarjeta se apile de arriba a abajo */
+  height: 100%;  /* Permite que las tarjetas ocupen todo el alto disponible */
+  display: flex;
+  flex-grow: 1;  /* Las tarjetas crecen para igualar la altura de la más alta */
+  background-color: var(--color-card-bg);
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  width: 240px;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin: 5px; /* Margen mínimo para evitar que se superpongan */
+  margin-left: 200px; /* Desplaza la tarjeta hacia la derecha */
+
+}
+
+/* Asegura que el contenido de la tarjeta esté alineado */
+.card-body {
+  flex-grow: 1;  /* Hace que el cuerpo de la tarjeta crezca para ocupar el espacio restante */
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
 

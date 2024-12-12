@@ -14,7 +14,7 @@
   <div id="contenedor-menu"></div>
       <header class="d-flex justify-content-between align-items-center mb-4">
         <h1>Empresas</h1>
-        <button id="añadirEmpresa"><i class="fas fa-plus"></i></button> <!-- Botón de añadir cliente -->
+        <button id="añadirEmpresa" class= "btnadd"><i class="fas fa-plus"></i></button> <!-- Botón de añadir cliente -->
       </header>
 
       <div id="tarjetasEmpresas" class="card-deck">
@@ -67,13 +67,15 @@
               </div>
               <button type="submit" id="btn-guardar" class="btn btn-secondary ">Guardar</button>
               <button type="submit" id="btn-modificar" class="btn btn-secondary" style="display: none;" >Modificar</button>
+              <button type="button" id="btn-ofertas" class="btn btn-primary mt-3" onclick="abrirOfertas()">Gestionar Ofertas</button>
             </form>
           </div>
         </div>
       </div>          
     </div>
+
     <!-- Modal para confirmar eliminación de empresa -->
-    <div id="confirmDeleteModal" class="modal" style="display: none;">
+    <div id="confirmDeleteModal" class="sdds" style="display: none;">
       <div class="modal-content">
         <span class="close" id="closeDeleteModal">&times;</span>
         <p>¿Estás seguro de que deseas eliminar este Empresa?</p>

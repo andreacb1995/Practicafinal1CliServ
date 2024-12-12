@@ -14,7 +14,7 @@
   <div id="contenedor-menu"></div>
       <header class="d-flex justify-content-between align-items-center mb-4">
         <h1>Alumnos</h1>
-        <button id="añadirAlumno"><i class="fas fa-plus"></i></button> <!-- Botón de añadir cliente -->
+        <button id="añadirAlumno" class= "btnadd"><i class="fas fa-plus"></i></button> <!-- Botón de añadir cliente -->
       </header>
 
       <div id="tarjetasAlumnos" class="card-deck">
@@ -64,18 +64,16 @@
                   <option value="informatica">Informática</option>
                   <option value="gestion">Gestión</option>
                 </select>
-                <div class="file-input-container">
-                  <label for="titulo">Titulo:</label>
+              </div>
+              <div class="input-group">
+                <label for="titulo">Titulo:</label>
                   <input type="file" id="tituloalum" name="tituloalum" class="form-field" accept=".pdf">
-
                   <div class="mostrarTitulo">
                     <span id="fileTitulo" class="file-info"></span>
                     <div id="LinkTitulo"></div> <!-- Contenedor para el enlace de descarga -->
                     <button type="button" id="tituloBtn" class="btn btn-secondary" style="display: none;">Cambiar Titulo</button> <!-- Botón para cambiar el CV -->
                   </div>
-
                 </div>
-              </div>
               <div class="input-group">
                 <label for="promocion">Promoción:</label>
                 <input type="text" id="promocion" name="promocion" class="form-field" required>
@@ -119,10 +117,16 @@
                 <label for="titulo_que_le_da_acceso">Título que le da acceso:</label>
                 <input type="text" id="titulo_que_le_da_acceso" name="titulo_que_le_da_acceso" class="form-field">
               </div>
+
               <div class="input-group">
                 <label for="foto">Foto:</label>
-                <input type="text" id="foto" name="foto" class="form-field">
+                <input type="file" id="foto" name="foto" class="form-field" accept=".jpg,.png">
+                <div class="mostrarFoto">
+                  <span id="fileFoto" class="file-info"></span>
+                  <button type="button" id="fotoBtn" class="btn btn-secondary" style="display: none;">Cambiar Foto</button> <!-- Botón para cambiar el CV -->
+                </div>
               </div>
+
               <!-- Añadir un contenedor para el mensaje de "No hay cambios" -->
               <div id="mensajeSinCambios" style="color: red; display: none; font-weight: bold; margin: 10px;">
                 No se han realizado cambios.
