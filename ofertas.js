@@ -1,4 +1,9 @@
-// Inicialización
+/**
+ * Este script gestiona la funcionalidad relacionada con las ofertas de empleo vinculadas a empresas.
+ * Incluye operaciones para listar, agregar, editar, eliminar y asignar alumnos a ofertas específicas.
+ */
+
+// Inicialización de variables globales
 const ofertasTabla = document.getElementById('ofertasTabla');
 const ofertaForm = document.getElementById('ofertaForm');
 const ofertaIdInput = document.getElementById('ofertaId');
@@ -7,12 +12,15 @@ const ofertaDescripcionInput = document.getElementById('ofertaDescripcion');
 const modalContent = document.getElementById('modalContent');
 const btnOferta = document.getElementById('btn-crear-oferta');
 
-// Obtén el parámetro empresaId de la URL
+// Obtiene el parámetro empresaId de la URL
 const params = new URLSearchParams(window.location.search);
 const empresaId = params.get("empresaId");
 
 
 document.addEventListener('DOMContentLoaded', function () {
+    /**
+     * Configuración inicial para las ofertas.
+     */
     const ofertaIdInput = document.getElementById('ofertaId');
     if (!ofertaIdInput) {
       console.error('El elemento ofertaIdInput no existe en el DOM');
@@ -21,12 +29,12 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // Botón para abrir el modal de añadir oferta
     document.getElementById('btn-crear-oferta').addEventListener('click', function () {
-      ofertaIdInput.value = ''; // Restablece el ID
-      ofertaNombreInput.value = ''; // Restablece el nombre
-      ofertaDescripcionInput.value = ''; // Restablece la descripción
+      ofertaIdInput.value = ''; 
+      ofertaNombreInput.value = ''; 
+      ofertaDescripcionInput.value = ''; 
     });
 
-    // Manejar la confirmación de eliminación
+    // Eliminación de una oferta
     document.getElementById('confirmEliminarBoton').addEventListener('click', function () {
         if (ofertaIdEliminar) {
             fetch(`http://localhost/proyectofinal/php/ofertas.php?id=${ofertaIdEliminar}`, {
@@ -35,8 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    cargarOfertas();
-                    // Cerrar el modal de confirmación
+                    cargarOfertas(); // Recargar las ofertas después de eliminar
                     const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmEliminarModal'));
                     confirmModal.hide();
                 } else {
@@ -48,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-    // Muestra el nombre de la empresa en la cabecera
+    // Mostrar el nombre de la empresa en la cabecera si existe el ID
     if (empresaId) {
         // Filtrar las ofertas relacionadas con la empresa
         fetch(`http://localhost/proyectofinal/php/empresas.php?id=${empresaId}`, {
@@ -58,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             // Renderiza las ofertas específicas
             if (data.success) {
-                // Muestra el nombre de la empresa
+                // Muestra el nombre de la empresa en la página
                 document.getElementById("empresaNombre").innerText = data.empresa.nombre || 'Empresa no encontrada';
                 
             } else {
@@ -69,6 +76,10 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => console.error('Error fetching ofertas:', error));
     }
 
+/**
+ * Muestra las ofertas en una tabla HTML.
+ * @param {Array} ofertas - Lista de ofertas obtenidas.
+ */
 function mostrarTablaOfertas(ofertas) {
     ofertasTabla.innerHTML = '';
     ofertas.forEach((oferta, index) => {
@@ -97,7 +108,9 @@ function mostrarTablaOfertas(ofertas) {
 }
 
 
-// Función para cargar las ofertas desde la base de datos
+/**
+ * Carga las ofertas y las muestra en la tabla.
+ */
 function cargarOfertas() {
     fetch(`http://localhost/proyectofinal/php/ofertas.php?empresaId=${empresaId}`, {
         method: 'GET', 
@@ -108,13 +121,17 @@ function cargarOfertas() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                mostrarTablaOfertas(data.ofertas);
+                mostrarTablaOfertas(data.ofertas); // Mostrar las ofertas en la tabla
             } else {
                 console.error('Error al cargar las ofertas:', data.message);
             }
         })
         .catch(error => console.error('Error al conectar con el servidor:', error));
 }
+
+/**
+ * Envío del formulario de ofertas para crear o actualizar.
+ */
 
 ofertaForm.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -125,9 +142,8 @@ ofertaForm.addEventListener('submit', function (e) {
         descripcion: ofertaDescripcionInput.value.trim(),
     };
 
-    const id = ofertaIdInput.value.trim(); // Puede estar vacío para nuevas ofertas
+    const id = ofertaIdInput.value.trim(); // Si tiene valor, se actualizará; si no, es una nueva oferta
 
-    // Validar campos obligatorios (excepto `id` para nuevas ofertas)
     if (!ofertaData.nombre || !ofertaData.descripcion) {
         alert("Por favor, completa todos los campos antes de guardar.");
         return;
@@ -148,17 +164,17 @@ ofertaForm.addEventListener('submit', function (e) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                cargarOfertas();
-                ofertaForm.reset();
-                // Cerrar el modal
+                cargarOfertas(); // Actualizar las ofertas en la tabla
+                ofertaForm.reset();  // Restablecer el formulario
                 const ofertaModal = bootstrap.Modal.getInstance(document.getElementById('ofertaModal'));
-                ofertaModal.hide();                
+                ofertaModal.hide(); // Cerrar el modal                
             } else {
                 console.error('Error al guardar la oferta:', data.message);
             }
         })
         .catch(error => console.error('Error al conectar con el servidor:', error));
 });
+
 
 function alumnosCompatiblesModal(ofertaId, alumnos, asignado) {
     const modalContent = document.querySelector("#modal .modal-body form ul");
@@ -180,12 +196,10 @@ function alumnosCompatiblesModal(ofertaId, alumnos, asignado) {
         </li>
     `;
 
-    // Mostrar el modal con Bootstrap
     const modalElement = document.getElementById('modal');
     const ofertaModal = new bootstrap.Modal(modalElement);
     ofertaModal.show();
 
-    // Configurar botón para asignar
     const asignarBoton = document.getElementById('asignarBoton');
     asignarBoton.replaceWith(asignarBoton.cloneNode(true));
     const nuevoAsignarBoton = document.getElementById('asignarBoton');
@@ -197,11 +211,17 @@ function alumnosCompatiblesModal(ofertaId, alumnos, asignado) {
             return;
         }
 
-        const alumnoId = seleccionadoAlumno.value || null; // Maneja la eliminación de asignación
+        const alumnoId = seleccionadoAlumno.value || null; 
             actualizarAlumnoAsignado(ofertaId, alumnoId, ofertaModal);
     });
 }
 
+/**
+ * Asigna o desasigna alumnos a una oferta.
+ * @param {string} ofertaId - ID de la oferta a modificar.
+ * @param {string|null} alumnoId - ID del alumno a asignar, o null para desasignar.
+ * @param {Object} ofertaModal - Instancia del modal Bootstrap.
+ */
  function actualizarAlumnoAsignado(ofertaId, alumnoId, ofertaModal) {
     fetch('http://localhost/proyectofinal/php/accionesOfertas.php?action=asignarAlumno', {
         method: 'POST',
@@ -213,9 +233,7 @@ function alumnosCompatiblesModal(ofertaId, alumnos, asignado) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                console.log("Alumnos actualizados correctamente");
-                cargarOfertas();
-                // Cerrar el modal después de asignar
+                cargarOfertas(); // Refrescar las ofertas en la tabla
                 if (ofertaModal) {
                     ofertaModal.hide();
                 }
@@ -226,36 +244,27 @@ function alumnosCompatiblesModal(ofertaId, alumnos, asignado) {
         .catch(error => console.error('Error al conectar con el servidor:', error));
 }
 
-// Manejar eliminación
 ofertasTabla.addEventListener('click', function (e) {
     const target = e.target;
     const ofertaId = target.dataset.id;
 
     if (target.classList.contains('btn-ver')) {
-        // Realizar fetch para obtener los detalles de la oferta
         fetch(`http://localhost/proyectofinal/php/ofertas.php?id=${ofertaId}`)
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Configurar el modal con los datos de la oferta
                     ofertaIdInput.value = data.oferta._id;
                     ofertaNombreInput.value = data.oferta.nombre;
                     ofertaDescripcionInput.value = data.oferta.descripcion;
 
-                    // Hacer los campos de solo lectura
                     ofertaNombreInput.setAttribute('readonly', true);
                     ofertaDescripcionInput.setAttribute('readonly', true);
 
-                    // Cambiar el título del modal
                     document.getElementById('ofertaModalTitulo').innerText = 'Consultar Oferta';
-
-                    // Ocultar el botón de guardar
                     const guardarBoton = ofertaForm.querySelector('[type="submit"]');
                     if (guardarBoton) {
                         guardarBoton.style.display = 'none';
                     }
-
-                    // Mostrar el modal
                     const ofertaModal = new bootstrap.Modal(document.getElementById('ofertaModal'));
                     ofertaModal.show();
                 } else {
@@ -303,12 +312,9 @@ ofertasTabla.addEventListener('click', function (e) {
             .catch(error => console.error('Error al conectar con el servidor:', error));
     }
     
-    
-
     if (target.classList.contains('btn-eliminar')) {
         ofertaIdEliminar = target.dataset.id;
 
-        // Abrir el modal de confirmación
         const confirmModal = new bootstrap.Modal(document.getElementById('confirmEliminarModal'));
         confirmModal.show();
     } else if (target.classList.contains('btn-editar')) {
@@ -319,7 +325,6 @@ ofertasTabla.addEventListener('click', function (e) {
                     ofertaIdInput.value = data.oferta._id;
                     ofertaNombreInput.value = data.oferta.nombre;
                     ofertaDescripcionInput.value = data.oferta.descripcion;
-                    // Mostrar el modal de edición
                     const ofertaModal = new bootstrap.Modal(document.getElementById('ofertaModal'));
                     ofertaModal.show();                
                 } else {
@@ -329,7 +334,6 @@ ofertasTabla.addEventListener('click', function (e) {
             .catch(error => console.error('Error al conectar con el servidor:', error));
     }
 
-    // Restaurar el modal cuando se cierra para que esté listo para editar o agregar
     document.getElementById('ofertaModal').addEventListener('hidden.bs.modal', function () {
         ofertaIdInput.value = '';
         ofertaNombreInput.value = '';
@@ -338,7 +342,6 @@ ofertasTabla.addEventListener('click', function (e) {
         ofertaNombreInput.removeAttribute('readonly');
         ofertaDescripcionInput.removeAttribute('readonly');
 
-        // Restaurar el título del modal y mostrar el botón de guardar
         document.getElementById('ofertaModalTitulo').innerText = 'Nueva Oferta';
         const guardarBoton = ofertaForm.querySelector('[type="submit"]');
         if (guardarBoton) {
@@ -360,13 +363,9 @@ function alumnosModal(alumnos) {
             </li>
         `).join('');
     }
-
-    // Mostrar el modal
     const alumnosModal = new bootstrap.Modal(document.getElementById('alumnosModal'));
     alumnosModal.show();
 }
-
-
 
 // Cargar las ofertas al iniciar la página
 cargarOfertas();

@@ -17,6 +17,7 @@
   --color-fondo-tarjeta: #ffffff;       
   --color-borde-input: var(--color-gris-claro-1);  
 }
+
 /* Asegura que el contenedor principal ocupe toda la altura de la ventana */
 html, body {
   height: 100%;
@@ -35,7 +36,6 @@ body {
   margin-left: 40px; /* Espacio para el menú compacto */
   transition: margin-left 0.3s ease;
 }
-
 
 
 /* Footer */
@@ -91,7 +91,6 @@ header h1 {
 .btnadd:hover {
   background-color: #0056b3;
 }
-
 
 /* Estilo del Menú Lateral */
 #menu {
@@ -153,7 +152,6 @@ header h1 {
   background-color: var(--color-gris-medio-2); 
   color: #fff; 
 }
-
 
 /* Estilo para el ícono cuando el enlace está activo */
 .nav-link.active .fas {
@@ -232,11 +230,6 @@ header h1 {
   transition: margin-top 0.3s ease-in-out;
   margin-top: 50px; /* Desplazamiento hacia abajo */
 }
-
-
-
-
-
 
 .card {
   display: flex;

@@ -55,3 +55,8 @@
   height: 130px
 }
 
+blockquote .blockquote-footer {
+  background-color: transparent; /* Asegura que no tenga fondo */
+  color: inherit; /* Usa el color de texto heredado */
+  padding: 0; /* Opcional: elimina cualquier relleno extra */
+}

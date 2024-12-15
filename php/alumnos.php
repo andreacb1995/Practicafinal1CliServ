@@ -53,19 +53,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     } else {
         // Si no se proporciona el ID, obtener todos los alumnos
         try {
-            // Obtener todos los alumnos de la colección
-            $alumnos = $collection->find(); // Aquí puedes filtrar o limitar los resultados si es necesario
+                // Obtener todos los alumnos de la colección
+                $alumnos = $collection->find(); // Aquí puedes filtrar o limitar los resultados si es necesario
 
-            // Convertir los resultados a un array
-            $alumnosArray = iterator_to_array($alumnos);
+                // Convertir los resultados a un array
+                $alumnosArray = iterator_to_array($alumnos);
 
-            // Limpiar el ID que MongoDB agrega automáticamente (MongoDB añade un campo _id que es único)
-            foreach ($alumnosArray as &$alumno) {
-                $alumno['_id'] = (string) $alumno['_id']; // Convertir ObjectId a string para que sea legible en JSON
-            }
+                // Limpiar el ID que MongoDB agrega automáticamente (MongoDB añade un campo _id que es único)
+                foreach ($alumnosArray as &$alumno) {
+                    $alumno['_id'] = (string) $alumno['_id']; // Convertir ObjectId a string para que sea legible en JSON
+                }
 
-            // Enviar los datos de todos los alumnos en formato JSON
-            echo json_encode(['success' => true, 'data' => $alumnosArray]);
+                // Enviar los datos de todos los alumnos en formato JSON
+                echo json_encode(['success' => true, 'data' => $alumnosArray]);
 
         } catch (Exception $e) {
             echo json_encode(['success' => false, 'message' => 'Error al obtener los alumnos: ' . $e->getMessage()]);

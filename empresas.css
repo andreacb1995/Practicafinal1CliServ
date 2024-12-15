@@ -130,22 +130,22 @@
   }
   
   /* Estilo del Formulario en el Modal */
-  #addEmpresaForm {
+  #crearEmpresaForm {
     display: flex;
     flex-direction: column;
   }
   
-  #addEmpresaForm .input-group {
+  #crearEmpresaForm .input-group {
     margin-bottom: 20px;
   }
   
-  #addEmpresaForm label {
+  #crearEmpresaForm label {
     display: block;
     font-weight: bold;
     margin-bottom: 8px;
   }
   
-  #addEmpresaForm input, #addEmpresaForm select, #addEmpresaForm textarea {
+  #crearEmpresaForm input, #crearEmpresaForm select, #crearEmpresaForm textarea {
     width: 100%;
     padding: 12px;
     border: 1px solid var(--color-input-border);
@@ -153,7 +153,7 @@
     box-sizing: border-box;
   }
   
-  #addEmpresaForm textarea {
+  #crearEmpresaForm textarea {
     resize: vertical;
   }
   
@@ -187,7 +187,7 @@
     background-color: var(--color-error-hover);
   }
   
-  .buttonconfirmElim {
+  .confirmEliminarButton {
     background-color: var(--color-mid-grey-1);
     color: white;
     border: none;
@@ -197,7 +197,7 @@
     margin-right: 10px;
   }
   
-  .buttonconfirmElim:hover {
+  .confirmEliminarButton:hover {
     background-color: var(--color-mid-grey-2);
   }
   
@@ -215,7 +215,7 @@
   }
   
   /* Ventana de confirmación de eliminación */
-  #confirmDeleteModal .modal-content {
+  #confirmEliminarModal .modal-content {
     background-color: var(--color-card-bg); /* Fondo blanco */
     border: 2px solid var(--color-error); /* Bordes rojos */
     border-radius: 8px;
@@ -228,7 +228,7 @@
   }
   
   /* Contenedor de botones en línea */
-  #confirmDeleteModal .modal-content div{
+  #confirmEliminarModal .modal-content div{
     display: flex; /* Flexbox para organizar en línea */
     justify-content: center; /* Centrar horizontalmente */
     align-items: center; /* Centrar verticalmente */
@@ -237,15 +237,15 @@
   }
   
   /* Texto del mensaje */
-  #confirmDeleteModal p {
+  #confirmEliminarModal p {
     font-size: 16px; /* Texto más pequeño */
     color: var(--color-dark-grey-1); /* Gris oscuro */
     margin-bottom: 15px;
     font-weight: bold;
   }
   
-  #confirmDeleteModal .confirm-button,
-  #confirmDeleteModal .cancel-button {
+  #confirmEliminarModal .confirm-button,
+  #confirmEliminarModal .cancel-button {
     padding: 6px 12px; /* Más pequeños */
     font-size: 12px; /* Texto más pequeño */
     border-radius: 3px; /* Bordes ligeramente redondeados */
@@ -258,17 +258,17 @@
   }
   
   /* Botón confirmar - Eliminar */
-  #confirmDeleteModal .confirm-button {
+  #confirmEliminarModal .confirm-button {
     background-color: var(--color-error); /* Rojo */
   }
   
   /* Botón cancelar */
-  #confirmDeleteModal .cancel-button {
+  #confirmEliminarModal .cancel-button {
     background-color: var(--color-cancel);
   }
   
   /* Botón de cerrar (X) */
-  #confirmDeleteModal .close {
+  #confirmEliminarModal .close {
     position: absolute;
     top: 8px; /* Más cercano al borde */
     right: 12px;
@@ -278,12 +278,12 @@
     cursor: pointer;
   }
   
-  #confirmDeleteModal .close:hover {
+  #confirmEliminarModal .close:hover {
     color: var(--color-light-grey-1);
   }
   
-  #confirmDeleteModal .confirm-button:hover,
-  #confirmDeleteModal .cancel-button:hover {
+  #confirmEliminarModal .confirm-button:hover,
+  #confirmEliminarModal .cancel-button:hover {
     transition: background-color 0.3s ease;
   }
   

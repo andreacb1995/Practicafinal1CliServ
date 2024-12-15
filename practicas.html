@@ -3,19 +3,106 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Practicas</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <title>Gestión de practicas</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <!-- Font Awesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="practicas.css"> 
   <link rel="stylesheet" href="style.css"> 
 </head>
-
 <body class="practicas">
+  
+  <!-- Contenedor del Menú -->
   <div id="contenedor-menu"></div>
 
+  <!-- Encabezado -->
+  <header class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Gestión de practicas</h1>
+    <button id="btn-crear-practica" class="btnadd" data-bs-toggle="modal" data-bs-target="#practicaModal">
+      <i class="fas fa-plus"></i> 
+    </button>
+  </header>
+
+  <!-- Nombre de la Empresa -->
+  <div id="empresaNombreContainer" class="container mb-4">
+    <h2 id="empresaNombre" class="text-center text-primary"></h2> <!-- Aquí aparecerá el nombre de la empresa -->
+  </div>
+    
+  <!-- Tabla de practicas -->
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th>#</th>
+          <th>Nombre de la practica</th>
+          <th>Asignada</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="practicasTabla">
+        <!-- Las practicas se añadirán dinámicamente aquí -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal de Nueva practica -->
+  <div class="modal fade" id="practicaModal" tabindex="-1" aria-labelledby="practicaModalTitulo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="practicaModalTitulo">Nueva practica</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="practicaForm">
+          <!-- Campo oculto para almacenar el ID de la practica -->
+          <input type="hidden" id="practicaId">
+            <div class="mb-3">
+              <label for="practicaNombre" class="form-label">Nombre de la practica</label>
+              <input type="text" class="form-control" id="practicaNombre" placeholder="Nombre de la practica">
+            </div>
+            <div class="mb-3">
+              <label for="practicaDescripcion" class="form-label">Descripción</label>
+              <textarea class="form-control" id="practicaDescripcion" rows="8" placeholder="Descripción de la practica"></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" form="practicaForm" class="btn btn-success">Guardar</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <div class="modal fade" id="confirmEliminarModal" tabindex="-1" aria-labelledby="confirmEliminarModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="confirmEliminarModalLabel">Confirmar Eliminación</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ¿Estás seguro de que deseas eliminar esta practica?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="confirmEliminarBoton">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <!-- Custom JavaScript -->
+  <script src="practicas.js"></script> 
   <script src="script.js"></script> 
+
 </body>
 </html>
