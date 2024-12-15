@@ -443,6 +443,8 @@ document.addEventListener("DOMContentLoaded", function () {
             event.stopPropagation();
             Editando = false; 
             crearEmpresaForm.reset(); 
+            document.getElementById('empresaId').value = ''; // Limpiar el campo oculto del ID del alumno
+
             console.log("Nueva Empresa")
             document.getElementById('formModal').querySelector('h2').textContent = 'Nueva Empresa'; 
             btnGuardar.style.display = 'inline-block'; 
@@ -456,6 +458,10 @@ document.addEventListener("DOMContentLoaded", function () {
         cerrarModalVentana.addEventListener('click', (event) => {
             event.stopPropagation();
             cerrarModal(formModal);
+            // Restablecer la variable Editando y limpiar el formulario
+            Editando = false;
+            crearEmpresaForm.reset();
+            empresaEliminarId = null;
         });
         
         crearEmpresaForm.addEventListener('submit', function handleFormSubmit(event) {
@@ -571,7 +577,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        mostrarModalExito('¡Cliente eliminado correctamente!'); 
+                        mostrarModalExito('¡Empresa eliminada correctamente!'); 
                         obtenerEmpresas(accion);
                         confirmEliminarModal.style.display = 'none';
                     } else {

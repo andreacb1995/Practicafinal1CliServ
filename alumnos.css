@@ -395,3 +395,6 @@ input[type="file"]:focus {
   width: 100%; /* Asegura que las tarjetas no se estiren en dispositivos pequeños */
   max-width: 300px; /* Ancho máximo para las tarjetas */
 }
+.card-text{
+  height: 60px
+}
