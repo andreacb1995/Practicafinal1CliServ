@@ -57,6 +57,16 @@
                   <option value="gestion">Gestión</option>
                 </select>
               </div>
+
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="fct" name="fct">
+                <label class="form-check-label" for="fct">FCT</label>
+              </div>
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="bolsa" name="bolsa">
+                <label class="form-check-label" for="bolsa">Bolsa</label>
+              </div>
+              
               <!-- Añadir un contenedor para el mensaje de "No hay cambios" -->
               <div id="mensajeSinCambios" style="color: red; display: none; font-weight: bold; margin: 10px;">
                 No se han realizado cambios.
@@ -71,7 +81,7 @@
     </div>
 
     <!-- Modal para confirmar eliminación de empresa -->
-    <div id="confirmDeleteModal" class="sdds" style="display: none;">
+    <div id="confirmDeleteModal" class="modal" style="display: none;">
       <div class="modal-content">
         <span class="close" id="closeDeleteModal">&times;</span>
         <p>¿Estás seguro de que deseas eliminar este Empresa?</p>

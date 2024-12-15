@@ -44,7 +44,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
     } else {
         try {
-            $empresas = $collection->find();
+            $filter = [];
+
+            // Filtrar según la acción
+            if ($accion === 'fct') {
+                $filter = ['fct' => true];
+            } elseif ($accion === 'bolsa') {
+                $filter = ['bolsa' => true];
+            }
+
+            $empresas = $collection->find($filter);
             $empresasArray = iterator_to_array($empresas);
 
             foreach ($empresasArray as &$empresa) {
@@ -66,7 +75,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             'email' => $data['email'],
             'persona_de_contacto' => $data['persona_de_contacto'],
             'rama' => $data['rama'] ?? '',
-            'oferta' => $data['oferta'] ?? ''
+            'oferta' => $data['oferta'] ?? '',
+            'fct' => $data['fct'] ?? false,
+            'bolsa' => $data['bolsa'] ?? false 
         ];
 
         if (isset($data['_id']) && !empty($data['_id'])) {

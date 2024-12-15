@@ -458,17 +458,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (document.body.classList.contains("empresas")) {
-        obtenerEmpresas();
         const params = new URLSearchParams(window.location.search);
         const accion = params.get('accion');
 
-        if (accion === 'fct') {
-            console.log('Mostrando datos de FCT');
-            // Lógica para FCT
-        } else if (accion === 'bolsa') {
-            console.log('Mostrando datos de Bolsa');
-            // Lógica para Bolsa
-        } 
+        obtenerEmpresas(accion);
 
         const btnGuardar = document.getElementById('btn-guardar');
         const btnOfertas = document.getElementById('btn-ofertas');
@@ -523,6 +516,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     email: document.getElementById('email').value,
                     persona_de_contacto: document.getElementById('persona_de_contacto').value,
                     rama: document.getElementById('rama').value,
+                    fct: document.getElementById('fct').checked,
+                    bolsa: document.getElementById('bolsa').checked 
                 }
                 if(isEditing){
                     valoresOriginales = {
@@ -531,6 +526,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         email: empresamodif.email,
                         persona_de_contacto: empresamodif.persona_de_contacto,
                         rama: empresamodif.rama,
+                        fct: empresamodif.fct,
+                        bolsa: empresamodif.bolsa,
                     };
     
                     // Comparar los valores actuales con los nuevos valores
@@ -973,20 +970,30 @@ function mostrarModalExito(mensaje) {
 }
 
 // Función para obtener las empresas desde el servidor
-function obtenerEmpresas() {
+function obtenerEmpresas(accion) {
+    console.log(`Cargando empresas con acción: ${accion}`);
 
+    let url = 'http://localhost/proyectofinal/php/empresas.php';
 
-    fetch('http://localhost/proyectofinal/php/empresas.php')
-    //fetch(`http://localhost/proyectofinal/php/empresas.php?accion=${accion}`)
+    // Si se proporciona una acción, agregarla como parámetro de consulta
+    if (accion) {
+        url += `?accion=${accion}`;
+    }
 
-      .then(response => response.json())
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error en la solicitud: ${response.status}`);
+            }
+            return response.json();
+        })
       .then(data => {
         if (data.success) {
-            empresasA = data.data;  // Guardar los datos de las empresas en el array
+            empresasA = data.data || []; // Si 'data' no existe, usar un array vacío
 
             renderEmpresas(data.data); // Llamar a la función que renderiza las tarjetas de los alumnos
         } else {
-          console.error('Error al obtener los alumnos:', data.message);
+          console.error('Error al obtener las empresas:', data.message);
         }
       })
       .catch(error => {
@@ -1079,6 +1086,9 @@ function obtenerEmpresaPorId(empresaId, tipo) {
                 document.getElementById('email').value = empresa.email;
                 document.getElementById('persona_de_contacto').value = empresa.persona_de_contacto;
                 document.getElementById('rama').value = empresa.rama;
+                document.getElementById('fct').checked = empresa.fct || false;
+                document.getElementById('bolsa').checked = empresa.bolsa || false;
+
                 const modalTitle = document.getElementById('formModal').querySelector('h2');
                 const btnGuardar = document.getElementById('btn-guardar');
                 const btnModificar = document.getElementById('btn-modificar');
