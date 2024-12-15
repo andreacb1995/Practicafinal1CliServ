@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Manejar el formulario de inicio de sesión solo si existe en la página
     const formularioLogin = document.getElementById("formulario-login");
 
+
     if (formularioLogin) {
         formularioLogin.addEventListener("submit", function handleLoginFormSubmit(event) {
             event.preventDefault(); // Evitar recargar la página
@@ -458,6 +459,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (document.body.classList.contains("empresas")) {
         obtenerEmpresas();
+        const params = new URLSearchParams(window.location.search);
+        const accion = params.get('accion');
+
+        if (accion === 'fct') {
+            console.log('Mostrando datos de FCT');
+            // Lógica para FCT
+        } else if (accion === 'bolsa') {
+            console.log('Mostrando datos de Bolsa');
+            // Lógica para Bolsa
+        } 
 
         const btnGuardar = document.getElementById('btn-guardar');
         const btnOfertas = document.getElementById('btn-ofertas');
@@ -480,7 +491,6 @@ document.addEventListener("DOMContentLoaded", function () {
             btnGuardar.innerHTML = '<i class="fas fa-save"></i> Guardar'; // Añadir ícono al botón de guardar
             document.getElementById('btn-modificar').style.display = 'none';
             abrirModal(formModal);
-
         });     
                     
         // Cerrar el modal al hacer clic en la 'x'
@@ -964,7 +974,11 @@ function mostrarModalExito(mensaje) {
 
 // Función para obtener las empresas desde el servidor
 function obtenerEmpresas() {
+
+
     fetch('http://localhost/proyectofinal/php/empresas.php')
+    //fetch(`http://localhost/proyectofinal/php/empresas.php?accion=${accion}`)
+
       .then(response => response.json())
       .then(data => {
         if (data.success) {

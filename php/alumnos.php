@@ -106,6 +106,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 // Verificar si el alumno está asignado a alguna oferta
                 $ofertaAsignada = $ofertasCollection->findOne(['alumnoAsignado' => $id]);
 
+
+                // Si el campo "titula" se intenta modificar y el alumno está asignado, rechazar la operación
+                if ($ofertaAsignada && isset($data['titula'])) {
+                    echo json_encode([
+                        'success' => false,
+                        'message' => 'No se puede modificar el campo "titula" porque el alumno está asignado a una oferta.'
+                    ]);
+                    return;
+                }
                 // Si el campo "trabajando" se intenta modificar y el alumno está asignado, rechazar la operación
                 if ($ofertaAsignada && isset($data['trabajando'])) {
                     echo json_encode([
@@ -114,7 +123,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     ]);
                     return;
                 }
-
                 // Actualizar el alumno en la base de datos
                 $result = $collection->updateOne(
                     ['_id' => $id], // Buscar por ID

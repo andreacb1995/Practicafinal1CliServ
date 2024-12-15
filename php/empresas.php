@@ -26,6 +26,7 @@ try {
 // Verificar si es una solicitud GET (para obtener una empresa o todas las empresas)
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $empresaId = isset($_GET['id']) ? $_GET['id'] : null;
+    $accion = isset($_GET['accion']) ? $_GET['accion'] : null;
 
     if ($empresaId) {
         try {

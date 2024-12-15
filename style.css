@@ -180,6 +180,64 @@ header h1 {
   display: inline;
 }
 
+/* Submenú: Heredando estilos del menú principal */
+#empresas-href + ul {
+  display: none; /* Oculta el submenú */
+  padding: 0; /* Quita padding interno */
+  margin: 0; /* Ajusta el margen */
+}
+
+#empresas-href:hover + ul,
+#empresas-href + ul:hover {
+  display: block; /* Muestra el submenú */
+}
+
+#menu .nav-item ul {
+  list-style: none; /* Elimina puntos de la lista */
+  padding: 0; /* Quita padding interno */
+}
+
+#menu .nav-item ul li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-gris-claro-1);
+  padding: 12px 15px;
+  padding-left: 30px; /* Aumenta el desplazamiento hacia la derecha */
+
+  white-space: nowrap;
+  overflow: hidden;
+  border-radius: 5px; /* Bordes redondeados */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 0.8rem; /* Tamaño de texto igual a los demás botones */
+}
+
+#menu .nav-item ul li a i {
+  font-size: 1rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+
+#menu .nav-item ul li a:hover {
+  background-color: var(--color-gris-medio-2); /* Fondo al pasar el ratón */
+  color: #fff;
+}
+
+/* Animación para desplazar elementos al mostrar el submenú */
+#empresas-href:hover + ul ~ .nav-item {
+  transition: margin-top 0.3s ease-in-out;
+  margin-top: 50px; /* Desplazamiento hacia abajo */
+}
+
+
+
+
+
+
 .card {
   display: flex;
   flex-direction: column;  /* Asegura que el contenido de la tarjeta se apile de arriba a abajo */

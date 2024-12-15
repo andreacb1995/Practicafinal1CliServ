@@ -65,7 +65,8 @@ function getAlumnosCompatibles($empresasCollection, $alumnosCollection)
         $rama = $empresa['rama'];
         $alumnos = $alumnosCollection->find([
             'formacion' => $rama,
-            'trabajando' => ['$ne' => 'Sí'] // Excluir a los que están trabajando
+            'trabajando' => ['$ne' => 'Sí'], // Excluir a los que están trabajando
+            'titula' => ['$ne' => 'No'] // Excluir a los que no están titulados
         ]);
         $alumnosArray = iterator_to_array($alumnos);
 
@@ -105,23 +106,29 @@ function getAlumnosAsignados($ofertasCollection, $alumnosCollection)
     }
 }
 
-// Función para asignar un alumno a una oferta
+// Función para asignar (o desasignar) un alumno a una oferta
 function asignarAlumno($ofertasCollection)
 {
     $data = json_decode(file_get_contents('php://input'), true);
     $ofertaId = $data['ofertaId'];
     $alumnoId = $data['alumno'];
 
-    if ($ofertaId && $alumnoId) {
-        $alumnoObjectId = new MongoDB\BSON\ObjectId(trim($alumnoId));
+    if ($ofertaId) {
+        $ofertaObjectId = new MongoDB\BSON\ObjectId(trim($ofertaId));
 
+        // Definir la actualización en función de si hay un alumnoId o no
+        $updateData = $alumnoId 
+            ? ['$set' => ['alumnoAsignado' => new MongoDB\BSON\ObjectId(trim($alumnoId))]]
+            : ['$unset' => ['alumnoAsignado' => '']]; 
+
+        // Realizar la actualización
         $result = $ofertasCollection->updateOne(
-            ['_id' => new MongoDB\BSON\ObjectId($ofertaId)],
-            ['$set' => ['alumnoAsignado' => $alumnoObjectId]]
+            ['_id' => $ofertaObjectId],
+            $updateData
         );
 
         if ($result->getModifiedCount() > 0) {
-            echo json_encode(['success' => true, 'message' => 'Alumno asignado correctamente.']);
+            echo json_encode(['success' => true, 'message' => 'Operación realizada correctamente.']);
         } else {
             echo json_encode(['success' => false, 'message' => 'No se realizaron cambios.']);
         }

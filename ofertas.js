@@ -79,7 +79,7 @@ function mostrarTablaOfertas(ofertas) {
             ? `<button class="btn btn-info btn-sm btn-ver-alumnos" data-id="${oferta._id}">
                   Ver Alumno Asignado
               </button>`
-            : 'No asignado';
+            : 'No asignada';
 
         row.innerHTML = `
             <td>${index + 1}</td>
@@ -162,15 +162,23 @@ ofertaForm.addEventListener('submit', function (e) {
 
 function alumnosCompatiblesModal(ofertaId, alumnos, asignado) {
     const modalContent = document.querySelector("#modal .modal-body form ul");
-    modalContent.innerHTML = alumnos.map(alumno => `
+    modalContent.innerHTML = `
+        ${alumnos.map(alumno => `
+            <li>
+                <label>
+                    <input type="radio" name="alumno" value="${alumno._id}" 
+                           ${asignado === alumno._id ? 'checked' : ''}>
+                    ${alumno.nombre} ${alumno.apellidos} (${alumno.formacion.toUpperCase()})
+                </label>
+            </li>
+        `).join('')}
         <li>
             <label>
-                <input type="radio" name="alumno" value="${alumno._id}" 
-                       ${asignado === alumno._id ? 'checked' : ''}>
-                ${alumno.nombre} ${alumno.apellidos} (${alumno.formacion.toUpperCase()})
+                <input type="radio" name="alumno" value="" ${!asignado ? 'checked' : ''}>
+                No asignada
             </label>
         </li>
-    `).join('');
+    `;
 
     // Mostrar el modal con Bootstrap
     const modalElement = document.getElementById('modal');
@@ -189,8 +197,8 @@ function alumnosCompatiblesModal(ofertaId, alumnos, asignado) {
             return;
         }
 
-        const alumnoId = seleccionadoAlumno.value;
-        actualizarAlumnoAsignado(ofertaId, alumnoId, ofertaModal);
+        const alumnoId = seleccionadoAlumno.value || null; // Maneja la eliminación de asignación
+            actualizarAlumnoAsignado(ofertaId, alumnoId, ofertaModal);
     });
 }
 
@@ -217,7 +225,6 @@ function alumnosCompatiblesModal(ofertaId, alumnos, asignado) {
         })
         .catch(error => console.error('Error al conectar con el servidor:', error));
 }
-
 
 // Manejar eliminación
 ofertasTabla.addEventListener('click', function (e) {

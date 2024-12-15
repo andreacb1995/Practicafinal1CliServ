@@ -11,10 +11,23 @@
         </a>
       </li>
       <li class="nav-item mb-3">
-        <a href="empresas.html" id="empresas-href" class="nav-link d-flex align-items-center">
+        <a id="empresas-href" class="nav-link d-flex align-items-center">
           <i class="fas fa-building"></i> <span>Empresas</span>
         </a>
-      </li>
+      <!-- Submenú oculto inicialmente -->
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2">
+          <a href="empresas.html?accion=fct" id="submenu-fct" class="nav-link">
+            <i class="fas fa-briefcase"></i> FCT
+          </a>
+        </li>
+        <li class="nav-item mb-2">
+          <a href="empresas.html?accion=bolsa" id="submenu-bolsa" class="nav-link">
+            <i class="fas fa-wallet"></i> Bolsa
+          </a>
+        </li>
+      </ul>
+    </li>
       <li class="nav-item mb-3">
         <a href="cursos.html" id="cursos-href" class="nav-link d-flex align-items-center">
           <i class="fas fa-book"></i> <span>Cursos</span>
@@ -26,7 +39,7 @@
         </a>
       </li>
       <li class="nav-item mt-auto">
-        <a href="logout.php" id="cerrar-sesion" class="nav-link d-flex align-items-center">
+        <a href="login.html" id="cerrar-sesion" class="nav-link d-flex align-items-center">
           <i class="fas fa-sign-out-alt"></i> <span>Cerrar Sesión</span>
         </a>
       </li>
