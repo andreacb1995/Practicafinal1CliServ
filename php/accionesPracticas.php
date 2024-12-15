@@ -66,7 +66,7 @@ function getAlumnosCompatibles($empresasCollection, $alumnosCollection)
         $alumnos = $alumnosCollection->find([
             'formacion' => $rama,
             'trabajando' => ['$ne' => 'Sí'], // Excluir a los que están trabajando
-            'titula' => ['$ne' => 'No'] // Excluir a los que no están titulados
+            'titula' => ['$ne' => 'Sí'] // Excluir a los que no están titulados
         ]);
         $alumnosArray = iterator_to_array($alumnos);
 

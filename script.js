@@ -107,9 +107,13 @@ document.addEventListener("DOMContentLoaded", function () {
              * @param {Event} event - Evento de clic en el botón para añadir alumno.
              */
             event.stopPropagation();
+
             Editando = false; 
-            crearAlumnoForm.reset(); 
-            console.log("Nuevo Alumno")
+            alumnoEliminarId = null; // Limpia el ID del alumno a eliminar
+            crearAlumnoForm.reset(); // Restablece todos los campos del formulario
+            
+            document.getElementById('alumnoId').value = ''; // Limpiar el campo oculto del ID del alumno
+
             document.getElementById('formModal').querySelector('h2').textContent = 'Nuevo Alumno'; 
             btnGuardar.style.display = 'inline-block'; 
             estadoCamposForm(false);
@@ -125,11 +129,17 @@ document.addEventListener("DOMContentLoaded", function () {
              */
             event.stopPropagation();
             cerrarModal(formModal);
+            
+            // Restablecer la variable Editando y limpiar el formulario
+            Editando = false;
+            crearAlumnoForm.reset();
+            alumnoEliminarId = null;
         });
 
         crearAlumnoForm.addEventListener('submit', function handleFormSubmit(event) {
             event.preventDefault();
             const btnclick = event.submitter;
+
             if (btnclick.id === 'btn-modificar') {
                 console.log('Modificar Alumno');
                 btnGuardar.style.display = 'inline-block'; 
@@ -182,11 +192,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         promocion: document.getElementById('promocion').value,
                         cv: nombreArchivocv ,
                         trabajando: document.getElementById('trabajando').value,
-                        cursando_titulado: document.getElementById('cursando_titulado').value,
                         titula: document.getElementById('titula').value,
                         titulo_que_le_da_acceso: document.getElementById('titulo_que_le_da_acceso').value,
                         foto: nombreArchivofoto
                     }
+
                     if(Editando){
                         const mensajeSinCambios = document.getElementById('mensajeSinCambios');
                         const archivoCvInput = document.getElementById('cv');
@@ -200,7 +210,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             formacion: alumnomodif.formacion,
                             promocion: alumnomodif.promocion,
                             trabajando: alumnomodif.trabajando,
-                            cursando_titulado: alumnomodif.cursando_titulado,
                             titula: alumnomodif.titula,
                             titulo_que_le_da_acceso: alumnomodif.titulo_que_le_da_acceso,
                         };
@@ -259,6 +268,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             }
                         });
                     }
+
                     fetch(`${urlBase}/alumnos.php`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -325,7 +335,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        mostrarModalExito('¡Cliente eliminado correctamente!'); 
+                        mostrarModalExito('¡Alumno eliminado correctamente!'); 
                         obtenerAlumnos();
                         confirmEliminarModal.style.display = 'none';
                     } else {
@@ -798,7 +808,6 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                 document.getElementById('formacion').value = alumno.formacion;
                 document.getElementById('promocion').value = alumno.promocion;
                 document.getElementById('trabajando').value = alumno.trabajando;
-                document.getElementById('cursando_titulado').value = alumno.cursando_titulado;
                 document.getElementById('titula').value = alumno.titula;
                 document.getElementById('titulo_que_le_da_acceso').value = alumno.titulo_que_le_da_acceso;
 

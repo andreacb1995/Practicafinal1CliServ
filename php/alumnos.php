@@ -91,7 +91,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             'cv' => $data['cv'] ?? '',
             'oferta' => $data['oferta'] ?? '',
             'trabajando' => $data['trabajando'] ?? '',
-            'cursando_titulado' => $data['cursando_titulado'] ?? '',
             'titula' => $data['titula'] ?? '',
             'titulo_que_le_da_acceso' => $data['titulo_que_le_da_acceso'] ?? '',
             'foto' => $data['foto'] ?? ''
