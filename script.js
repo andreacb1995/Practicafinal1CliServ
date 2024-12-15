@@ -1,5 +1,6 @@
 let alumnosA = []; // Array para almacenar los alumnos obtenidos
 let empresasA = []; // Array para almacenar las empresas obtenidos
+const urlBase = 'http://localhost/proyectofinal/php';
 
 document.addEventListener("DOMContentLoaded", function () {
     // Manejar el formulario de inicio de sesión solo si existe en la página
@@ -18,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
             mensajeError.style.display = "none";
 
             // Enviar datos al backend
-            fetch('http://localhost/proyectofinal/php/login.php', {       
+            fetch(`${urlBase}/login.php`, {       
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -29,32 +30,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(data => {
                     console.log(data.message)
                     if (data.message && data.message.trim().toLowerCase() === "inicio de sesión exitoso".toLowerCase()) {
-                        window.location.href = 'index.html';
-
-                        // Si el inicio de sesión es exitoso, redirigir al usuario a la página principal
-                        //window.location.href = 'index.html'; // Redirige a la página principal
-                        /*fetch('http://localhost/proyectofinal/php/verificar_sesion.php', {
-                            method: 'GET',
-                            credentials: 'include'  
-                        })
+                        // Recuperar el usuario de la sesión a través de una llamada al servidor
+                        fetch(`${urlBase}/sesion.php`)
                         .then(response => response.json())
                         .then(data => {
-                            console.log("verificar sesion");
-                            if (data.message === 'Sesión válida') {
-                                console.log("sesion");
-
-                                // Si la sesión es válida, mostrar un mensaje de bienvenida
-                                document.getElementById('bienvenida').textContent = `Bienvenido, ${data.usuario}!`;
-                            } //else {
-                                // Si no hay sesión, redirigir al login
-                                // window.location.href = 'login.html';
-                            //}
-                        })
-                        /*.catch(() => {
-                            // Si hay un error en la verificación de la sesión, redirigir al login
-                               window.location.href = 'login.html';
-                        });*/
-
+                            if (data.usuario) {
+                                window.location.href = 'index.html';
+                            } else {
+                                window.location.href = 'login.html';
+                            }
+                        });
                     } else {
                         // Mostrar el mensaje de error si las credenciales son incorrectas
                         mensajeError.style.display = "block";
@@ -70,64 +55,53 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const formModal = document.getElementById('formModal'); // Modal del formulario
-    const addAlumno = document.getElementById('añadirAlumno'); // Botón de añadir cliente
-    const addAlumnoForm = document.getElementById('addAlumnoForm'); // Formulario
-    const addEmpresaForm = document.getElementById('addEmpresaForm'); // Formulario
+    const crearAlumno = document.getElementById('añadirAlumno'); // Botón de añadir cliente
+    const crearAlumnoForm = document.getElementById('crearAlumnoForm'); // Formulario
+    const crearEmpresaForm = document.getElementById('crearEmpresaForm'); // Formulario
     const addEmpresa = document.getElementById('añadirEmpresa'); // Botón de añadir cliente
-
-    const closeModal = document.getElementById('closeModal'); // Botón para cerrar el modal
-
-    const confirmDeleteModal = document.getElementById('confirmDeleteModal'); // Modal de confirmación de eliminación
-    const closeDeleteModal = document.getElementById('closeDeleteModal'); // Botón para cerrar el modal de eliminación
-    const confirmDeleteButton = document.getElementById('confirmDeleteButton'); // Botón para confirmar eliminación
-    const cancelDeleteButton = document.getElementById('cancelDeleteButton'); // Botón para cancelar eliminación
-    const confirmModal = document.getElementById('successModal'); // Modal de confirmación de eliminación
-    const closeConfirmModal = document.getElementById('closeSuccessModal'); // Botón para cerrar el modal de eliminación
+    const cerrarModal = document.getElementById('cerrarModal'); // Botón para cerrar el modal
+    const confirmEliminarModal = document.getElementById('confirmEliminarModal'); // Modal de confirmación de eliminación
+    const cerrarDeleteModal = document.getElementById('cerrarDeleteModal'); // Botón para cerrar el modal de eliminación
+    const confirmEliminarButton = document.getElementById('confirmEliminarButton'); // Botón para confirmar eliminación
+    const cancelarElimButton = document.getElementById('cancelarElimButton'); // Botón para cancelar eliminación
+    const cerrarConfirmModal = document.getElementById('cerrarSuccessModal'); // Botón para cerrar el modal de eliminación
     const ModalElimArchivo = document.getElementById('ModalElimArchivo'); // Modal de confirmación de eliminación
     const ElimArchivoButton = document.getElementById('EliminarArchivoButton'); // Botón para confirmar eliminación
-    const cancelElumArchivoButton = document.getElementById('cancelElumArchivoButton'); // Botón para cancelar eliminación
+    const cancelElimArchivoBtn = document.getElementById('cancelElimArchivoBtn'); // Botón para cancelar eliminación
 
-    
-    let isEditing = false; // Variable para saber si estamos en modo edición
-    let alumnoToDeleteId = null; // Guardar el id del cliente que se va a eliminar
-    let cambiarcv = false; // Variable para saber si estamos cambio el cv
-    let empresaToDeleteId = null; // Guardar el id del cliente que se va a eliminar
+    let Editando = false; // Variable para saber si estamos en modo edición
+    let alumnoEliminarId = null; // Guardar el id del cliente que se va a eliminar
+    let empresaEliminarId = null; // Guardar el id del cliente que se va a eliminar
 
     if (document.body.classList.contains("alumnos")) {
         obtenerAlumnos();
-        //const submitButton = addAlumnoForm.querySelector('button[type="submit"]'); // Botón de guardar cliente
+
         const btnGuardar = document.getElementById('btn-guardar');
         // Asegurarse de que los modales estén siempre ocultos al iniciar
         formModal.style.display = 'none';
-        confirmDeleteModal.style.display = 'none';
-
-        isEditing = false
-        
+        confirmEliminarModal.style.display = 'none';
+        Editando = false
         // Abrir el modal al hacer clic en el botón de añadir cliente
-        addAlumno.addEventListener('click', (event) => {
+        crearAlumno.addEventListener('click', (event) => {
             event.stopPropagation();
-            isEditing = false; // No estamos editando, estamos añadiendo
-            addAlumnoForm.reset(); // Limpiar formulario
+            Editando = false; // No estamos editando, estamos añadiendo
+            crearAlumnoForm.reset(); // Limpiar formulario
             console.log("Nuevo Alumno")
             document.getElementById('formModal').querySelector('h2').textContent = 'Nuevo Alumno'; // Cambiar el título
             btnGuardar.style.display = 'inline-block'; // Mostrar el botón de guardar
             estadoCamposForm(false);
-            // Cambiar el título y el botón del modal para "Añadir Cliente"
-            //modalTitle.textContent = 'Nuevo Cliente';
-            btnGuardar.innerHTML = '<i class="fas fa-save"></i> Guardar'; // Añadir ícono al botón de guardar
+            btnGuardar.innerHTML = '<i class="fas fa-save"></i> Guardar'; 
             document.getElementById('btn-modificar').style.display = 'none';
-
             abrirModal(formModal);
         });     
             
         // Cerrar el modal al hacer clic en la 'x'
-        closeModal.addEventListener('click', (event) => {
+        cerrarModal.addEventListener('click', (event) => {
             event.stopPropagation();
             cerrarModal(formModal);
         });
 
-
-        addAlumnoForm.addEventListener('submit', function handleFormSubmit(event) {
+        crearAlumnoForm.addEventListener('submit', function handleFormSubmit(event) {
             event.preventDefault();
             const btnclick = event.submitter;
             if (btnclick.id === 'btn-modificar') {
@@ -136,12 +110,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById('formModal').querySelector('h2').textContent = 'Modificar Alumno'; // Cambiar el título
                 btnGuardar.textContent = 'Modificar';
                 document.getElementById('btn-modificar').style.display = 'none'; 
-                isEditing = true; // No estamos editando, estamos añadiendo
+                Editando = true; // No estamos editando, estamos añadiendo
 
                 estadoCamposForm(false);
                 
                 const alumnomodif = alumnosA.find(alumno => alumno._id === document.getElementById('alumnoId').value);
-                
                 const subirTitulo = document.getElementById('tituloalum'); // El input para el archivo
                 const TituloBtn = document.getElementById('tituloBtn');
 
@@ -152,11 +125,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
                 
                 const subirArchivo = document.getElementById('cv'); // El input para el archivo
-                const changeCvButton = document.getElementById('changeCvButton');
+                const cambiarCvBtn = document.getElementById('cambiarCvBtn');
 
                 if (alumnomodif.cv) {
                     // Mostrar botón para cambiar archivo
-                    changeCvButton.style.display = 'inline-block';
+                    cambiarCvBtn.style.display = 'inline-block';
                     subirArchivo.disabled = true; // Deshabilitar selección de archivos
                 }
 
@@ -190,9 +163,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         titulo_que_le_da_acceso: document.getElementById('titulo_que_le_da_acceso').value,
                         foto: nombreArchivofoto
                     }
-                    if(isEditing){
+                    if(Editando){
                         const mensajeSinCambios = document.getElementById('mensajeSinCambios');
-                        const archivoInput = document.getElementById('cv');
+                        const archivoCvInput = document.getElementById('cv');
             
                         valoresOriginales = {
                             nombre: alumnomodif.nombre,
@@ -218,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             }
                         }
     
-                        if (archivoInput.files.length > 0 || archivoTituloInput.files.length > 0
+                        if (archivoCvInput.files.length > 0 || archivoTituloInput.files.length > 0
                             || archivofotoInput.files.length > 0
                         ) {
                             // Si se ha seleccionado un nuevo archivo, hay cambios
@@ -237,9 +210,8 @@ document.addEventListener("DOMContentLoaded", function () {
                             mensajeSinCambios.style.display = 'none';  // Ocultar el mensaje si hay cambios
                         }
                         
-                        
                         const formData = new FormData(this); // Captura todos los datos del formulario, incluyendo el archivo
-                        fetch('http://localhost/proyectofinal/php/subir_archivo.php', {
+                        fetch(`${urlBase}/subir_archivo.php`, {
                             method: 'POST',
                             body: formData
                         })
@@ -272,7 +244,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         });
 
                     }
-                    fetch('http://localhost/proyectofinal/php/alumnos.php', {
+                    fetch(`${urlBase}/alumnos.php`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(alumnoData)
@@ -285,14 +257,14 @@ document.addEventListener("DOMContentLoaded", function () {
                         })
                         .then(data => {
                             if (data.success) {
-                                if (isEditing) {
+                                if (Editando) {
                                     mostrarModalExito('Alumno modificado correctamente!');
                                 } else {
                                     mostrarModalExito('Alumno añadido correctamente!');
                                 }
                                 obtenerAlumnos();
                                 cerrarModal(document.getElementById('formModal'));
-                                addAlumnoForm.reset();
+                                crearAlumnoForm.reset();
                             } else {
                                 console.error("Error del servidor:", data.message);
                                 alert("Error: " + data.message);
@@ -309,32 +281,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.getElementById('tarjetasAlumnos').addEventListener('click', function (event) {
             const target = event.target;
-            const alumnoButton = target.closest('button[data-id]'); // Encuentra el botón más cercano con data-id
+            const alumnoBtn = target.closest('button[data-id]'); // Encuentra el botón más cercano con data-id
             const mensajeSinCambios = document.getElementById('mensajeSinCambios');
             mensajeSinCambios.textContent = '';
 
-            if (!alumnoButton) return; // Si no hay botón válido, salir
+            if (!alumnoBtn) return; // Si no hay botón válido, salir
         
-            const alumnoId = alumnoButton.dataset.id; // Obtén el ID del alumno
+            const alumnoId = alumnoBtn.dataset.id; // Obtén el ID del alumno
             cambiarcv = false
 
             // Verifica qué botón se clicó y ejecuta la acción correspondiente
-            if (alumnoButton.classList.contains('verAlumno')) {
+            if (alumnoBtn.classList.contains('verAlumno')) {
                 obtenerAlumnoPorId(alumnoId, 'ver');
-            } else if (alumnoButton.classList.contains('modificarAlumno')) {
-                isEditing = true;
+            } else if (alumnoBtn.classList.contains('modificarAlumno')) {
+                Editando = true;
                 obtenerAlumnoPorId(alumnoId, 'modificar');
-            } else if (alumnoButton.classList.contains('eliminarAlumno')) {
-                alumnoToDeleteId = alumnoId;
-                document.getElementById('confirmDeleteModal').style.display = 'flex';
+            } else if (alumnoBtn.classList.contains('eliminarAlumno')) {
+                alumnoEliminarId = alumnoId;
+                document.getElementById('confirmEliminarModal').style.display = 'flex';
             }
         });
         
-
-            // Función para eliminar un cliente con confirmación
-        confirmDeleteButton.addEventListener('click', () => {
-            if (alumnoToDeleteId) {
-                fetch(`http://localhost/proyectofinal/php/alumnos.php?id=${alumnoToDeleteId}`, {
+        // Función para eliminar un cliente con confirmación
+        confirmEliminarButton.addEventListener('click', () => {
+            if (alumnoEliminarId) {
+                fetch(`${urlBase}/alumnos.php?id=${alumnoEliminarId}`, {
                     method: 'DELETE', // Enviar una solicitud DELETE
                     headers: {
                         'Content-Type': 'application/json',
@@ -346,7 +317,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         // Opcionalmente, eliminar el alumno de la interfaz sin recargar la página
                         mostrarModalExito('¡Cliente eliminado correctamente!'); // Mostrar el modal de éxito
                         obtenerAlumnos();
-                        confirmDeleteModal.style.display = 'none';
+                        confirmEliminarModal.style.display = 'none';
                     } else {
                         alert('Error al eliminar el alumno.');
                     }
@@ -356,12 +327,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         ElimArchivoButton.addEventListener('click', () => {
-
             const archivocvAlumno = alumnosA.find(alumno => alumno._id === document.getElementById('alumnoId').value);
-        
             if (archivocvAlumno.cv) {
                 // Enviar una solicitud al servidor para eliminar el archivo
-                fetch('http://localhost/proyectofinal/php/eliminar_archivo.php', {
+                fetch(`${urlBase}/eliminar_archivo.php`, {
                     method: 'POST',
                     body: new URLSearchParams({
                         archivo: archivocvAlumno.cv
@@ -384,29 +353,28 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         
         // Cancelar la eliminación
-        cancelDeleteButton.addEventListener('click', () => {
-            confirmDeleteModal.style.display = 'none';
+        cancelarElimButton.addEventListener('click', () => {
+            confirmEliminarModal.style.display = 'none';
         });
 
-        closeDeleteModal.addEventListener('click', () => {
-            confirmDeleteModal.style.display = 'none';
+        cerrarDeleteModal.addEventListener('click', () => {
+            confirmEliminarModal.style.display = 'none';
         });
 
-        closeConfirmModal.addEventListener('click', () => {
+        cerrarConfirmModal.addEventListener('click', () => {
             successModal.style.display = 'none';
         });
 
-        cancelElumArchivoButton.addEventListener('click', () => {
+        cancelElimArchivoBtn.addEventListener('click', () => {
             ModalElimArchivo.style.display = 'none';
         });
         
         // Al hacer clic en el botón "Cambiar CV", restablecer el input para permitir seleccionar un nuevo archivo
-        document.getElementById('changeCvButton').addEventListener('click', function() {
-            cambiarcv = true
+        document.getElementById('cambiarCvBtn').addEventListener('click', function() {
             const fileInput = document.getElementById('cv');
-            const fileInfoSpan = document.getElementById('fileSelected');
-            const downloadLinkContainer = document.getElementById('downloadLinkContainer');
-            const changeCvButton = document.getElementById('changeCvButton');
+            const fileInfoSpan = document.getElementById('archivoCV');
+            const linkCv = document.getElementById('linkCv');
+            const cambiarCvBtn = document.getElementById('cambiarCvBtn');
 
             // Restablecer el input de archivo
             fileInput.value = '';  // Limpiar el valor del input
@@ -414,9 +382,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Restablecer los estados de la UI
             fileInfoSpan.textContent = '';
-            downloadLinkContainer.innerHTML = ''; // Limpiar el enlace de descarga
+            linkCv.innerHTML = ''; // Limpiar el enlace de descarga
             
-            changeCvButton.style.display = 'none'; // Ocultar el botón "Cambiar CV"
+            cambiarCvBtn.style.display = 'none'; // Ocultar el botón "Cambiar CV"
 
         });
 
@@ -460,22 +428,24 @@ document.addEventListener("DOMContentLoaded", function () {
     if (document.body.classList.contains("empresas")) {
         const params = new URLSearchParams(window.location.search);
         const accion = params.get('accion');
-
+        
+        const tituloEmpresas = document.getElementById('tituloEmpresas');
+        tituloEmpresas.innerText = `Empresas de ${accion.toUpperCase()}`;
         obtenerEmpresas(accion);
 
         const btnGuardar = document.getElementById('btn-guardar');
         const btnOfertas = document.getElementById('btn-ofertas');
 
         formModal.style.display = 'none';
-        confirmDeleteModal.style.display = 'none';
+        confirmEliminarModal.style.display = 'none';
 
-        isEditing = false
+        Editando = false
 
         // Abrir el modal al hacer clic en el botón de añadir empresa
         addEmpresa.addEventListener('click', (event) => {
             event.stopPropagation();
-            isEditing = false; // No estamos editando, estamos añadiendo
-            addEmpresaForm.reset(); // Limpiar formulario
+            Editando = false; // No estamos editando, estamos añadiendo
+            crearEmpresaForm.reset(); // Limpiar formulario
             console.log("Nueva Empresa")
             document.getElementById('formModal').querySelector('h2').textContent = 'Nueva Empresa'; 
             btnGuardar.style.display = 'inline-block'; // Mostrar el botón de guardar
@@ -487,12 +457,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });     
                     
         // Cerrar el modal al hacer clic en la 'x'
-        closeModal.addEventListener('click', (event) => {
+        cerrarModal.addEventListener('click', (event) => {
             event.stopPropagation();
             cerrarModal(formModal);
         });
         
-        addEmpresaForm.addEventListener('submit', function handleFormSubmit(event) {
+        crearEmpresaForm.addEventListener('submit', function handleFormSubmit(event) {
             event.preventDefault();
 
             const btnclick = event.submitter;
@@ -502,7 +472,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById('formModal').querySelector('h2').textContent = 'Modificar Empresa'; // Cambiar el título
                 btnGuardar.textContent = 'Modificar';
                 document.getElementById('btn-modificar').style.display = 'none'; 
-                isEditing = true; // No estamos editando, estamos añadiendo
+                Editando = true; // No estamos editando, estamos añadiendo
 
                 estadoCamposForm(false);
         
@@ -519,7 +489,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     fct: document.getElementById('fct').checked,
                     bolsa: document.getElementById('bolsa').checked 
                 }
-                if(isEditing){
+                if(Editando){
                     valoresOriginales = {
                         nombre: empresamodif.nombre,
                         telefono: empresamodif.telefono,
@@ -553,7 +523,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
 
-                fetch('http://localhost/proyectofinal/php/empresas.php', {
+                fetch(`${urlBase}/empresas.php`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(empresaData)
@@ -561,14 +531,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        if (isEditing){
+                        if (Editando){
                             mostrarModalExito('Empresa modificada correctamente!'); 
                         } else{
                             mostrarModalExito('Empresa añadida correctamente!'); 
                         }
-                        obtenerEmpresas();
+                        obtenerEmpresas(accion);
                         cerrarModal(document.getElementById('formModal'));
-                        addEmpresaForm.reset();
+                        crearEmpresaForm.reset();
                     } else {
                         console.error("Error del servidor:", data.message);
                     }
@@ -594,18 +564,18 @@ document.addEventListener("DOMContentLoaded", function () {
             if (empresaButton.classList.contains('verEmpresa')) {
                 obtenerEmpresaPorId(empresaId, 'ver');
             } else if (empresaButton.classList.contains('modificarEmpresa')) {
-                isEditing = true;
+                Editando = true;
                 obtenerEmpresaPorId(empresaId, 'modificar');
             } else if (empresaButton.classList.contains('eliminarEmpresa')) {
-                empresaToDeleteId = empresaId;
-                document.getElementById('confirmDeleteModal').style.display = 'flex';
+                empresaEliminarId = empresaId;
+                document.getElementById('confirmEliminarModal').style.display = 'flex';
             }
         });
         
         // Función para eliminar un cliente con confirmación
-        confirmDeleteButton.addEventListener('click', () => {
-            if (empresaToDeleteId) {
-                fetch(`http://localhost/proyectofinal/php/empresas.php?id=${empresaToDeleteId}`, {
+        confirmEliminarButton.addEventListener('click', () => {
+            if (empresaEliminarId) {
+                fetch(`${urlBase}/empresas.php?id=${empresaEliminarId}`, {
                     method: 'DELETE', // Enviar una solicitud DELETE
                     headers: {
                         'Content-Type': 'application/json',
@@ -616,8 +586,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (data.success) {
                         // Opcionalmente, eliminar el alumno de la interfaz sin recargar la página
                         mostrarModalExito('¡Cliente eliminado correctamente!'); // Mostrar el modal de éxito
-                        obtenerEmpresas();
-                        confirmDeleteModal.style.display = 'none';
+                        obtenerEmpresas(accion);
+                        confirmEliminarModal.style.display = 'none';
                     } else {
                         alert('Error al eliminar la empresa.');
                     }
@@ -627,15 +597,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         // Cancelar la eliminación
-        cancelDeleteButton.addEventListener('click', () => {
-            confirmDeleteModal.style.display = 'none';
+        cancelarElimButton.addEventListener('click', () => {
+            confirmEliminarModal.style.display = 'none';
         });
 
-        closeDeleteModal.addEventListener('click', () => {
-            confirmDeleteModal.style.display = 'none';
+        cerrarDeleteModal.addEventListener('click', () => {
+            confirmEliminarModal.style.display = 'none';
         });
 
-        closeConfirmModal.addEventListener('click', () => {
+        cerrarConfirmModal.addEventListener('click', () => {
             successModal.style.display = 'none';
         });
         
@@ -705,7 +675,7 @@ function cerrarModal(modal) {
 }
 
 // Función para renderizar las cartas de alumnos
-function renderAlumnos(alumnos) {
+function crearTarjetasAlumnos(alumnos) {
     const cardsContainer = document.getElementById('tarjetasAlumnos');
     cardsContainer.innerHTML = ''; // Limpiar el contenedor antes de renderizar
 
@@ -759,13 +729,13 @@ function crearTarjetaAlumno(alumno, foto) {
 }
 // Función para obtener los alumnos desde el servidor
 function obtenerAlumnos() {
-    fetch('http://localhost/proyectofinal/php/alumnos.php')
+    fetch(`${urlBase}/alumnos.php`)
       .then(response => response.json())
       .then(data => {
         if (data.success) {
             alumnosA = data.data;  // Guardar los datos de los alumnos en el array
 
-            renderAlumnos(data.data); // Llamar a la función que renderiza las tarjetas de los alumnos
+            crearTarjetasAlumnos(data.data); // Llamar a la función que renderiza las tarjetas de los alumnos
         } else {
           console.error('Error al obtener los alumnos:', data.message);
         }
@@ -782,7 +752,7 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
             return;
         }
 
-        fetch(`http://localhost/proyectofinal/php/alumnos.php?id=${alumnoId}`, {
+        fetch(`${urlBase}/alumnos.php?id=${alumnoId}`, {
             method: 'GET'
         })
         .then(response => {
@@ -815,7 +785,7 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                 const tituloAlumno = alumno.titulo_asociado;                
                 const fotoAlumno = alumno.foto;                
 
-                const modalTitle = document.getElementById('formModal').querySelector('h2');
+                const modalTitulo = document.getElementById('formModal').querySelector('h2');
                 const btnGuardar = document.getElementById('btn-guardar');
                 const btnModificar = document.getElementById('btn-modificar');
 
@@ -830,16 +800,16 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                 //tituloalum.disabled = false; // Habilitar selección de archivos por defecto
                 fileTitulo.textContent = '';
 
-                const changeCvButton = document.getElementById('changeCvButton');
+                const cambiarCvBtn = document.getElementById('cambiarCvBtn');
                 const subirArchivo = document.getElementById('cv');
-                const fileSelected = document.getElementById('fileSelected');
-                const downloadLinkContainer = document.getElementById('downloadLinkContainer');
+                const archivoCV = document.getElementById('archivoCV');
+                const linkCv = document.getElementById('linkCv');
 
                 // Restablecer estado inicial del modal
-                downloadLinkContainer.innerHTML = ''; // Limpia enlaces previos
-                changeCvButton.style.display = 'none'; // Ocultar botón para cambiar archivo
+                linkCv.innerHTML = ''; // Limpia enlaces previos
+                cambiarCvBtn.style.display = 'none'; // Ocultar botón para cambiar archivo
                 subirArchivo.disabled = false; // Habilitar selección de archivos por defecto
-                fileSelected.textContent = '';
+                archivoCV.textContent = '';
 
                 const fotoBtn = document.getElementById('fotoBtn');
                 const fotoalum = document.getElementById('foto');
@@ -851,12 +821,11 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                 fotoalum.disabled = false; // Habilitar selección de archivos por defecto
                 fileFoto.textContent = '';
 
-
                 if (tipo === 'ver') {
-                    modalTitle.textContent = 'Alumno'; // Cambiar el título
+                    modalTitulo.textContent = 'Alumno'; // Cambiar el título
                     btnGuardar.style.display = 'none'; // Ocultar botón de guardar
                     btnModificar.style.display = 'block'; // Mostrar botón de modificar
-                    changeCvButton.disabled = false;
+                    cambiarCvBtn.disabled = false;
                     tituloBtn.disabled = false;
                     //fotoBtn.disabled = false;
 
@@ -869,19 +838,19 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                         link.target = "_blank"; // Abrir en nueva pestaña
                         LinkTitulo.appendChild(link);
                     } else {
-                        fileSelected.textContent = 'Este alumno no tiene Título.';
+                        archivoCV.textContent = 'Este alumno no tiene Título.';
                     }
 
                     // Si hay CV, mostrar enlace de descarga
                     if (cvAlumno) {
-                        fileSelected.textContent = `Archivo seleccionado: ${cvAlumno}`;
+                        archivoCV.textContent = `Archivo seleccionado: ${cvAlumno}`;
                         const link = document.createElement("a");
                         link.href = `http://localhost/proyectofinal/php/descargas/${cvAlumno}`; // Ruta completa al archivo
                         link.textContent = "Descargar CV";
                         link.target = "_blank"; // Abrir en nueva pestaña
-                        downloadLinkContainer.appendChild(link);
+                        linkCv.appendChild(link);
                     } else {
-                        fileSelected.textContent = 'Este alumno no tiene un CV.';
+                        archivoCV.textContent = 'Este alumno no tiene un CV.';
                     }
 
                     if (fotoAlumno) {
@@ -893,7 +862,7 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                     estadoCamposForm(true); // Deshabilitar campos para modo "ver"
 
                     } else if (tipo === 'modificar') {
-                        modalTitle.textContent = 'Modificar Alumno'; // Cambiar el título
+                        modalTitulo.textContent = 'Modificar Alumno'; // Cambiar el título
                         btnGuardar.style.display = 'inline-block'; // Mostrar botón de guardar
                         btnGuardar.textContent = 'Modificar';
                         btnModificar.style.display = 'none'; // Ocultar botón de modificar
@@ -913,22 +882,22 @@ function obtenerAlumnoPorId(alumnoId, tipo) {
                             tituloalum.disabled = true; // Deshabilitar selección de archivos
 
                         } else {
-                            fileSelected.textContent = 'Este alumno no tiene Título.';
+                            archivoCV.textContent = 'Este alumno no tiene Título.';
                         }
 
                         if (cvAlumno) {
-                            fileSelected.textContent = `Archivo seleccionado: ${cvAlumno}`;
+                            archivoCV.textContent = `Archivo seleccionado: ${cvAlumno}`;
                             const link = document.createElement("a");
                             link.href = `http://localhost/proyectofinal/php/descargas/${cvAlumno}`; // Ruta completa al archivo
                             link.textContent = "Descargar CV";
                             link.target = "_blank"; // Abrir en nueva pestaña
-                            downloadLinkContainer.appendChild(link);
+                            linkCv.appendChild(link);
 
                             // Mostrar botón para cambiar archivo
-                            changeCvButton.style.display = 'inline-block';
+                            cambiarCvBtn.style.display = 'inline-block';
                             subirArchivo.disabled = true; // Deshabilitar selección de archivos
                         } else {
-                            fileSelected.textContent = 'Este alumno no tiene un CV.';
+                            archivoCV.textContent = 'Este alumno no tiene un CV.';
                         }
 
                         if (fotoAlumno) {
@@ -973,14 +942,7 @@ function mostrarModalExito(mensaje) {
 function obtenerEmpresas(accion) {
     console.log(`Cargando empresas con acción: ${accion}`);
 
-    let url = 'http://localhost/proyectofinal/php/empresas.php';
-
-    // Si se proporciona una acción, agregarla como parámetro de consulta
-    if (accion) {
-        url += `?accion=${accion}`;
-    }
-
-    fetch(url)
+    fetch(`${urlBase}/empresas.php?accion=${accion}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Error en la solicitud: ${response.status}`);
@@ -990,8 +952,7 @@ function obtenerEmpresas(accion) {
       .then(data => {
         if (data.success) {
             empresasA = data.data || []; // Si 'data' no existe, usar un array vacío
-
-            renderEmpresas(data.data); // Llamar a la función que renderiza las tarjetas de los alumnos
+            crearTarjetasEmpresas(data.data); // Llamar a la función que renderiza las tarjetas de los alumnos
         } else {
           console.error('Error al obtener las empresas:', data.message);
         }
@@ -1002,7 +963,7 @@ function obtenerEmpresas(accion) {
 }  
 
 // Función para renderizar las cartas de empresas
-function renderEmpresas(empresas) {
+function crearTarjetasEmpresas(empresas) {
     const cardsContainer = document.getElementById('tarjetasEmpresas');
     cardsContainer.innerHTML = ''; // Limpiar el contenedor antes de renderizar
 
@@ -1011,10 +972,7 @@ function renderEmpresas(empresas) {
     row.classList.add('row'); // Asegurarse de tener la clase 'row' para alinear las columnas
 
     empresas.forEach(empresa => {
-        // Comprobamos que alumno no sea undefined y tenga la propiedad 'foto'
-
         const card = crearTarjetaEmpresa(empresa); // Pasamos foto como parámetro
-        
         const col = document.createElement('div');
         col.classList.add('col-md-4', 'mb-4'); // Cada tarjeta estará en una columna de 4 en la cuadrícula de Bootstrap
         col.appendChild(card);
@@ -1089,20 +1047,20 @@ function obtenerEmpresaPorId(empresaId, tipo) {
                 document.getElementById('fct').checked = empresa.fct || false;
                 document.getElementById('bolsa').checked = empresa.bolsa || false;
 
-                const modalTitle = document.getElementById('formModal').querySelector('h2');
+                const modalTitulo = document.getElementById('formModal').querySelector('h2');
                 const btnGuardar = document.getElementById('btn-guardar');
                 const btnModificar = document.getElementById('btn-modificar');
                 const btnOfertas = document.getElementById('btn-ofertas');
 
                 if (tipo === 'ver') {
-                    modalTitle.textContent = 'Empresa'; // Cambiar el título
+                    modalTitulo.textContent = 'Empresa'; // Cambiar el título
                     btnGuardar.style.display = 'none'; // Ocultar botón de guardar
                     btnModificar.style.display = 'block'; // Mostrar botón de modificar
                     btnOfertas.style.display = 'block'; // Mostrar botón de modificar
                     estadoCamposForm(true); // Deshabilitar campos para modo "ver"
 
                     } else if (tipo === 'modificar') {
-                        modalTitle.textContent = 'Modificar Empresa'; // Cambiar el título
+                        modalTitulo.textContent = 'Modificar Empresa'; // Cambiar el título
                         btnGuardar.style.display = 'inline-block'; // Mostrar botón de guardar
                         btnGuardar.textContent = 'Modificar';
                         btnModificar.style.display = 'none'; // Ocultar botón de modificar
@@ -1135,4 +1093,22 @@ function abrirOfertas(empresaId) {
     } else {
         alert("Selecciona una empresa válida para gestionar las ofertas.");
     }
+}
+
+
+function crearTarjetas(items, contenedorId, crearTarjeta) {
+    const contenedor = document.getElementById(contenedorId);
+    contenedor.innerHTML = ''; // Limpiar contenedor
+
+    const row = document.createElement('div');
+    row.classList.add('row');
+
+    items.forEach(item => {
+        const col = document.createElement('div');
+        col.classList.add('col-md-4', 'mb-4');
+        col.appendChild(crearTarjeta(item));
+        row.appendChild(col);
+    });
+
+    contenedor.appendChild(row);
 }

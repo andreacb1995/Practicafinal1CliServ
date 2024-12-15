@@ -13,7 +13,7 @@
 <body class="empresas">
   <div id="contenedor-menu"></div>
       <header class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Empresas</h1>
+        <h1 id="tituloEmpresas">Empresas</h1>
         <button id="añadirEmpresa" class= "btnadd"><i class="fas fa-plus"></i></button> <!-- Botón de añadir cliente -->
       </header>
 
@@ -26,10 +26,10 @@
         <div class="modal-content">
           <div class="modal-header">
             <h2>Nuevo Empresa</h2>
-            <span class="close" id="closeModal">&times;</span>
+            <span class="close" id="cerrarModal">&times;</span>
           </div>
           <div class="modal-body">
-            <form id="addEmpresaForm"  enctype="multipart/form-data">
+            <form id="crearEmpresaForm"  enctype="multipart/form-data">
               <!-- Campo oculto para el ID de la empresa -->
               <input type="hidden" id="empresaId" value=""> <!-- ID de la empresa -->
             
@@ -81,19 +81,19 @@
     </div>
 
     <!-- Modal para confirmar eliminación de empresa -->
-    <div id="confirmDeleteModal" class="modal" style="display: none;">
+    <div id="confirmEliminarModal" class="modal" style="display: none;">
       <div class="modal-content">
-        <span class="close" id="closeDeleteModal">&times;</span>
+        <span class="close" id="cerrarDeleteModal">&times;</span>
         <p>¿Estás seguro de que deseas eliminar este Empresa?</p>
         <div>
-          <button id="confirmDeleteButton" class="confirm-button">Eliminar</button>
-          <button id="cancelDeleteButton" class="cancel-button">Cancelar</button>
+          <button id="confirmEliminarButton" class="confirm-button">Eliminar</button>
+          <button id="cancelarElimButton" class="cancel-button">Cancelar</button>
         </div>
       </div>
     </div>
     <div id="successModal" class="modal" style="display: none;">
       <div class="modal-content">
-        <span class="close" id="closeSuccessModal">&times;</span>
+        <span class="close" id="cerrarSuccessModal">&times;</span>
         <p id="successModalMessage">¡Datos guardados correctamente!</p>
       </div>
     </div>

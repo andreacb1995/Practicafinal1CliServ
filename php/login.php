@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
@@ -30,7 +31,7 @@ $clave = trim($input['clave']);
 $usuarioEncontrado = $coleccion->findOne(['usuario' => $usuario]);
 
 if ($usuarioEncontrado && password_verify($clave, $usuarioEncontrado['clave'])) {
-    setcookie('cookie_usuario', $usuario, time() + (86400 * 30), "/"); // 30 días
+    $_SESSION['usuario'] = $usuario;
     echo json_encode(['message' => 'Inicio de sesión exitoso', 'usuario' => $usuario]);
 
 

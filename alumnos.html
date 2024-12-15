@@ -26,10 +26,10 @@
         <div class="modal-content">
           <div class="modal-header">
             <h2>Nuevo Alumno</h2>
-            <span class="close" id="closeModal">&times;</span>
+            <span class="close" id="cerrarModal">&times;</span>
           </div>
           <div class="modal-body">
-            <form id="addAlumnoForm"  enctype="multipart/form-data">
+            <form id="crearAlumnoForm"  enctype="multipart/form-data">
               <!-- Campo oculto para el ID del alumno -->
               <input type="hidden" id="alumnoId" value=""> <!-- ID del alumno -->
             
@@ -82,9 +82,9 @@
                 <label for="cv">CV:</label>
                 <input type="file" id="cv" name="cv" class="form-field" accept=".pdf">
                 <div class="mostrarCv">
-                  <span id="fileSelected" class="file-info"></span>
-                  <div id="downloadLinkContainer"></div> <!-- Contenedor para el enlace de descarga -->
-                  <button type="button" id="changeCvButton" class="btn btn-secondary" style="display: none;">Cambiar CV</button> <!-- Botón para cambiar el CV -->
+                  <span id="archivoCV" class="file-info"></span>
+                  <div id="linkCv"></div> <!-- Contenedor para el enlace de descarga -->
+                  <button type="button" id="cambiarCvBtn" class="btn btn-secondary" style="display: none;">Cambiar CV</button> <!-- Botón para cambiar el CV -->
                 </div>
               </div>
 
@@ -139,30 +139,30 @@
       </div>          
     </div>
     <!-- Modal para confirmar eliminación de cliente -->
-    <div id="confirmDeleteModal" class="modal" style="display: none;">
+    <div id="confirmEliminarModal" class="modal" style="display: none;">
       <div class="modal-content">
-        <span class="close" id="closeDeleteModal">&times;</span>
+        <span class="close" id="cerrarDeleteModal">&times;</span>
         <p>¿Estás seguro de que deseas eliminar este alumno?</p>
         <div>
-          <button id="confirmDeleteButton" class="confirm-button">Eliminar</button>
-          <button id="cancelDeleteButton" class="cancel-button">Cancelar</button>
+          <button id="confirmEliminarButton" class="confirm-button">Eliminar</button>
+          <button id="cancelarElimButton" class="cancel-button">Cancelar</button>
         </div>
       </div>
     </div>
     <div id="successModal" class="modal" style="display: none;">
       <div class="modal-content">
-        <span class="close" id="closeSuccessModal">&times;</span>
+        <span class="close" id="cerrarSuccessModal">&times;</span>
         <p id="successModalMessage">¡Datos guardados correctamente!</p>
       </div>
     </div>
     <!-- Modal para confirmar eliminación de archivo cv -->
     <div id="ModalElimArchivo" class="modal" style="display: none;">
       <div class="modal-content">
-        <span class="close" id="closeDeleteModal">&times;</span>
+        <span class="close" id="cerrarDeleteModal">&times;</span>
         <p>¿Estás seguro de que deseas eliminar el cv de este alumno?</p>
         <div>
           <button id="EliminarArchivoButton" class="buttonconfirmElim">Si</button>
-          <button id="cancelElumArchivoButton" class="cancel-button">Cancelar</button>
+          <button id="cancelElimArchivoBtn" class="cancel-button">Cancelar</button>
         </div>
       </div>
     </div>
