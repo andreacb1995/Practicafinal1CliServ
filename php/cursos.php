@@ -54,9 +54,6 @@ switch ($method) {
             } catch (Exception $e) {
                 echo json_encode(['success' => false, 'message' => 'Error al obtener los cursos: ' . $e->getMessage()]);
             }
-
-
-
         }
         break;
 

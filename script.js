@@ -961,7 +961,6 @@ function mostrarModalExito(mensaje) {
  * Función para obtener los datos de las empresas.
  */
 function obtenerEmpresas(accion) {
-    console.log(`Cargando empresas con acción: ${accion}`);
 
     fetch(`${urlBase}/empresas.php?accion=${accion}`)
         .then(response => {
@@ -1012,6 +1011,9 @@ function crearTarjetaEmpresa(empresa) {
         console.error("Empresa no definida:", empresa);
         return; 
     }
+    // Obtener el parámetro "accion" de la URL
+    const params = new URLSearchParams(window.location.search);
+    const accion = params.get('accion');
     
     const card = document.createElement('div');
     card.classList.add('card');
@@ -1023,6 +1025,16 @@ function crearTarjetaEmpresa(empresa) {
                                data-id="${empresa._id}" title="Eliminar"><i class="fas fa-trash-alt"></i> </button>`;
     const ofertasButton     = `<button type="button" class="btn btn-secondary" onclick="abrirOfertas('${empresa._id}')" 
                             data-id="${empresa._id}" title="Gestionar ofertas"><i class="fas fa-briefcase"></i> </button>`;
+    const practicasButton     = `<button type="button" class="btn btn-secondary" onclick="abrirPracticas('${empresa._id}')" 
+                            data-id="${empresa._id}" title="Gestionar prácticas"><i class="fas fa-briefcase"></i> </button>`;
+
+    // Configuración de los botones según el valor de "accion"
+    let botonesAdicionales = '';
+    if (accion === 'fct') {
+        botonesAdicionales = practicasButton;
+    } else {
+        botonesAdicionales = ofertasButton;
+    }
 
     card.innerHTML = `
         <div class="card-body">
@@ -1032,7 +1044,7 @@ function crearTarjetaEmpresa(empresa) {
                 ${verButton}
                 ${modificarButton}
                 ${eliminarButton}
-                ${ofertasButton}
+                ${botonesAdicionales}
             </div>
         </div>
     `;
@@ -1075,12 +1087,25 @@ function obtenerEmpresaPorId(empresaId, tipo) {
             const btnGuardar = document.getElementById('btn-guardar');
             const btnModificar = document.getElementById('btn-modificar');
             const btnOfertas = document.getElementById('btn-ofertas');
+            const btnPracticas = document.getElementById('btn-practicas');
 
             if (tipo === 'ver') {
                 modalTitulo.textContent = 'Empresa'; 
                 btnGuardar.style.display = 'none'; 
                 btnModificar.style.display = 'block'; 
-                btnOfertas.style.display = 'block'; 
+
+                
+                const params = new URLSearchParams(window.location.search);
+                const accion = params.get('accion');
+
+                if (accion === 'fct') {
+                    btnPracticas.style.display = 'block'; 
+                    btnOfertas.style.display = 'none'; 
+                } else {
+                    btnPracticas.style.display = 'none'; 
+                    btnOfertas.style.display = 'block'; 
+                }
+
                 estadoCamposForm(true); 
 
                 } else if (tipo === 'modificar') {
@@ -1089,6 +1114,7 @@ function obtenerEmpresaPorId(empresaId, tipo) {
                     btnGuardar.textContent = 'Modificar';
                     btnModificar.style.display = 'none'; 
                     btnOfertas.style.display = 'none'; 
+                    btnPracticas.style.display = 'none'; 
                     estadoCamposForm(false); 
                 }
 
@@ -1120,3 +1146,16 @@ function abrirOfertas(empresaId) {
     }
 }
 
+function abrirPracticas(empresaId) {
+    if (!empresaId) {
+        empresaId = document.getElementById('empresaId').value; // Obtener el ID desde el formulario si no se pasa como argumento
+    }
+
+    if (empresaId) {
+        // Redirigir a la página de ofertas con el ID como parámetro en la URL
+        window.location.href = `practicas.html?empresaId=${empresaId}`;
+    } else {
+        // Mostrar una alerta si no se proporciona un ID válido
+        alert("Selecciona una empresa válida para gestionar las practicas.");
+    }
+}

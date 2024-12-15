@@ -19,7 +19,7 @@
 
   <!-- Encabezado -->
   <header class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Gestión de practicas</h1>
+    <h1>Gestión FCT</h1>
     <button id="btn-crear-practica" class="btnadd" data-bs-toggle="modal" data-bs-target="#practicaModal">
       <i class="fas fa-plus"></i> 
     </button>
@@ -46,6 +46,29 @@
       </tbody>
     </table>
   </div>
+  
+ <!-- Modal para Asignar Alumnos -->
+ <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="modalLabel">Asignar/Desasignar Alumnos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="asignarForm">
+          <ul class="list-unstyled">
+            <!-- Lista generada dinámicamente -->
+          </ul>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-success" id="asignarBoton">Asignar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   <!-- Modal de Nueva practica -->
   <div class="modal fade" id="practicaModal" tabindex="-1" aria-labelledby="practicaModalTitulo" aria-hidden="true">
@@ -78,6 +101,25 @@
     </div>
   </div>
 
+    <!-- Modal para Mostrar Alumnos Asignados -->
+    <div class="modal fade" id="alumnosModal" tabindex="-1" aria-labelledby="alumnosModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="alumnosModalLabel">Alumnos Asignados</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <ul id="listaAlumnos" class="list-group">
+              <!-- Lista de alumnos asignados generada dinámicamente -->
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
   <div class="modal fade" id="confirmEliminarModal" tabindex="-1" aria-labelledby="confirmEliminarModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

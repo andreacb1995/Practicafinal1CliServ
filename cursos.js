@@ -70,8 +70,10 @@ function mostrarTablacursos(cursos) {
                 <button class="btn btn-primary btn-sm btn-ver" data-id="${curso._id}">Ver</button>
                 <button class="btn btn-info btn-sm btn-editar" data-id="${curso._id}">Editar</button>
                 <button class="btn btn-danger btn-sm btn-eliminar" data-id="${curso._id}">Eliminar</button>
-                <button class="btn btn-asignar btn-sm" data-id="${curso._id}">Ver Asignaturas</button>
+                <button class="btn btn-asignaturas btn-sm" data-id="${curso._id}" onclick="abrirAsignaturas('${curso._id}')">Ver Asignaturas</button>
             </td>
+
+             
         `;
         cursosTabla.appendChild(row);
     });
@@ -154,6 +156,7 @@ cursosTabla.addEventListener('click', function (e) {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
+                    console.log(data.curso)
                     cursoIdInput.value = data.curso._id;
                     cursoNombreInput.value = data.curso.nombre;
                     cursoDescripcionInput.value = data.curso.descripcion;
@@ -175,7 +178,6 @@ cursosTabla.addEventListener('click', function (e) {
             .catch(error => console.error('Error al conectar con el servidor:', error));
     }
 
-    
     if (target.classList.contains('btn-eliminar')) {
         cursoIdEliminar = target.dataset.id;
 
@@ -215,6 +217,18 @@ cursosTabla.addEventListener('click', function (e) {
 });
 
 
+function abrirAsignaturas(cursoId) {
+    if (!cursoId) {
+        cursoId = document.getElementById('cursoId').value; // Obtener el ID desde el formulario si no se pasa como argumento
+    }
 
+    if (cursoId) {
+        // Redirigir a la página de ofertas con el ID como parámetro en la URL
+        window.location.href = `asignaturas.html?cursoId=${cursoId}`;
+    } else {
+        // Mostrar una alerta si no se proporciona un ID válido
+        alert("Selecciona un curso válido para gestionar las asignaturas.");
+    }
+}
 // Cargar las cursos al iniciar la página
 cargarcursos();
