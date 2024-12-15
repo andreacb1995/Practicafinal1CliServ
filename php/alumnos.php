@@ -20,6 +20,7 @@ try {
     $client = new MongoDB\Client("mongodb://localhost:27017");
     $database = $client->proyectofinal1; // Nombre de tu base de datos
     $collection = $database->alumnos; // Nombre de la colección
+    $ofertasCollection = $database->ofertas; // Colección de ofertas
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => 'Error de conexión: ' . $e->getMessage()]);
     exit;
@@ -102,6 +103,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 // Convertir el ID de MongoDB a un tipo de dato ObjectId
                 $id = new MongoDB\BSON\ObjectId($data['_id']);
                 
+                // Verificar si el alumno está asignado a alguna oferta
+                $ofertaAsignada = $ofertasCollection->findOne(['alumnoAsignado' => $id]);
+
+                // Si el campo "trabajando" se intenta modificar y el alumno está asignado, rechazar la operación
+                if ($ofertaAsignada && isset($data['trabajando'])) {
+                    echo json_encode([
+                        'success' => false,
+                        'message' => 'No se puede modificar el campo "trabajando" porque el alumno está asignado a una oferta.'
+                    ]);
+                    return;
+                }
+
                 // Actualizar el alumno en la base de datos
                 $result = $collection->updateOne(
                     ['_id' => $id], // Buscar por ID

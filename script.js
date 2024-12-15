@@ -26,10 +26,13 @@ document.addEventListener("DOMContentLoaded", function () {
             })
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data.message)
                     if (data.message && data.message.trim().toLowerCase() === "inicio de sesión exitoso".toLowerCase()) {
+                        window.location.href = 'index.html';
+
                         // Si el inicio de sesión es exitoso, redirigir al usuario a la página principal
                         //window.location.href = 'index.html'; // Redirige a la página principal
-                        fetch('http://localhost/proyectofinal/php/verificar_sesion.php', {
+                        /*fetch('http://localhost/proyectofinal/php/verificar_sesion.php', {
                             method: 'GET',
                             credentials: 'include'  
                         })
@@ -90,6 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let empresaToDeleteId = null; // Guardar el id del cliente que se va a eliminar
 
     if (document.body.classList.contains("alumnos")) {
+        obtenerAlumnos();
         //const submitButton = addAlumnoForm.querySelector('button[type="submit"]'); // Botón de guardar cliente
         const btnGuardar = document.getElementById('btn-guardar');
         // Asegurarse de que los modales estén siempre ocultos al iniciar
@@ -97,7 +101,6 @@ document.addEventListener("DOMContentLoaded", function () {
         confirmDeleteModal.style.display = 'none';
 
         isEditing = false
-        obtenerAlumnos();
         
         // Abrir el modal al hacer clic en el botón de añadir cliente
         addAlumno.addEventListener('click', (event) => {
@@ -114,7 +117,6 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('btn-modificar').style.display = 'none';
 
             abrirModal(formModal);
-
         });     
             
         // Cerrar el modal al hacer clic en la 'x'
@@ -126,7 +128,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         addAlumnoForm.addEventListener('submit', function handleFormSubmit(event) {
             event.preventDefault();
-
             const btnclick = event.submitter;
             if (btnclick.id === 'btn-modificar') {
                 console.log('Modificar Alumno');
@@ -158,15 +159,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     subirArchivo.disabled = true; // Deshabilitar selección de archivos
                 }
 
-
-
-
             } else if (btnclick.id === 'btn-guardar') {        
                 
-                //if (cambiarcv){
-                  //  document.getElementById('ModalElimArchivo').style.display = 'flex';
-                //}else {
-                    
                     const alumnomodif = alumnosA.find(alumno => alumno._id === document.getElementById('alumnoId').value);
                     const archivoCvInput = document.getElementById('cv');
                     const nombreArchivocv = archivoCvInput.value.split('\\').pop() || (alumnomodif ? alumnomodif.cv : '') || '';
@@ -176,8 +170,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     
                     const archivofotoInput = document.getElementById('foto');
                     const nombreArchivofoto = archivofotoInput.value.split('\\').pop() || (alumnomodif ? alumnomodif.foto : '') || '';
-
-                    console.log(nombreArchivofoto);
 
                     const alumnoData = {
                         _id: document.getElementById('alumnoId').value,  // El ID del alumno que se va a modificar
@@ -200,30 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     if(isEditing){
                         const mensajeSinCambios = document.getElementById('mensajeSinCambios');
                         const archivoInput = document.getElementById('cv');
-
-                        /*if (alumnomodif.cv) {
-                            // Enviar una solicitud al servidor para eliminar el archivo
-                            fetch('http://localhost:3000:3000/proyectofinal1/eliminar_archivo.php', {
-                                method: 'POST',
-                                body: new URLSearchParams({
-                                    archivo: alumnomodif.cv
-                                })
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.status === 'success') {
-                                    console.log('Archivo eliminado correctamente');
-                                    ModalElimArchivo.style.display = 'none';
-        
-                                } else {
-                                    console.error('Error al eliminar el archivo:', data.message);
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error al intentar eliminar el archivo:', error);
-                            });
-                        }
-                        */
+            
                         valoresOriginales = {
                             nombre: alumnomodif.nombre,
                             apellidos: alumnomodif.apellidos,
@@ -302,7 +271,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         });
 
                     }
-
                     fetch('http://localhost/proyectofinal/php/alumnos.php', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -489,12 +457,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (document.body.classList.contains("empresas")) {
+        obtenerEmpresas();
+
         const btnGuardar = document.getElementById('btn-guardar');
+        const btnOfertas = document.getElementById('btn-ofertas');
+
         formModal.style.display = 'none';
         confirmDeleteModal.style.display = 'none';
 
         isEditing = false
-        obtenerEmpresas();
 
         // Abrir el modal al hacer clic en el botón de añadir empresa
         addEmpresa.addEventListener('click', (event) => {
@@ -504,6 +475,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Nueva Empresa")
             document.getElementById('formModal').querySelector('h2').textContent = 'Nueva Empresa'; 
             btnGuardar.style.display = 'inline-block'; // Mostrar el botón de guardar
+            btnOfertas.style.display = 'none'; // Mostrar el botón de guardar
             estadoCamposForm(false);
             btnGuardar.innerHTML = '<i class="fas fa-save"></i> Guardar'; // Añadir ícono al botón de guardar
             document.getElementById('btn-modificar').style.display = 'none';
@@ -523,7 +495,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const btnclick = event.submitter;
             if (btnclick.id === 'btn-modificar') {
                 console.log('Modificar Empresa');
-                btnGuardar.style.display = 'inline-block'; // Mostrar el botón de guardar
+                btnGuardar.style.display = 'none'; 
                 document.getElementById('formModal').querySelector('h2').textContent = 'Modificar Empresa'; // Cambiar el título
                 btnGuardar.textContent = 'Modificar';
                 document.getElementById('btn-modificar').style.display = 'none'; 
@@ -534,7 +506,6 @@ document.addEventListener("DOMContentLoaded", function () {
             } else if (btnclick.id === 'btn-guardar') {        
                 const mensajeSinCambios = document.getElementById('mensajeSinCambios');
                 const empresamodif = empresasA.find(empresa => empresa._id === document.getElementById('empresaId').value);
-
                 const empresaData = {
                     _id: document.getElementById('empresaId').value,  
                     nombre: document.getElementById('nombre').value,
@@ -614,7 +585,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Verifica qué botón se clicó y ejecuta la acción correspondiente
             if (empresaButton.classList.contains('verEmpresa')) {
-                console.log("verempresa")
                 obtenerEmpresaPorId(empresaId, 'ver');
             } else if (empresaButton.classList.contains('modificarEmpresa')) {
                 isEditing = true;
@@ -1043,9 +1013,14 @@ function crearTarjetaEmpresa(empresa) {
     const card = document.createElement('div');
     card.classList.add('card');
     // Crear los botones de Ver y Modificar
-    const verButton = `<button type="button" class="btn btn-secondary verEmpresa" data-id="${empresa._id}"><i class="fas fa-eye"></i></button>`;
-    const modificarButton = `<button type="button" class="btn btn-secondary modificarEmpresa" data-id="${empresa._id}"><i class="fas fa-edit"></i></button>`;
-    const eliminarButton = `<button type="button" class="btn btn-secondary eliminarEmpresa" data-id="${empresa._id}"><i class="fas fa-trash-alt"></i> </button>`;
+    const verButton         = `<button type="button" class="btn btn-secondary verEmpresa" 
+                                data-id="${empresa._id}" title="Ver"><i class="fas fa-eye"></i></button>`;
+    const modificarButton   = `<button type="button" class="btn btn-secondary modificarEmpresa" 
+                               data-id="${empresa._id}" title="Modificar"><i class="fas fa-edit"></i></button>`;
+    const eliminarButton    = `<button type="button" class="btn btn-secondary eliminarEmpresa" 
+                               data-id="${empresa._id}" title="Eliminar"><i class="fas fa-trash-alt"></i> </button>`;
+    const ofertasButton     = `<button type="button" class="btn btn-secondary" onclick="abrirOfertas('${empresa._id}')" 
+                            data-id="${empresa._id}" title="Gestionar ofertas"><i class="fas fa-briefcase"></i> </button>`;
 
     card.innerHTML = `
         <div class="card-body">
@@ -1055,6 +1030,7 @@ function crearTarjetaEmpresa(empresa) {
                 ${verButton}
                 ${modificarButton}
                 ${eliminarButton}
+                ${ofertasButton}
             </div>
         </div>
     `;
@@ -1082,7 +1058,6 @@ function obtenerEmpresaPorId(empresaId, tipo) {
         .then(data => {
             if (data.success) {
                 const empresa = data.empresa;
-                console.log(empresa)
                 // Llenar los campos del modal con los datos del alumno
                 document.getElementById('empresaId').value = empresa._id;
                 document.getElementById('nombre').value = empresa.nombre;
@@ -1093,11 +1068,13 @@ function obtenerEmpresaPorId(empresaId, tipo) {
                 const modalTitle = document.getElementById('formModal').querySelector('h2');
                 const btnGuardar = document.getElementById('btn-guardar');
                 const btnModificar = document.getElementById('btn-modificar');
+                const btnOfertas = document.getElementById('btn-ofertas');
 
                 if (tipo === 'ver') {
                     modalTitle.textContent = 'Empresa'; // Cambiar el título
                     btnGuardar.style.display = 'none'; // Ocultar botón de guardar
                     btnModificar.style.display = 'block'; // Mostrar botón de modificar
+                    btnOfertas.style.display = 'block'; // Mostrar botón de modificar
                     estadoCamposForm(true); // Deshabilitar campos para modo "ver"
 
                     } else if (tipo === 'modificar') {
@@ -1105,6 +1082,7 @@ function obtenerEmpresaPorId(empresaId, tipo) {
                         btnGuardar.style.display = 'inline-block'; // Mostrar botón de guardar
                         btnGuardar.textContent = 'Modificar';
                         btnModificar.style.display = 'none'; // Ocultar botón de modificar
+                        btnOfertas.style.display = 'none'; // Mostrar botón de guardar
 
                         estadoCamposForm(false); // Habilitar campos para edición
                     }
@@ -1120,9 +1098,13 @@ function obtenerEmpresaPorId(empresaId, tipo) {
 }
 
 
-function abrirOfertas() {
-    const empresaId = document.getElementById('empresaId').value; // Obtén el ID de la empresa seleccionada
+function abrirOfertas(empresaId) {
+    // Si el ID no se pasa como parámetro, intenta obtenerlo del campo oculto
+    if (!empresaId) {
+        empresaId = document.getElementById('empresaId').value;
+    }
 
+    console.log("ID de la empresa:", empresaId);
     if (empresaId) {
         // Redirigir a ofertas.html con el ID de la empresa como parámetro
         window.location.href = `ofertas.html?empresaId=${empresaId}`;

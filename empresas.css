@@ -201,7 +201,6 @@
     background-color: var(--color-mid-grey-2);
   }
   
-  
   .cancel-button {
     background-color: var(--color-cancel);
     color: white;
@@ -362,4 +361,8 @@
   min-height: 100px;  /* Ajusta según el diseño deseado */
   width: 100%; /* Asegura que las tarjetas no se estiren en dispositivos pequeños */
   max-width: 300px; /* Ancho máximo para las tarjetas */
+}
+
+.card-text{
+  height: 60px
 }
